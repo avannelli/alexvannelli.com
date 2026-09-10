@@ -1,0 +1,17 @@
+﻿---
+interface Props { idPrefix?: string }
+const { idPrefix = 'page' } = Astro.props;
+const fieldId = (name: string) => `${idPrefix}-${name}`;
+---
+<form class="inquiry-form" data-inquiry-form>
+ <div class="field"><label for={fieldId('name')}>Name</label><input id={fieldId('name')} name="name" autocomplete="name" placeholder="Your name" required /></div>
+ <div class="field"><label for={fieldId('business')}>Business</label><input id={fieldId('business')} name="business" autocomplete="organization" placeholder="Business name" /></div>
+ <div class="field"><label for={fieldId('email')}>Email</label><input id={fieldId('email')} name="email" type="email" autocomplete="email" placeholder="you@business.com" required /></div>
+ <div class="field"><label for={fieldId('website')}>Existing website <span>Optional</span></label><input id={fieldId('website')} name="website" type="url" placeholder="https://" /></div>
+ <div class="field field--wide"><label for={fieldId('project-type')}>Type of project</label><select id={fieldId('project-type')} name="project-type" required><option value="">Select a project type</option><option>New website</option><option>Website redesign</option><option>Ecommerce</option><option>Interactive experience</option><option>Not sure yet</option></select></div>
+ <div class="field field--wide"><label for={fieldId('description')}>Project description</label><textarea id={fieldId('description')} name="description" rows="3" placeholder="What should the website help your business do?" required></textarea></div>
+ <div class="form-end"><p data-form-status aria-live="polite">Preview form — submissions are not connected yet.</p><button type="submit">Prepare inquiry <span aria-hidden="true">↗</span></button></div>
+</form>
+<script>
+ document.querySelectorAll<HTMLFormElement>('[data-inquiry-form]').forEach(form=>form.addEventListener('submit',event=>{event.preventDefault();if(!form.reportValidity())return;const status=form.querySelector<HTMLElement>('[data-form-status]');if(status)status.textContent='Thanks — this preview cannot send your inquiry yet. The form will be connected before launch.'}));
+</script>

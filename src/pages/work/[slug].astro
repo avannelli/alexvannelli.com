@@ -1,0 +1,117 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ProjectDialog from '../../components/ProjectDialog.astro';
+import LiveLink from '../../components/LiveLink.astro';
+import { projects, site } from '../../data/portfolio';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const others = projects.filter((item) => item.slug !== project.slug);
+---
+<Layout title={`${project.title} — ${site.name}`} description={project.description}>
+ <div id="top"></div><Header />
+ <main id="main" class="case">
+  <section class="case-head wrap">
+   <a class="case-back" href="/#work"><span aria-hidden="true">←</span> Showcase</a>
+   <div class="case-title">
+    <h1>{project.title}</h1>
+    <div class="case-title-meta">
+     <p class="project-type">{project.category}</p>
+     {project.conceptProject && <span class="concept-label">Independent concept — not client work</span>}
+    </div>
+   </div>
+   <p class="case-lead">{project.description}</p>
+   <dl class="case-facts">
+    <div><dt>Type</dt><dd>{project.type}</dd></div>
+    <div><dt>Year</dt><dd>{project.year}</dd></div>
+    <div><dt>Role</dt><dd>{project.role}</dd></div>
+   </dl>
+  </section>
+
+  <section class="case-hero wrap" aria-label={`${project.title} preview`}>
+   <img
+    src={project.previewImage}
+    alt={project.previewAlt}
+    width="2160"
+    height="1350"
+    decoding="async"
+    style={`object-position:${project.previewPosition}`}
+   />
+  </section>
+
+  <section class="case-body wrap">
+   <div class="case-overview">
+    <p class="section-title">Overview</p>
+    {project.overview.map((paragraph) => <p class="case-paragraph">{paragraph}</p>)}
+   </div>
+   <aside class="case-side">
+    <div class="case-side-block">
+     <p class="section-title">Technologies</p>
+     <ul class="case-tags">{project.technologies.map((item) => <li>{item}</li>)}</ul>
+    </div>
+    <div class="case-side-block">
+     <p class="section-title">Focus</p>
+     <ul class="case-tags">{project.capabilities.map((item) => <li>{item}</li>)}</ul>
+    </div>
+    {(project.liveUrl || project.repositoryUrl) && (
+     <div class="case-side-block case-links">
+      <LiveLink project={project} />
+      {project.repositoryUrl && <a class="project-action" href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">VIEW REPOSITORY <span aria-hidden="true">↗</span><span class="visually-hidden">(opens in a new tab)</span></a>}
+     </div>
+    )}
+   </aside>
+  </section>
+
+  {project.galleryImages.length > 0 && (
+   <section class="case-gallery wrap" aria-label={`${project.title} screenshots`}>
+    <p class="section-title">From the site</p>
+    <div class="case-gallery-grid">
+     {project.galleryImages.map((image) => (
+      <figure>
+       <img src={image.src} alt={image.alt} width="1800" height="1125" loading="lazy" decoding="async" />
+       <figcaption>{image.caption}</figcaption>
+      </figure>
+     ))}
+    </div>
+   </section>
+  )}
+
+  <section class="case-features wrap">
+   <p class="section-title">Notable details</p>
+   <div class="case-feature-list">
+    {project.features.map((feature, index) => (
+     <article>
+      <span>{String(index + 1).padStart(2, '0')}</span>
+      <h2>{feature.title}</h2>
+      <p>{feature.detail}</p>
+     </article>
+    ))}
+   </div>
+  </section>
+
+  <section class="case-next wrap">
+   <div class="case-next-head">
+    <p class="section-title">More work</p>
+    <button class="button button--accent" type="button" data-open-project><span>Start a project</span><i aria-hidden="true">↗</i></button>
+   </div>
+   <div class="case-next-grid">
+    {others.map((item) => (
+     <a class="case-next-card" href={`/work/${item.slug}`}>
+      <img src={item.previewImage} alt={item.previewAlt} width="2160" height="1350" loading="lazy" decoding="async" style={`object-position:${item.previewPosition}`} />
+      <div>
+       <p class="project-type">{item.type}</p>
+       <h2>{item.title}</h2>
+      </div>
+     </a>
+    ))}
+   </div>
+  </section>
+ </main>
+ <Footer />
+ <ProjectDialog />
+</Layout>

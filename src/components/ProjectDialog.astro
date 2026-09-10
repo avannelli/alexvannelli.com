@@ -1,0 +1,13 @@
+﻿---
+import InquiryForm from './InquiryForm.astro';
+---
+<dialog class="project-dialog" id="project-dialog" aria-labelledby="dialog-title">
+ <div class="dialog-shell"><div class="dialog-head"><div><span>New project inquiry</span><h2 id="dialog-title">Let’s make something<br />worth remembering.</h2></div><button class="dialog-close" type="button" aria-label="Close project inquiry">Close <i aria-hidden="true">×</i></button></div><InquiryForm idPrefix="dialog" /></div>
+</dialog>
+<script>
+ const dialog=document.querySelector<HTMLDialogElement>('#project-dialog');
+ document.querySelectorAll<HTMLElement>('[data-open-project]').forEach(trigger=>trigger.addEventListener('click',()=>dialog?.showModal()));
+ dialog?.querySelector('.dialog-close')?.addEventListener('click',()=>dialog.close());
+ dialog?.addEventListener('click',event=>{if(event.target===dialog)dialog.close()});
+ dialog?.addEventListener('cancel',event=>{event.preventDefault();dialog.close()});
+</script>

@@ -1,0 +1,16 @@
+---
+import type { Project } from '../data/portfolio';
+interface Props { project: Project; variant?: 'primary' | 'quiet' }
+const { project, variant = 'primary' } = Astro.props;
+---
+{/* Renders nothing at all when liveUrl is empty, so no broken or localhost link can ship. */}
+{project.liveUrl && (
+ <a
+  class:list={['project-action', variant === 'primary' && 'project-action--live']}
+  href={project.liveUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+ >
+  {project.liveLabel} <span aria-hidden="true">↗</span><span class="visually-hidden">(opens in a new tab)</span>
+ </a>
+)}

@@ -1,0 +1,17 @@
+---
+import { site } from '../data/portfolio';
+const base = Astro.url.pathname === '/' ? '' : '/';
+---
+<header class="site-header wrap">
+  <a class="brand" href={`${base}#top`} aria-label={`${site.name}, home`}><strong>{site.name}</strong><span>Independent web design &amp; development</span></a>
+  <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span>Menu</span><i aria-hidden="true"></i></button>
+  <nav id="main-nav" aria-label="Main navigation"><a href={`${base}#work`}>Showcase</a><a href={`${base}#process`}>Process</a><a href={`${base}#capabilities`}>Capabilities</a><a href={`${base}#contact`}>Contact</a></nav>
+</header>
+<script>
+ const button=document.querySelector<HTMLButtonElement>('.menu-button');
+ const nav=document.querySelector<HTMLElement>('#main-nav');
+ const closeMenu=()=>{button?.setAttribute('aria-expanded','false');button?.setAttribute('aria-label','Open navigation');if(button?.querySelector('span'))button.querySelector('span')!.textContent='Menu';nav?.removeAttribute('data-open');document.documentElement.classList.remove('menu-open')};
+ button?.addEventListener('click',()=>{const opening=button.getAttribute('aria-expanded')!=='true';if(!opening){closeMenu();return}button.setAttribute('aria-expanded','true');button.setAttribute('aria-label','Close navigation');if(button.querySelector('span'))button.querySelector('span')!.textContent='Close';nav?.setAttribute('data-open','');document.documentElement.classList.add('menu-open')});
+ nav?.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenu));
+ document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMenu()});
+</script>

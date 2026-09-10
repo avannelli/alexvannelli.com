@@ -1,0 +1,9 @@
+---
+import { site } from '../data/portfolio';
+const base = Astro.url.pathname === '/' ? '' : '/';
+---
+<footer class="footer wrap">
+ <div><a class="footer-name" href={`${base}#top`}>{site.name}</a><p>Custom websites for local and independent businesses.</p></div>
+ <nav aria-label="Footer navigation"><a href={`${base}#work`}>Showcase</a><a href={`${base}#process`}>Process</a><a href={`${base}#capabilities`}>Capabilities</a><a href={`${base}#contact`}>Contact</a></nav>
+ <div class="footer-end"><a href={`mailto:${site.email}`}>{site.email}</a><span>© {new Date().getFullYear()} {site.name}</span></div>
+</footer>
