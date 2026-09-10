@@ -3,10 +3,22 @@ import type { Project } from '../data/portfolio';
 import LiveLink from './LiveLink.astro';
 interface Props { project: Project; index: number }
 const { project, index } = Astro.props;
-const href = `/work/${project.slug}`;
+const caseHref = `/work/${project.slug}`;
+// The preview opens the live site when there is one, and falls back to the case
+// study otherwise, so the image is never a dead or broken target.
+const visualHref = project.liveUrl || caseHref;
+const isLive = Boolean(project.liveUrl);
 ---
 <article class:list={['project', project.featured && 'project--featured']} data-category={project.category}>
- <a class="project-visual" href={href} aria-label={`View the ${project.title} case study`}>
+ <a
+  class="project-visual"
+  href={visualHref}
+  target={isLive ? '_blank' : undefined}
+  rel={isLive ? 'noopener noreferrer' : undefined}
+  aria-label={isLive
+   ? `Open the ${project.title} live site in a new tab`
+   : `View the ${project.title} case study`}
+ >
   <img
    src={project.previewImage}
    alt={project.previewAlt}
@@ -16,17 +28,18 @@ const href = `/work/${project.slug}`;
    decoding="async"
    style={`object-position:${project.previewPosition}`}
   />
+  {isLive && <span class="visual-badge" aria-hidden="true">Live site <i>↗</i></span>}
  </a>
  <div class="project-details">
   <div class="project-meta"><span>{String(index+1).padStart(2,'0')}</span>{project.conceptProject && <span class="concept-label">Independent concept</span>}</div>
   <div class="project-copy">
    <p class="project-type">{project.type} / {project.year}</p>
-   <h3><a href={href}>{project.title}</a></h3>
+   <h3><a href={caseHref}>{project.title}</a></h3>
    <p>{project.description}</p>
   </div>
   <ul aria-label="Capabilities demonstrated">{project.capabilities.map(item=><li>{item}</li>)}</ul>
   <div class="project-actions">
-   <a class="project-action" href={href}>View case study <span aria-hidden="true">→</span></a>
+   <a class="project-action" href={caseHref}>View case study <span aria-hidden="true">→</span></a>
    <LiveLink project={project} />
   </div>
  </div>

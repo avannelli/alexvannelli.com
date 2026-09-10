@@ -26,6 +26,12 @@ const others = projects.filter((item) => item.slug !== project.slug);
     </div>
    </div>
    <p class="case-lead">{project.description}</p>
+   {project.liveUrl && (
+    <div class="case-head-actions">
+     <LiveLink project={project} />
+     <span class="case-head-note">Opens the deployed project in a new tab</span>
+    </div>
+   )}
    <dl class="case-facts">
     <div><dt>Type</dt><dd>{project.type}</dd></div>
     <div><dt>Year</dt><dd>{project.year}</dd></div>
@@ -58,10 +64,9 @@ const others = projects.filter((item) => item.slug !== project.slug);
      <p class="section-title">Focus</p>
      <ul class="case-tags">{project.capabilities.map((item) => <li>{item}</li>)}</ul>
     </div>
-    {(project.liveUrl || project.repositoryUrl) && (
+    {project.repositoryUrl && (
      <div class="case-side-block case-links">
-      <LiveLink project={project} />
-      {project.repositoryUrl && <a class="project-action" href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">VIEW REPOSITORY <span aria-hidden="true">↗</span><span class="visually-hidden">(opens in a new tab)</span></a>}
+      <a class="project-action" href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">VIEW REPOSITORY <span aria-hidden="true">↗</span><span class="visually-hidden">(opens in a new tab)</span></a>
      </div>
     )}
    </aside>
@@ -93,6 +98,18 @@ const others = projects.filter((item) => item.slug !== project.slug);
     ))}
    </div>
   </section>
+
+  {project.liveUrl && (
+   <section class="case-launch wrap">
+    <div class="case-launch-inner">
+     <div>
+      <p class="section-title">See it running</p>
+      <p class="case-launch-copy">The deployed version of {project.title} is live — open it in a new tab.</p>
+     </div>
+     <LiveLink project={project} />
+    </div>
+   </section>
+  )}
 
   <section class="case-next wrap">
    <div class="case-next-head">

@@ -1,12 +1,12 @@
 ---
 import type { Project } from '../data/portfolio';
-interface Props { project: Project; variant?: 'primary' | 'quiet' }
-const { project, variant = 'primary' } = Astro.props;
+interface Props { project: Project; variant?: 'action' | 'quiet' }
+const { project, variant = 'action' } = Astro.props;
 ---
-{/* Renders nothing at all when liveUrl is empty, so no broken or localhost link can ship. */}
+{/* Renders nothing when liveUrl is empty, so a project without a deployment never shows a broken link. */}
 {project.liveUrl && (
  <a
-  class:list={['project-action', variant === 'primary' && 'project-action--live']}
+  class:list={['project-action', variant === 'action' && 'project-action--live']}
   href={project.liveUrl}
   target="_blank"
   rel="noopener noreferrer"
