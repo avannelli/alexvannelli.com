@@ -273,13 +273,6 @@ export const projects: Project[] = [
 
 export const getProject = (slug: string) => projects.find((project) => project.slug === slug);
 
-export const capabilities = [
-  { title: 'Plan', summary: 'Shape the right site before designing it.', detail: 'Strategy · Structure · Content' },
-  { title: 'Design', summary: 'Create a distinct, responsive visual system.', detail: 'Custom design · Redesigns · Prototypes' },
-  { title: 'Build', summary: 'Turn approved ideas into a fast, flexible product.', detail: 'Astro · React · CMS · Forms · Ecommerce' },
-  { title: 'Launch', summary: 'Prepare the site for real visitors and future growth.', detail: 'Testing · Hosting · Support' },
-];
-
 export const process = [
   { number: '01', name: 'Discover', text: 'Define the audience, goals, content, and required functionality.' },
   { number: '02', name: 'Design', text: 'Shape the visual direction and review key pages together.' },

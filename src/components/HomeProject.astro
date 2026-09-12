@@ -1,0 +1,32 @@
+---
+import type { Project } from '../data/portfolio';
+interface Props { project: Project; index: number }
+const { project, index } = Astro.props;
+const caseHref = `/work/${project.slug}`;
+const live = Boolean(project.liveUrl);
+---
+<article class:list={['home-project', index === 0 && 'home-project--lead', index % 2 === 1 && 'home-project--reverse']} data-home-project data-category={project.category}>
+ <div class="home-project-heading" data-home-reveal>
+  <p class="home-project-index"><span>{String(index + 1).padStart(2, '0')}</span>{index === 0 ? 'In the spotlight' : project.category}</p>
+  {index === 0 && <h3 class="home-spotlight-title"><a href={caseHref}>{project.title}<span aria-hidden="true">↗</span></a></h3>}
+  <p class="home-project-kind">{project.conceptProject ? 'Independent concept' : 'Personal project'} <span aria-hidden="true">/</span> {project.year}</p>
+ </div>
+ <div class="home-project-layout">
+  <a class="home-preview" href={project.liveUrl || caseHref} target={live ? '_blank' : undefined} rel={live ? 'noopener noreferrer' : undefined} aria-label={live ? `Open ${project.title} live site (new tab)` : `View ${project.title} case study`} data-home-reveal>
+   <div class="home-preview-image"><img src={project.previewImage} alt={project.previewAlt} width="2160" height="1350" loading={index === 0 ? 'eager' : 'lazy'} decoding="async" style={`object-position:${project.previewPosition}`} /></div>
+   <span class="home-preview-caption"><span>{live ? new URL(project.liveUrl).hostname : 'Explore the project'}</span><span>{live ? 'Open live' : 'Case study'} <i aria-hidden="true">↗</i></span></span>
+  </a>
+  <div class="home-project-info" data-home-reveal>
+   <p class="home-eyebrow">{project.type}</p>
+   {index !== 0 && <h3><a href={caseHref}>{project.title}<span aria-hidden="true">↗</span></a></h3>}
+   <p class="home-project-description">{project.description}</p>
+   <div class="home-project-highlight"><span>The interesting part</span><p>{project.features[0]?.title}</p></div>
+   <ul class="home-project-tags" aria-label="What I built">{project.capabilities.map(capability => <li>{capability}</li>)}</ul>
+   <div class="home-project-links">
+    <a href={caseHref}>Case study <span aria-hidden="true">→</span></a>
+    {live && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">{project.liveLabel.charAt(0) + project.liveLabel.slice(1).toLowerCase()} <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a>}
+    {project.repositoryUrl && <a href={project.repositoryUrl} target="_blank" rel="noopener noreferrer">Source code <span class="visually-hidden">(opens in a new tab)</span></a>}
+   </div>
+  </div>
+ </div>
+</article>

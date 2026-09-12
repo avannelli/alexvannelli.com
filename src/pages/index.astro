@@ -1,62 +1,136 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import ProjectCard from '../components/ProjectCard.astro';
 import InquiryForm from '../components/InquiryForm.astro';
 import ProjectDialog from '../components/ProjectDialog.astro';
 import Footer from '../components/Footer.astro';
-import { projects, categories, capabilities, process, site } from '../data/portfolio';
+import HomeProject from '../components/HomeProject.astro';
+import { projects, categories, process } from '../data/portfolio';
+import '../styles/home.css';
+
+// Preserve the curated data order within each featured group.
+const showcase = [...projects].sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
+const categoryLabels = ['All work', 'Interactive', 'Engineering', 'Hospitality'];
 ---
 <Layout>
- <div id="top"></div><Header />
- <main id="main">
-  <section class="intro wrap" aria-labelledby="intro-title"><h1 id="intro-title">Websites built<br />for <em>business.</em></h1><div class="intro-bottom"><div class="intro-copy"><p>Distinctive, fast websites for businesses ready to move beyond generic templates.</p><aside class="profile-card"><div class="profile-photo" role="img" aria-label="Portrait placeholder for Alessandro Vannelli"><span>Portrait<br />coming soon</span></div><div class="profile-copy"><span>Designer &amp; developer</span><h2>Alessandro Vannelli</h2><p>React experience, modern tools, and careful design judgment—focused on building dependable websites.</p></div></aside></div><div class="intro-actions"><a class="button button--light" href="#work"><span>View showcase</span><i aria-hidden="true">↓</i></a><button class="button button--accent" type="button" data-open-project><span>Start a project</span><i aria-hidden="true">↗</i></button></div></div></section>
-  <section id="work" class="work-section"><div class="filter-wrap wrap" aria-label="Filter projects"><p class="filter-label">Showcase</p><button class="filter-scroll" data-direction="left" aria-label="Scroll filters left">←</button><div class="filters">{categories.map((category,index)=><button type="button" class:list={[index===0&&'is-active']} data-filter={category} aria-pressed={index===0?'true':'false'}>{category}</button>)}</div><button class="filter-scroll" data-direction="right" aria-label="Scroll filters right">→</button></div><div class="project-list wrap">{projects.map((project,index)=><ProjectCard project={project} index={index} />)}</div></section>
-  <section id="process" class="process-section"><div class="wrap"><div class="process-title"><p class="section-title">How it works</p><h2>A clear process.</h2></div><div class="process-list">{process.map(stage=><article><span>{stage.number}</span><h3>{stage.name}</h3><p>{stage.text}</p></article>)}</div></div></section>
-  <section id="capabilities" class="capabilities wrap"><div class="section-head"><p class="section-title">What I can build</p><h2>From idea to launch.</h2></div><div class="capability-table">{capabilities.map((item,index)=><article class="capability-row"><span>{String(index+1).padStart(2,'0')}</span><h3>{item.title}</h3><p>{item.summary}</p><small>{item.detail}</small></article>)}</div></section>
-  <section id="contact" class="contact-section"><div class="wrap contact-grid"><div><p class="section-title">Have something in mind?</p><h2>Tell me what<br />you’re building.</h2><p class="contact-lead">A new site, a thoughtful redesign, or an idea ready to take shape.</p><div class="availability"><i></i><span>Available for select projects</span></div></div><InquiryForm idPrefix="page" /></div></section>
- </main>
- <Footer />
- <ProjectDialog />
+ <div class="home-page">
+  <div id="top"></div>
+  <Header />
+  <main id="main">
+   <section class="home-intro wrap" aria-labelledby="home-title">
+    <div class="home-intro-top"><p><span class="home-signal" aria-hidden="true"></span>Independent mind. Hands-on maker.</p><a href="#work">Scroll for the good stuff <span aria-hidden="true">↓</span></a></div>
+    <div class="home-intro-grid">
+     <div class="home-statement">
+      <h1 id="home-title">Websites built<br /> for <span>business.</span><svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M10 10h43v43M53 10 9 54" stroke="currentColor" stroke-width="5"/></svg></h1>
+      <p class="home-lede">Thoughtful websites for local businesses.<br />A few personal experiments along the way.</p>
+      <div class="home-actions"><button class="home-primary" type="button" data-open-project>Let’s build something <span aria-hidden="true">↗</span></button><a class="home-text-link" href="#work">Explore my work <span aria-hidden="true">↓</span></a></div>
+     </div>
+     <aside class="home-bio" aria-labelledby="home-bio-title">
+      <div class="home-bio-heading">
+       <div class="home-portrait" role="img" aria-label="Portrait placeholder, photo coming soon"><svg viewBox="0 0 56 64" fill="none" aria-hidden="true"><circle cx="28" cy="22" r="10"/><path d="M9 58v-7c0-12 8-19 19-19s19 7 19 19v7"/></svg><span>Photo soon</span></div>
+       <div><p class="home-eyebrow">The person behind the work</p><h2 id="home-bio-title">Hey, I’m<br /> <span>Alessandro.</span></h2></div>
+      </div>
+      <p>I design it, build it, and sweat the small stuff. This is where I share what I’m making and what I’m learning along the way.</p>
+      <details class="home-personal">
+       <summary><span>Off the clock</span><span class="home-personal-hint">A little more me</span><span class="home-plus" aria-hidden="true">+</span></summary>
+       <div class="home-personal-notes">
+        <p><span class="home-habs-mark" aria-hidden="true"></span><span><strong>Canadiens, always.</strong> Hockey fan. Montreal has my loyalty.</span></p>
+        <p><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 8v8m4-11v14m10-14v14m4-11v8M7 12h10" stroke="currentColor" stroke-width="1.5"/></svg><span><strong>Time in the gym.</strong> A regular part of life away from the screen.</span></p>
+        <p><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="m10 9 5 3-5 3V9Z" stroke="currentColor" stroke-width="1.5"/></svg><span><strong>One more episode.</strong> Movies, TV, and something good to get into.</span></p>
+       </div>
+      </details>
+      <p class="home-interests"><span>Habs fan</span><span>Gym regular</span><span>Film &amp; TV</span></p>
+     </aside>
+    </div>
+   </section>
+
+   <section id="work" class="home-work wrap" aria-labelledby="home-work-title">
+    <div class="home-work-nav">
+     <h2 id="home-work-title">Showcase <span>{String(projects.length).padStart(2, '0')}</span></h2>
+     <div class="home-filters" role="group" aria-label="Filter projects">
+      {categories.map((category, index) => <button type="button" data-home-filter={category} aria-pressed={index === 0 ? 'true' : 'false'}>{categoryLabels[index] || category}</button>)}
+     </div>
+    </div>
+    <p class="visually-hidden" data-home-filter-status aria-live="polite"></p>
+    <div class="home-projects">{showcase.map((project, index) => <HomeProject project={project} index={index} />)}</div>
+    <div class="home-work-end"><span>Personal projects. Independent concepts. All built by me.</span><a href="#contact" class="home-text-link">Your project could be next <span aria-hidden="true">↗</span></a></div>
+   </section>
+
+   <section id="process" class="home-process" aria-labelledby="home-process-title">
+    <div class="wrap home-process-grid">
+     <div class="home-process-intro" data-home-reveal><p class="home-eyebrow">From the first conversation</p><h2 id="home-process-title">A clear process.<br /><span>A personal approach.</span></h2><p>You work directly with the person designing and building your site. That’s me.</p></div>
+     <div class="home-process-steps">{process.map((stage) => <article data-home-reveal><span class="home-step-marker" aria-hidden="true"></span><h3>{stage.name}</h3><p>{stage.text}</p></article>)}</div>
+    </div>
+   </section>
+
+   <section id="contact" class="home-contact wrap" aria-labelledby="home-contact-title">
+    <div class="home-contact-intro" data-home-reveal><p class="home-eyebrow">Have something in mind?</p><h2 id="home-contact-title">Let’s make<br />your next<br /><span>good thing.</span></h2><p>A new website, a thoughtful redesign, or an idea you’d like to talk through.</p><span class="home-contact-note">Good conversations are a good start.</span></div>
+    <InquiryForm idPrefix="page" />
+   </section>
+  </main>
+  <Footer />
+  <ProjectDialog />
+ </div>
  <script>
-  const filters = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
-  const cards = document.querySelectorAll<HTMLElement>('[data-category]');
-  let filtering = false;
-  filters.forEach((button) => button.addEventListener('click', async () => {
-    if (filtering || button.classList.contains('is-active')) return;
-    filtering = true;
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const currentCards = [...cards].filter((card) => !card.hidden);
-    if (!reducedMotion) {
-      await Promise.all(currentCards.map((card) => card.animate(
-        [{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(8px)' }],
-        { duration: 150, easing: 'ease-in', fill: 'forwards' }
-      ).finished.catch(() => undefined)));
+  const root = document.querySelector<HTMLElement>('.home-page');
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const articles = [...document.querySelectorAll<HTMLElement>('[data-home-project]')];
+  const filterButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-home-filter]')];
+  let filterVersion = 0;
+  filterButtons.forEach(button => button.addEventListener('click', () => {
+   const version = ++filterVersion;
+   filterButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+   articles.forEach(article => {
+    article.getAnimations().forEach(animation => animation.cancel());
+    article.hidden = button.dataset.homeFilter !== 'All projects' && article.dataset.category !== button.dataset.homeFilter;
+    if (!article.hidden && !motion.matches) {
+     article.animate([{ opacity: .25, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 300, easing: 'ease-out' });
     }
-    filters.forEach((item) => { item.classList.remove('is-active'); item.setAttribute('aria-pressed', 'false'); });
-    button.classList.add('is-active');
-    button.setAttribute('aria-pressed', 'true');
-    const value = button.dataset.filter;
-    cards.forEach((card) => { card.hidden = value !== 'All projects' && card.dataset.category !== value; });
-    const nextCards = [...cards].filter((card) => !card.hidden);
-    if (!reducedMotion) {
-      nextCards.forEach((card, index) => card.animate(
-        [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }],
-        { duration: 240, delay: index * 35, easing: 'cubic-bezier(.22,.7,.26,1)', fill: 'both' }
-      ));
-    }
-    filtering = false;
+   });
+   const count = articles.filter(article => !article.hidden).length;
+   const status = document.querySelector<HTMLElement>('[data-home-filter-status]');
+   if (status && version === filterVersion) status.textContent = `${count} ${count === 1 ? 'project' : 'projects'} shown.`;
   }));
-  document.querySelectorAll<HTMLButtonElement>('.filter-scroll').forEach((button) => button.addEventListener('click', () => document.querySelector('.filters')?.scrollBy({ left: button.dataset.direction === 'left' ? -260 : 260, behavior: 'smooth' })));
+
+  // Content is visible by default. Animate only when it enters the viewport.
+  const revealItems = document.querySelectorAll<HTMLElement>('[data-home-reveal]');
+  if ('IntersectionObserver' in window) {
+   const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+     if (!entry.isIntersecting) return;
+     if (!motion.matches) entry.target.animate(
+      [{ opacity: .25, transform: 'translateY(18px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 550, easing: 'cubic-bezier(.22,.7,.26,1)' }
+     );
+     observer.unobserve(entry.target);
+    });
+   }, { threshold: .12 });
+   revealItems.forEach(item => observer.observe(item));
+  }
+  motion.addEventListener('change', () => {
+   if (motion.matches) root?.getAnimations({ subtree: true }).forEach(animation => animation.cancel());
+  });
+
+  // Keep the compact mobile menu's keyboard focus inside its controls.
+  const menuButton = root?.querySelector<HTMLButtonElement>('.menu-button');
+  const menu = root?.querySelector<HTMLElement>('#main-nav');
+  const closeMenu = (restoreFocus = false) => {
+   if (menuButton?.getAttribute('aria-expanded') !== 'true') return;
+   menuButton.click();
+   if (restoreFocus) menuButton.focus();
+  };
+  document.addEventListener('keydown', event => {
+   if (event.key === 'Escape' && menu?.contains(document.activeElement)) menuButton?.focus();
+   if (event.key !== 'Tab' || menuButton?.getAttribute('aria-expanded') !== 'true') return;
+   const controls = [menuButton, ...menu!.querySelectorAll<HTMLAnchorElement>('a')];
+   const first = controls[0];
+   const last = controls[controls.length - 1];
+   if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+   else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
+  document.addEventListener('click', event => {
+   if (event.target instanceof Node && !menu?.contains(event.target) && !menuButton?.contains(event.target)) closeMenu();
+  });
+  window.matchMedia('(min-width: 641px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
  </script>
 </Layout>
-
-
-
-
-
-
-
-
-
-

@@ -5,7 +5,7 @@ const base = Astro.url.pathname === '/' ? '' : '/';
 <header class="site-header wrap">
   <a class="brand" href={`${base}#top`} aria-label={`${site.name}, home`}><strong>{site.name}</strong><span>Independent web design &amp; development</span></a>
   <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span>Menu</span><i aria-hidden="true"></i></button>
-  <nav id="main-nav" aria-label="Main navigation"><a href={`${base}#work`}>Showcase</a><a href={`${base}#process`}>Process</a><a href={`${base}#capabilities`}>Capabilities</a><a href={`${base}#contact`}>Contact</a></nav>
+  <nav id="main-nav" aria-label="Main navigation"><a href={`${base}#work`}>Showcase</a><a href={`${base}#process`}>Process</a><a href={`${base}#contact`}>Contact</a></nav>
 </header>
 <script>
  const button=document.querySelector<HTMLButtonElement>('.menu-button');

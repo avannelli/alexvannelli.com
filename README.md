@@ -1,8 +1,8 @@
 # Alessandro Vannelli portfolio
 
 An Astro static site for Alessandro's independent web-design practice. It showcases three real
-projects — InsertCoin, Alderspan Engineering, and Morrow & Crumb — plus capabilities, a four-stage
-process, and an inquiry form with placeholder-only submission behavior.
+projects — InsertCoin, Alderspan Engineering, and Morrow & Crumb — plus a four-stage process
+and an inquiry form with placeholder-only submission behavior.
 
 ## Requirements
 

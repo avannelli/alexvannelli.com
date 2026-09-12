@@ -22,16 +22,15 @@
 - `npm run preview`
 
 - Keep section copy and divider spacing compact, especially on desktop. Use succinct, unnumbered section headings.
-- Capabilities should be a compact visual composition rather than a plain list.
 - The header has no project CTA. Intro project CTAs open a fading inquiry dialog that reuses the footer form.
 
 - Use Showcase instead of Selected Work in visitor-facing copy and navigation.
 - Avoid pale green as the primary accent; the current site accent is warm copper.
-- Capabilities uses a uniform, non-interactive matrix with its heading above it. About content belongs concisely in the introduction; do not add a separate About section.
+- About content belongs concisely in the introduction; do not add a separate About section.
 
 - Keep copy concise and audit contrast whenever a section uses a light background.
-- Capabilities is grouped into four static stages: Plan, Design, Build, and Launch.
 
+- There is no Capabilities section: it duplicated Process and was removed. Do not reintroduce it.
 - Place Process directly after the introduction. Keep the introduction compact on desktop with its bottom divider close to the content.
 
 - Keep the opening free of redundant service labels. The Process section uses a lighter charcoal, preserving the continuous dark palette without cream or white bands.

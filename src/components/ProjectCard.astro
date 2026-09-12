@@ -8,6 +8,13 @@ const caseHref = `/work/${project.slug}`;
 // study otherwise, so the image is never a dead or broken target.
 const visualHref = project.liveUrl || caseHref;
 const isLive = Boolean(project.liveUrl);
+const number = String(index + 1).padStart(2, '0');
+// The frame's address bar shows the real host when the project is deployed, and
+// a plausible stand-in derived from the slug when it is not, so the chrome never
+// looks empty or claims a URL that does not exist.
+const frameAddress = isLive
+ ? new URL(project.liveUrl).host.replace(/^www\./, '')
+ : `${project.slug}`;
 ---
 <article class:list={['project', project.featured && 'project--featured']} data-category={project.category}>
  <a
@@ -19,19 +26,26 @@ const isLive = Boolean(project.liveUrl);
    ? `Open the ${project.title} live site in a new tab`
    : `View the ${project.title} case study`}
  >
-  <img
-   src={project.previewImage}
-   alt={project.previewAlt}
-   width="2160"
-   height="1350"
-   loading={index === 0 ? 'eager' : 'lazy'}
-   decoding="async"
-   style={`object-position:${project.previewPosition}`}
-  />
-  {isLive && <span class="visual-badge" aria-hidden="true">Live site <i>↗</i></span>}
+  <span class="frame-bar" aria-hidden="true">
+   <span class="frame-dots"><i></i><i></i><i></i></span>
+   <span class="frame-address">{frameAddress}</span>
+  </span>
+  <span class="frame-view">
+   <img
+    src={project.previewImage}
+    alt={project.previewAlt}
+    width="2160"
+    height="1350"
+    loading={index === 0 ? 'eager' : 'lazy'}
+    decoding="async"
+    style={`object-position:${project.previewPosition}`}
+   />
+   {isLive && <span class="visual-badge" aria-hidden="true">Live site <i>↗</i></span>}
+  </span>
  </a>
  <div class="project-details">
-  <div class="project-meta"><span>{String(index+1).padStart(2,'0')}</span>{project.conceptProject && <span class="concept-label">Independent concept</span>}</div>
+  <span class="project-ghost" aria-hidden="true">{number}</span>
+  <div class="project-meta"><span>{number}</span>{project.conceptProject && <span class="concept-label">Independent concept</span>}</div>
   <div class="project-copy">
    <p class="project-type">{project.type} / {project.year}</p>
    <h3><a href={caseHref}>{project.title}</a></h3>
