@@ -1,0 +1,67 @@
+---
+// Showroom presentation behind the name: spotlight, rotating wireframe object,
+// exploded-view planes, moving crop frames and specification callouts. Decorative only.
+const meridians = Array.from({ length: 8 }, (_, i) => i);
+const ruler = Array.from({ length: 81 }, (_, i) => i);
+---
+<div class="hero-art showroom" aria-hidden="true">
+ <div class="sr-spot sr-spot-a"></div>
+ <div class="sr-spot sr-spot-b"></div>
+ <div class="sr-depth sr-floor" style="--depth:10"><i class="floor-grid"></i><i class="floor-horizon"></i></div>
+ <div class="sr-depth sr-glass" style="--depth:4"></div>
+
+ <!-- measurement ruler across the top -->
+ <svg class="sr-ruler" viewBox="0 0 800 24" preserveAspectRatio="none" fill="none">
+  {ruler.map(i => <path d={`M${i * 10} 0V${i % 10 === 0 ? 14 : i % 5 === 0 ? 9 : 5}`} stroke="#2b2b2c" stroke-opacity={i % 10 === 0 ? .5 : .22} vector-effect="non-scaling-stroke"/>)}
+ </svg>
+
+ <!-- rotating wireframe object (torus-like), right -->
+ <div class="sr-depth sr-object-shadow" style="--depth:16"></div>
+ <div class="sr-object" style="--depth:22">
+  <svg viewBox="-140 -140 280 280" fill="none">
+   <g class="obj-spin" stroke="#2b2b2c" stroke-width=".8">
+    {meridians.map(i => <ellipse rx="110" ry={24 + i * 11} stroke-opacity={.14 + i * .03} transform={`rotate(${i * 22.5})`}/>)}
+   </g>
+   <circle r="44" stroke="#2b2b2c" stroke-opacity=".45" stroke-width=".8"/>
+   <circle r="3" fill="#d6281f"/>
+   <path d="M-140 0h40M100 0h40M0-140v40M0 100v40" stroke="#2b2b2c" stroke-opacity=".4" stroke-width=".8"/>
+  </svg>
+  <span class="callout co-obj">Ø 220 MM<br /><em>FIG. 01 · ROTATION 360°</em></span>
+ </div>
+
+ <!-- exploded-view planes, left -->
+ <div class="sr-exploded" style="--depth:18">
+  <i class="plane p1"></i><i class="plane p2"></i><i class="plane p3"></i>
+  <svg class="exp-guides" viewBox="0 0 200 240" fill="none"><path d="M100 0V240" stroke="#2b2b2c" stroke-opacity=".35" stroke-dasharray="2 4"/></svg>
+  <span class="callout co-exp">EXPLODED VIEW<br /><em>A · INTERFACE / B · SYSTEM / C · CORE</em></span>
+ </div>
+
+ <!-- crop frame that moves between compositions -->
+ <div class="sr-crop"><i></i><i></i><i></i><i></i></div>
+
+ <div class="sr-specs">
+  <span class="sp-a">MODEL 01 <em>/</em> SERIES A</span>
+  <span class="sp-b">DESIGN SYSTEM <em>—</em> EST. 2026</span>
+  <span class="sp-c">W 1440 × H 900<br /><em>INTERFACE · FEATURE SET 03</em></span>
+ </div>
+</div>
+<script>
+ // Gentle showroom parallax: pointer position and scroll ease each layer by its --depth.
+ const room = document.querySelector<HTMLElement>('.showroom');
+ const stage = room?.closest<HTMLElement>('.opening');
+ if (room && stage && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
+  let tx = 0, ty = 0, x = 0, y = 0, frame = 0;
+  const tick = () => {
+   x += (tx - x) * .06; y += (ty - y) * .06;
+   room.style.setProperty('--px', x.toFixed(4));
+   room.style.setProperty('--py', (y + Math.min(scrollY / innerHeight, 1) * .8).toFixed(4));
+   frame = Math.abs(tx - x) + Math.abs(ty - y) > .0005 ? requestAnimationFrame(tick) : 0;
+  };
+  const kick = () => { if (!frame) frame = requestAnimationFrame(tick); };
+  if (matchMedia('(pointer:fine)').matches) {
+   stage.addEventListener('pointermove', e => { const b = stage.getBoundingClientRect(); tx = (e.clientX - b.left) / b.width - .5; ty = (e.clientY - b.top) / b.height - .5; kick(); });
+   stage.addEventListener('pointerleave', () => { tx = 0; ty = 0; kick(); });
+  }
+  addEventListener('scroll', () => { room.style.setProperty('--py', (y + Math.min(scrollY / innerHeight, 1) * .8).toFixed(4)); }, { passive: true });
+ }
+</script>

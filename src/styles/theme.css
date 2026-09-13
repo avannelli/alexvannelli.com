@@ -1,0 +1,4 @@
+:root{--bg:#dfd9ce;--bg-deep:#d6cfc2;--panel:#ebe6dd;--ink:#111111;--muted:#5d5e61;--accent:#d6281f;--accent-soft:#d6281f10;--line:#2b2b2c26;--line-soft:#2b2b2c18;--mustard:#111111;--teal:#1f47d6;--rust:#d6281f;--blue:#1f47d6;--amber:#d6281f;--green:#1f47d6;--cyan:#1f47d6;--magenta:#6e2233;--violet:#1c2740;--mono:'IBM Plex Mono',ui-monospace,monospace;color-scheme:light}
+body{background:var(--bg);color:var(--ink)}
+html:has(dialog[open]){overflow:hidden}
+@media(prefers-reduced-motion:reduce){:root{scroll-behavior:auto}}

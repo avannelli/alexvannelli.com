@@ -1,11 +1,17 @@
 ---
 import { site } from '../data/portfolio';
-const base = Astro.url.pathname === '/' ? '' : '/';
+const isHome = Astro.url.pathname === '/';
+const base = isHome ? '' : '/';
 ---
-<header class="site-header wrap">
+<header class:list={['site-header', 'wrap', { masthead: isHome }]}>
   <a class="brand" href={`${base}#top`} aria-label={`${site.name}, home`}><strong>{site.name}</strong><span>Independent web design &amp; development</span></a>
   <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open navigation"><span>Menu</span><i aria-hidden="true"></i></button>
-  <nav id="main-nav" aria-label="Main navigation"><a href={`${base}#work`}>Showcase</a><a href={`${base}#process`}>Process</a><a href={`${base}#contact`}>Contact</a></nav>
+  {isHome ? (
+    <nav id="main-nav" aria-label="Main navigation"><a href="#work">Showcase</a><a class="nav-home" href="#top" aria-label="Back to top"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7"/><path d="M6 9.5V20h4.5v-5.5h3V20H18V9.5"/></svg><span class="nav-home-label">Home</span></a><a href="#process">Process</a></nav>
+  ) : (
+    <nav id="main-nav" aria-label="Main navigation"><a href={`${base}#work`}>Showcase</a><a href={`${base}#process`}>Process</a><a href="#project-dialog" data-open-project aria-haspopup="dialog" aria-controls="project-dialog">Contact</a></nav>
+  )}
+  {isHome && <a class="corner-contact" href="#project-dialog" data-open-project aria-haspopup="dialog" aria-controls="project-dialog"><span>Contact</span><i aria-hidden="true">↗</i></a>}
 </header>
 <script>
  const button=document.querySelector<HTMLButtonElement>('.menu-button');
@@ -13,5 +19,9 @@ const base = Astro.url.pathname === '/' ? '' : '/';
  const closeMenu=()=>{button?.setAttribute('aria-expanded','false');button?.setAttribute('aria-label','Open navigation');if(button?.querySelector('span'))button.querySelector('span')!.textContent='Menu';nav?.removeAttribute('data-open');document.documentElement.classList.remove('menu-open')};
  button?.addEventListener('click',()=>{const opening=button.getAttribute('aria-expanded')!=='true';if(!opening){closeMenu();return}button.setAttribute('aria-expanded','true');button.setAttribute('aria-label','Close navigation');if(button.querySelector('span'))button.querySelector('span')!.textContent='Close';nav?.setAttribute('data-open','');document.documentElement.classList.add('menu-open')});
  nav?.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeMenu));
- document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMenu()});
+ const sections=[...document.querySelectorAll<HTMLElement>('#work,#process')];
+ if(nav&&sections.length&&'IntersectionObserver' in window){const links=[...nav.querySelectorAll<HTMLAnchorElement>('a[href*="#"]')];const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;links.forEach(link=>link.href.endsWith(`#${entry.target.id}`)?link.setAttribute('aria-current','location'):link.removeAttribute('aria-current'))}),{rootMargin:'-45% 0px -50% 0px'});sections.forEach(section=>io.observe(section))}
+ document.addEventListener('keydown',event=>{if(event.key==='Escape' && button?.getAttribute('aria-expanded')==='true'){closeMenu();button.focus()}});
 </script>
+
+

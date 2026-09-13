@@ -1,136 +1,58 @@
----
+﻿---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import InquiryForm from '../components/InquiryForm.astro';
-import ProjectDialog from '../components/ProjectDialog.astro';
-import Footer from '../components/Footer.astro';
-import HomeProject from '../components/HomeProject.astro';
-import { projects, categories, process } from '../data/portfolio';
-import '../styles/home.css';
+import HeroArtwork from '../components/HeroArtwork.astro';
 
-// Preserve the curated data order within each featured group.
-const showcase = [...projects].sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
-const categoryLabels = ['All work', 'Interactive', 'Engineering', 'Hospitality'];
+import ProjectDialog from '../components/ProjectDialog.astro';
+import ProjectIdentity from '../components/ProjectIdentity.astro';
+import Footer from '../components/Footer.astro';
+import { projects, process } from '../data/portfolio';
+import '../styles/home.css';
 ---
 <Layout>
- <div class="home-page">
-  <div id="top"></div>
+ <div class="home-page" id="top">
   <Header />
   <main id="main">
-   <section class="home-intro wrap" aria-labelledby="home-title">
-    <div class="home-intro-top"><p><span class="home-signal" aria-hidden="true"></span>Independent mind. Hands-on maker.</p><a href="#work">Scroll for the good stuff <span aria-hidden="true">↓</span></a></div>
-    <div class="home-intro-grid">
-     <div class="home-statement">
-      <h1 id="home-title">Websites built<br /> for <span>business.</span><svg viewBox="0 0 64 64" fill="none" aria-hidden="true"><path d="M10 10h43v43M53 10 9 54" stroke="currentColor" stroke-width="5"/></svg></h1>
-      <p class="home-lede">Thoughtful websites for local businesses.<br />A few personal experiments along the way.</p>
-      <div class="home-actions"><button class="home-primary" type="button" data-open-project>Let’s build something <span aria-hidden="true">↗</span></button><a class="home-text-link" href="#work">Explore my work <span aria-hidden="true">↓</span></a></div>
+   <section class="opening wrap" aria-labelledby="home-title">
+    <HeroArtwork />
+    <div class="opening-meta"><span>Independent by design</span><span>Design / Development / Exploration</span></div>
+    <div class="opening-name"><h1 id="home-title"><span class="name-first">Alessandro</span><span class="name-last" data-text="Vannelli">Vannelli</span></h1><p><span class="label-code" aria-hidden="true"><b>MODEL 01</b>/ SERIES A</span><span class="label-rule" aria-hidden="true"></span><span class="label-text">Independent Web Design &amp; Development</span><span class="label-rule" aria-hidden="true"></span><span class="label-code" aria-hidden="true">EST. <b>2026</b></span></p></div>
+    <div class="opening-projects">
+     <p class="eyebrow">Three projects. Three different worlds.</p>
+     <div class="identity-row">{projects.map((project,index)=><a href={`#${project.slug}`} style={`--delay:${.85+index*.18}s`}><span class="ch-top" aria-hidden="true"><span class="ch-num">0{index+1}</span><span class="ch-cat">{project.category.split(/\s|&/)[0]}</span><span class="ch-state"><span class="ch-led"></span></span></span><ProjectIdentity project={project} /><span class="identity-arrow" aria-hidden="true">▶</span><span class="ch-cursor" aria-hidden="true">▶</span><span class="ch-bar" aria-hidden="true"></span></a>)}</div>
+    </div>
+    <div class="opening-bottom"><p>Websites with a point of view.<br /><span>Designed and built by one pair of hands.</span></p><span class="press-start" aria-hidden="true">CATALOGUE VOL. 01 — P. 01</span></div>
+   </section>
+   <section id="work" class="showcase wrap" aria-labelledby="work-title">
+    <div class="section-rail"><h2 id="work-title">Showcase</h2><span>Personal projects &amp; independent concepts</span><span>01 — 03</span></div>
+    {projects.map((project,index)=><article id={project.slug} class:list={['work-piece',`work-${project.slug}`,index%2===1 && 'work-piece-reverse']}>
+     <div class="work-heading"><span class="work-number">0{index+1}</span><h3><a href={`/work/${project.slug}`}>{project.title}</a></h3><span class="work-kind">{project.conceptProject ? 'Independent concept' : 'Personal project'}</span></div>
+     <div class="work-composition">
+      <a class="work-stage" href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`Visit ${project.title} (opens in a new tab)`}>
+       <span class="stage-grid" aria-hidden="true"></span><span class="stage-label">{project.category}</span>
+       <div class="site-window"><div class="window-bar"><span aria-hidden="true">● ● ●</span><span>{new URL(project.liveUrl).hostname}</span><span aria-hidden="true">↗</span></div><img src={project.previewImage} alt={project.previewAlt} width="1440" height="900" loading="lazy" decoding="async" style={`object-position:${project.previewPosition}`} /></div>
+       <span class="stage-caption">Designed &amp; developed by Alessandro Vannelli<span>Open website ↗</span></span>
+      </a>
+      <div class="work-note"><ProjectIdentity project={project} /><p class="work-summary">{index===0 ? 'A little nostalgia. A lot of play.' : index===1 ? 'Structure, with a different perspective.' : 'A warmer welcome to the everyday.'}</p><p class="work-description">{index===0 ? 'An original browser arcade. Five games, one shared cabinet, and a visual world built from scratch.' : index===1 ? 'An engineering consultancy concept that brings technical work to life through bold type and structural illustration.' : 'A bakery concept with an illustrated identity, a considered menu, and its own unhurried rhythm.'}</p><ul class="work-tags">{project.capabilities.slice(0,3).map(tag=><li>{tag}</li>)}</ul><a class="case-link" href={`/work/${project.slug}`}>Inside the project <span aria-hidden="true">↗</span></a></div>
      </div>
-     <aside class="home-bio" aria-labelledby="home-bio-title">
-      <div class="home-bio-heading">
-       <div class="home-portrait" role="img" aria-label="Portrait placeholder, photo coming soon"><svg viewBox="0 0 56 64" fill="none" aria-hidden="true"><circle cx="28" cy="22" r="10"/><path d="M9 58v-7c0-12 8-19 19-19s19 7 19 19v7"/></svg><span>Photo soon</span></div>
-       <div><p class="home-eyebrow">The person behind the work</p><h2 id="home-bio-title">Hey, I’m<br /> <span>Alessandro.</span></h2></div>
-      </div>
-      <p>I design it, build it, and sweat the small stuff. This is where I share what I’m making and what I’m learning along the way.</p>
-      <details class="home-personal">
-       <summary><span>Off the clock</span><span class="home-personal-hint">A little more me</span><span class="home-plus" aria-hidden="true">+</span></summary>
-       <div class="home-personal-notes">
-        <p><span class="home-habs-mark" aria-hidden="true"></span><span><strong>Canadiens, always.</strong> Hockey fan. Montreal has my loyalty.</span></p>
-        <p><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 8v8m4-11v14m10-14v14m4-11v8M7 12h10" stroke="currentColor" stroke-width="1.5"/></svg><span><strong>Time in the gym.</strong> A regular part of life away from the screen.</span></p>
-        <p><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="m10 9 5 3-5 3V9Z" stroke="currentColor" stroke-width="1.5"/></svg><span><strong>One more episode.</strong> Movies, TV, and something good to get into.</span></p>
-       </div>
-      </details>
-      <p class="home-interests"><span>Habs fan</span><span>Gym regular</span><span>Film &amp; TV</span></p>
-     </aside>
-    </div>
+    </article>)}
    </section>
-
-   <section id="work" class="home-work wrap" aria-labelledby="home-work-title">
-    <div class="home-work-nav">
-     <h2 id="home-work-title">Showcase <span>{String(projects.length).padStart(2, '0')}</span></h2>
-     <div class="home-filters" role="group" aria-label="Filter projects">
-      {categories.map((category, index) => <button type="button" data-home-filter={category} aria-pressed={index === 0 ? 'true' : 'false'}>{categoryLabels[index] || category}</button>)}
-     </div>
-    </div>
-    <p class="visually-hidden" data-home-filter-status aria-live="polite"></p>
-    <div class="home-projects">{showcase.map((project, index) => <HomeProject project={project} index={index} />)}</div>
-    <div class="home-work-end"><span>Personal projects. Independent concepts. All built by me.</span><a href="#contact" class="home-text-link">Your project could be next <span aria-hidden="true">↗</span></a></div>
-   </section>
-
-   <section id="process" class="home-process" aria-labelledby="home-process-title">
-    <div class="wrap home-process-grid">
-     <div class="home-process-intro" data-home-reveal><p class="home-eyebrow">From the first conversation</p><h2 id="home-process-title">A clear process.<br /><span>A personal approach.</span></h2><p>You work directly with the person designing and building your site. That’s me.</p></div>
-     <div class="home-process-steps">{process.map((stage) => <article data-home-reveal><span class="home-step-marker" aria-hidden="true"></span><h3>{stage.name}</h3><p>{stage.text}</p></article>)}</div>
-    </div>
-   </section>
-
-   <section id="contact" class="home-contact wrap" aria-labelledby="home-contact-title">
-    <div class="home-contact-intro" data-home-reveal><p class="home-eyebrow">Have something in mind?</p><h2 id="home-contact-title">Let’s make<br />your next<br /><span>good thing.</span></h2><p>A new website, a thoughtful redesign, or an idea you’d like to talk through.</p><span class="home-contact-note">Good conversations are a good start.</span></div>
-    <InquiryForm idPrefix="page" />
+   <section class="approach wrap" id="process" aria-labelledby="process-title">
+    <div class="section-rail"><h2 id="process-title">The approach</h2><span>One person. From first sketch to final build.</span></div>
+    <div class="approach-layout"><div class="approach-intro"><p class="large-statement">Good websites<br />start with<br /><em>your world.</em></p><p>I’m Alessandro. I design and build websites for local and independent businesses. We work directly together, shaping the details around what makes your business yours.</p><button type="button" data-open-project class="action-link">Tell me what you have in mind <span aria-hidden="true">↗</span></button></div><div class="process-list">{process.map((stage,index)=><details name="process" open={index===0}><summary>{stage.name}<span aria-hidden="true">+</span></summary><p>{stage.text}</p></details>)}<p class="process-footnote">A clear direction. Room to experiment.<br />Care in the details, on every screen.</p></div></div>
    </section>
   </main>
-  <Footer />
-  <ProjectDialog />
+  <Footer /><ProjectDialog />
  </div>
  <script>
-  const root = document.querySelector<HTMLElement>('.home-page');
-  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const articles = [...document.querySelectorAll<HTMLElement>('[data-home-project]')];
-  const filterButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-home-filter]')];
-  let filterVersion = 0;
-  filterButtons.forEach(button => button.addEventListener('click', () => {
-   const version = ++filterVersion;
-   filterButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-   articles.forEach(article => {
-    article.getAnimations().forEach(animation => animation.cancel());
-    article.hidden = button.dataset.homeFilter !== 'All projects' && article.dataset.category !== button.dataset.homeFilter;
-    if (!article.hidden && !motion.matches) {
-     article.animate([{ opacity: .25, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 300, easing: 'ease-out' });
-    }
-   });
-   const count = articles.filter(article => !article.hidden).length;
-   const status = document.querySelector<HTMLElement>('[data-home-filter-status]');
-   if (status && version === filterVersion) status.textContent = `${count} ${count === 1 ? 'project' : 'projects'} shown.`;
-  }));
-
-  // Content is visible by default. Animate only when it enters the viewport.
-  const revealItems = document.querySelectorAll<HTMLElement>('[data-home-reveal]');
-  if ('IntersectionObserver' in window) {
-   const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-     if (!entry.isIntersecting) return;
-     if (!motion.matches) entry.target.animate(
-      [{ opacity: .25, transform: 'translateY(18px)' }, { opacity: 1, transform: 'none' }],
-      { duration: 550, easing: 'cubic-bezier(.22,.7,.26,1)' }
-     );
-     observer.unobserve(entry.target);
-    });
-   }, { threshold: .12 });
-   revealItems.forEach(item => observer.observe(item));
-  }
-  motion.addEventListener('change', () => {
-   if (motion.matches) root?.getAnimations({ subtree: true }).forEach(animation => animation.cancel());
-  });
-
-  // Keep the compact mobile menu's keyboard focus inside its controls.
-  const menuButton = root?.querySelector<HTMLButtonElement>('.menu-button');
-  const menu = root?.querySelector<HTMLElement>('#main-nav');
-  const closeMenu = (restoreFocus = false) => {
-   if (menuButton?.getAttribute('aria-expanded') !== 'true') return;
-   menuButton.click();
-   if (restoreFocus) menuButton.focus();
-  };
-  document.addEventListener('keydown', event => {
-   if (event.key === 'Escape' && menu?.contains(document.activeElement)) menuButton?.focus();
-   if (event.key !== 'Tab' || menuButton?.getAttribute('aria-expanded') !== 'true') return;
-   const controls = [menuButton, ...menu!.querySelectorAll<HTMLAnchorElement>('a')];
-   const first = controls[0];
-   const last = controls[controls.length - 1];
-   if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-   else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-  });
-  document.addEventListener('click', event => {
-   if (event.target instanceof Node && !menu?.contains(event.target) && !menuButton?.contains(event.target)) closeMenu();
-  });
-  window.matchMedia('(min-width: 641px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
+  const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){if(!motion.matches)entry.target.animate([{opacity:.4,transform:'translateY(24px)'},{opacity:1,transform:'none'}],{duration:700,easing:'cubic-bezier(.2,.7,.3,1)'});observer.unobserve(entry.target)}})},{threshold:.12});document.querySelectorAll('.work-composition,.approach-layout').forEach(el=>observer.observe(el));}
+  motion.addEventListener('change',()=>{if(motion.matches)document.getAnimations().forEach(a=>a.finish())});
+  const menuButton=document.querySelector<HTMLButtonElement>('.menu-button');const menu=document.querySelector<HTMLElement>('#main-nav');
+  document.addEventListener('keydown',event=>{if(menuButton?.getAttribute('aria-expanded')!=='true')return;if(event.key==='Escape')menuButton.focus();if(event.key!=='Tab')return;const controls=[menuButton,...menu!.querySelectorAll<HTMLAnchorElement>('a')];if(event.shiftKey&&document.activeElement===controls[0]){event.preventDefault();controls.at(-1)?.focus()}else if(!event.shiftKey&&document.activeElement===controls.at(-1)){event.preventDefault();menuButton.focus()}});
+  window.matchMedia('(min-width: 641px)').addEventListener('change',event=>{if(event.matches&&menuButton?.getAttribute('aria-expanded')==='true')menuButton.click()});
  </script>
 </Layout>
+
+
+

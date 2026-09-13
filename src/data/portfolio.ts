@@ -1,4 +1,4 @@
-export const site = {
+﻿export const site = {
   name: 'Alessandro Vannelli',
   title: 'Alessandro Vannelli — Websites built around the business behind them',
   description: 'Distinctive, fast websites for local businesses, designed and developed by Alessandro Vannelli.',
@@ -77,8 +77,8 @@ export const projects: Project[] = [
     technologies: ['React 19', 'TypeScript', 'Vite', 'Phaser 3', 'Web Audio API', 'CSS', 'Playwright'],
     capabilities: ['Game UI', 'Phaser integration', 'State management', 'Responsive controls'],
     previewImage: '/work/insertcoin-preview.webp',
-    previewAlt: 'InsertCoin game-selection screen showing the Circuit Break cabinet on a dark neon arcade layout',
-    previewPosition: 'left top',
+    previewAlt: 'Current InsertCoin homepage with its neon wordmark, coin mark, and press-start action',
+    previewPosition: 'center top',
     galleryImages: [
       {
         src: '/work/insertcoin-title.webp',
@@ -146,7 +146,7 @@ export const projects: Project[] = [
     capabilities: ['SVG identity', 'Animated intro', 'Editorial layout', 'Case-study system'],
     previewImage: '/work/alderspan-preview.webp',
     previewAlt: 'Alderspan Engineering homepage hero reading “Engineering with consequence.” beside a tied-arch structural drawing',
-    previewPosition: 'left 10%',
+    previewPosition: 'center top',
     galleryImages: [
       {
         src: '/work/alderspan-projects.webp',
@@ -219,7 +219,7 @@ export const projects: Project[] = [
     capabilities: ['Brand identity', 'Pastry illustration', 'Intro animation', 'Menu system'],
     previewImage: '/work/morrow-crumb-preview.webp',
     previewAlt: 'Morrow & Crumb homepage after the logo animation, with the hand-and-croissant mark and the headline “Baked slowly. Gone quickly.”',
-    previewPosition: 'left top',
+    previewPosition: 'center top',
     galleryImages: [
       {
         src: '/work/morrow-crumb-menu.webp',
@@ -279,3 +279,4 @@ export const process = [
   { number: '03', name: 'Build', text: 'Build, test, and refine the approved direction across devices.' },
   { number: '04', name: 'Launch', text: 'Confirm ownership, editing, hosting, and support before going live.' },
 ];
+

@@ -1,6 +1,7 @@
 ---
 import { site } from '../data/portfolio';
 import '../styles/global.css';
+import '../styles/theme.css';
 interface Props { title?: string; description?: string }
 const { title = site.title, description = site.description } = Astro.props;
 ---
@@ -10,9 +11,12 @@ const { title = site.title, description = site.description } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#111413" />
+    <meta name="theme-color" content="#dfd9ce" />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body><a class="skip-link" href="#main">Skip to content</a><slot /></body>
 </html>
+
+
+

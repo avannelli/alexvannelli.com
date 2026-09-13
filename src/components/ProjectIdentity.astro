@@ -1,0 +1,10 @@
+﻿---
+import type { Project } from '../data/portfolio';
+interface Props { project: Project }
+const { project } = Astro.props;
+const logo = project.slug === 'morrow-and-crumb' ? 'morrow-crumb' : project.slug;
+---
+<span class:list={['project-identity', `identity-${project.slug}`]}>
+ <img src={`/work/${logo}-logo.svg`} width="44" height="44" alt="" />
+ <span>{project.title}</span>
+</span>
