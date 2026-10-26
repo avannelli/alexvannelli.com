@@ -1,0 +1,59 @@
+---
+// The hero is a triptych: three full-size layers, one per project world,
+// each clipped to its own vertical slice. Every layer sets the same
+// headline in the same place, so the sentence runs unbroken across the
+// slices while each third of it takes on a different identity. Pointing at
+// a slice widens it; the split points are animatable custom properties, so
+// the whole interaction is CSS.
+import { getImage } from 'astro:assets';
+import { projects } from '../data/portfolio';
+
+const worlds = await Promise.all(
+  projects.map(async (project) => ({
+    project,
+    desktop: await getImage({ src: project.poster.src, widths: [480, 720, 960, 1440], format: 'webp' }),
+    phone: await getImage({ src: project.mobile.src, widths: [240, 390, 780], format: 'webp' }),
+  })),
+);
+---
+
+<section class="hero" aria-labelledby="hero-title" data-header-world="tri">
+  {worlds.map(({ project, desktop, phone }, index) => {
+    // Only the first layer is read aloud; the others repeat it for the eye.
+    const Title = index === 0 ? 'h1' : 'p';
+    return (
+      <div class={`hero-world hero-world--${index} world-${project.slug}`} aria-hidden={index > 0 ? 'true' : undefined}>
+        <div class="hero-copy wrap">
+          <Title class="hero-title" id={index === 0 ? 'hero-title' : undefined}>
+            <span>Different <em>worlds.</em></span>
+            <span>Built from scratch.</span>
+          </Title>
+        </div>
+        <picture class="hero-screen">
+          <source media="(max-width: 720px) and (orientation: portrait)" srcset={phone.srcSet.attribute} sizes="30vw" />
+          <img
+            src={desktop.src}
+            srcset={desktop.srcSet.attribute}
+            sizes="27vw"
+            alt=""
+            width="1440"
+            height="900"
+            loading={index === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        </picture>
+      </div>
+    );
+  })}
+
+  <nav class="hero-slices" aria-label="Selected work">
+    {projects.map((project, index) => (
+      <a class={`hero-slice hero-slice--${index} world-${project.slug}`} href={`#${project.slug}`}>
+        <span class="hero-slice-num">{project.number}</span>
+        <span class="hero-slice-title">{project.title}</span>
+        <span class="hero-slice-kind">{project.kind}</span>
+        <i aria-hidden="true">↓</i>
+      </a>
+    ))}
+  </nav>
+</section>

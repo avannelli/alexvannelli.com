@@ -1,0 +1,19 @@
+---
+// A phone-width capture in a hardware-free device outline: just the bezel
+// and the radius, so it reads as "mobile" without imitating a real handset.
+import { Image } from 'astro:assets';
+import type { Shot } from '../data/portfolio';
+
+interface Props {
+  shot: Shot;
+  class?: string;
+  style?: string;
+  [key: `data-${string}`]: string | boolean | undefined;
+}
+
+const { shot, class: className, ...attrs } = Astro.props;
+---
+
+<figure class:list={['phone', className]} {...attrs}>
+  <Image src={shot.src} alt={shot.alt} widths={[240, 390, 780]} sizes="(max-width: 720px) 34vw, 220px" loading="lazy" decoding="async" />
+</figure>

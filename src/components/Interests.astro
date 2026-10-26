@@ -1,0 +1,121 @@
+---
+// "Off the clock": one tile per interest, each drawn in its own small
+// world. A tile with a description is a button that opens a panel below in
+// the same palette; selecting it also sets its drawing in motion. Tiles
+// without a description stay static illustrations on the live site, while
+// the local preview shows where to write one.
+import Pitbull from './interests/Pitbull.astro';
+import HabsStall from './interests/HabsStall.astro';
+import { interests } from '../data/portfolio';
+
+const dev = import.meta.env.DEV;
+const interactive = (description: string) => dev || description.length > 0;
+const open = interests.find((interest) => interactive(interest.description));
+
+// The controller is pixel art: X is body, A is a button, . is empty.
+const controller = [
+  '...XXXXXXXXXXXX...',
+  '.XXXXXXXXXXXXXXXX.',
+  'XXX.XXXXXXXXXXAXXX',
+  'XX...XXXXXXXXAXAXX',
+  'XXX.XXXXXXXXXXAXXX',
+  'XXXXXXX..X..XXXXXX',
+  'XXXXXX......XXXXXX',
+  '.XXXX........XXXX.',
+  '..XX..........XX..',
+];
+const pixels = (mark: string) =>
+  controller
+    .flatMap((row, y) => [...row].map((cell, x) => (cell === mark ? `M${x * 10} ${y * 10 + 5}h10v10h-10z` : '')))
+    .join('');
+---
+
+<div class="interests" data-interests>
+  <ul class="interest-tiles">
+    {interests.map((interest, index) => {
+      const Tile = interactive(interest.description) ? 'button' : 'div';
+      const attrs = Tile === 'button'
+        ? { type: 'button', 'data-interest': '', 'aria-expanded': String(interest === open), 'aria-controls': `interest-${interest.slug}` }
+        : {};
+      return (
+        <li>
+          <Tile class={`interest-tile i-${interest.slug}`} id={`interest-tab-${interest.slug}`} {...attrs}>
+            <span class="interest-art" aria-hidden="true">
+              {interest.slug === 'games' && (
+                <svg viewBox="0 0 180 100">
+                  <path class="pix-body" d={pixels('X')} />
+                  <path class="pix-btn" d={pixels('A')} />
+                </svg>
+              )}
+              {interest.slug === 'lifting' && (
+                <svg viewBox="0 0 200 124">
+                  <path class="lift-floor" d="M0 116H200" />
+                  <g class="lift-bar">
+                    <rect class="lift-metal" x="6" y="56" width="27" height="8" rx="2" />
+                    <rect class="lift-metal" x="167" y="56" width="27" height="8" rx="2" />
+                    <rect class="lift-yellow" x="31" y="31" width="9" height="58" rx="2.5" />
+                    <rect class="lift-blue" x="40" y="22" width="12" height="76" rx="3" />
+                    <rect class="lift-red" x="52" y="15" width="14" height="90" rx="3" />
+                    <rect class="lift-metal" x="66" y="50" width="6" height="20" rx="1.5" />
+                    <rect class="lift-red" x="134" y="15" width="14" height="90" rx="3" />
+                    <rect class="lift-blue" x="148" y="22" width="12" height="76" rx="3" />
+                    <rect class="lift-yellow" x="160" y="31" width="9" height="58" rx="2.5" />
+                    <rect class="lift-metal" x="128" y="50" width="6" height="20" rx="1.5" />
+                    <rect class="lift-shaft" x="72" y="57" width="56" height="6" rx="1" />
+                    <path class="lift-knurl" d="M86 57v6M90 57v6M94 57v6M98 57v6M102 57v6M106 57v6M110 57v6M114 57v6" />
+                  </g>
+                  <g class="lift-chalk">
+                    <circle cx="40" cy="112" r="2" /><circle cx="52" cy="108" r="1.4" /><circle cx="150" cy="111" r="1.8" /><circle cx="162" cy="107" r="1.2" />
+                  </g>
+                </svg>
+              )}
+              {interest.slug === 'pitbulls' && (
+                <Pitbull />
+              )}
+              {interest.slug === 'hockey' && (
+                <HabsStall />
+              )}
+            </span>
+            <span class="interest-meta">
+              <span class="interest-num">{String(index + 1).padStart(2, '0')}</span>
+              <span class="interest-title">{interest.title}</span>
+              {Tile === 'button' && <span class="interest-toggle" aria-hidden="true"></span>}
+            </span>
+          </Tile>
+        </li>
+      );
+    })}
+  </ul>
+
+  {interests.filter((interest) => interactive(interest.description)).map((interest) => (
+    <div class={`interest-panel i-${interest.slug}`} id={`interest-${interest.slug}`} role="region" aria-labelledby={`interest-tab-${interest.slug}`}>
+      <p class="interest-panel-kicker label">Off the clock — {interest.title}</p>
+      {interest.description ? (
+        <p class="interest-panel-text">{interest.description}</p>
+      ) : (
+        <p class="interest-panel-todo">
+          Write a few lines about {interest.title.toLowerCase()} in <code>src/data/portfolio.ts</code> → <code>interests</code>. This reminder only appears in the local preview; on the live site this tile stays a plain illustration until it has a description.
+        </p>
+      )}
+    </div>
+  ))}
+</div>
+
+<script>
+  /* One panel open at a time. Without this script every panel simply
+     stays visible under the tiles. */
+  document.querySelectorAll<HTMLElement>('[data-interests]').forEach((root) => {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-interest]')];
+    const select = (active: HTMLButtonElement) => {
+      buttons.forEach((button) => {
+        const on = button === active;
+        button.setAttribute('aria-expanded', String(on));
+        const panel = document.getElementById(button.getAttribute('aria-controls') ?? '');
+        if (panel) panel.hidden = !on;
+      });
+    };
+    buttons.forEach((button) => button.addEventListener('click', () => select(button)));
+    const initial = buttons.find((button) => button.getAttribute('aria-expanded') === 'true') ?? buttons[0];
+    if (initial) select(initial);
+  });
+</script>

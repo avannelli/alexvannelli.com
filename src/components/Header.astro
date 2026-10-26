@@ -1,16 +1,40 @@
 ---
-import { site } from '../data/portfolio';
+// The header is the top edge of the triptych. Its three columns follow
+// the hero's split points (--s1 / --s2): the name lives in the arcade
+// third, the navigation in the blueprint third and the call to action in
+// the bakery third. Once scrolled, it takes on whichever world is beneath
+// it (scripts/motion.ts sets data-world from [data-header-world] zones).
+import { projects, site } from '../data/portfolio';
+
+interface Props {
+  /** Starting state before any scrolling: 'tri', a project slug, 'ink' or 'paper'. */
+  world?: string;
+  /** Show the three-part progress rail (homepage only). */
+  rail?: boolean;
+}
+
+const { world = 'paper', rail = false } = Astro.props;
 ---
 
-<header class="site-header">
-  <a class="brand" href="#top" aria-label={`${site.name}, home`}>{site.name}</a>
-  <a
-    class="btn btn--primary header-contact"
-    href="#project-dialog"
-    data-open-project
-    aria-haspopup="dialog"
-    aria-controls="project-dialog"
-  >
-    <span>Contact</span><i aria-hidden="true">↗</i>
+<header class="site-header" data-header data-world={world}>
+  <a class="brand" href="/" aria-label={`${site.name}, home`}>
+    <span class="brand-mark" aria-hidden="true">AV</span>
+    <span class="brand-name">{site.name}</span>
+    <span class="brand-role" data-role>{site.role}</span>
   </a>
+  <nav class="site-nav" aria-label="Primary">
+    <span class="nav-pair">
+      <a href="/#work">Work</a>
+      <a href="/#about">About</a>
+    </span>
+    <a class="nav-contact" href="/#contact">Contact</a>
+  </nav>
+  <button class="btn btn--header btn--sm header-cta" type="button" data-open-project aria-haspopup="dialog" aria-controls="project-dialog">
+    Start a project <i aria-hidden="true">↗</i>
+  </button>
+  {rail && (
+    <span class="header-rail" aria-hidden="true">
+      {projects.map((project) => <i data-rail={project.slug}></i>)}
+    </span>
+  )}
 </header>

@@ -1,0 +1,49 @@
+---
+// World 01 — the arcade. Copy on the left reads like a cabinet select
+// screen; the stage powers on like a CRT when it scrolls into view.
+import { Image } from 'astro:assets';
+import BrowserFrame from '../BrowserFrame.astro';
+import PhoneFrame from '../PhoneFrame.astro';
+import WorldActions from './WorldActions.astro';
+import { games, getProject } from '../../data/portfolio';
+
+const project = getProject('insertcoin')!;
+const [hockey] = project.gallery;
+---
+
+<section class="world world-insertcoin" id={project.slug} aria-labelledby="insertcoin-title" data-header-world={project.slug} data-header-label={`Now viewing — ${project.number} / 03 ${project.title}`}>
+  <div class="world-inner wrap">
+    <header class="ic-head">
+      <p class="world-meta label"><span>{project.number} / 03</span><span>{project.category} · Personal project</span></p>
+      <h2 id="insertcoin-title" class="ic-title" data-reveal="lines">
+        <span class="reveal-line"><span>Insert<span class="ic-title-coin">Coin</span><span class="ic-dot" aria-hidden="true">.</span></span></span>
+      </h2>
+      <img class="ic-coin" src={project.logo} width="64" height="64" alt="" />
+    </header>
+
+    <div class="ic-copy" data-reveal>
+      <p class="ic-tagline">▶ {project.headline}</p>
+      <p class="world-summary">{project.summary}</p>
+      <ol class="ic-cabinets" aria-label="Games on the arcade floor">
+        {games.map((game) => (
+          <li>
+            <span class="ic-cabinet-num">Game / {game.number}</span>
+            <span class="ic-cabinet-name">{game.name}</span>
+            <span class="ic-cabinet-genre">{game.genre}</span>
+          </li>
+        ))}
+      </ol>
+      <WorldActions project={project} />
+    </div>
+
+    <div class="ic-stage" data-reveal="crt">
+      <BrowserFrame class="ic-main" shot={project.cover} domain={project.domain} sizes="(max-width: 900px) 92vw, 60vw" />
+      <figure class="ic-cabinet" data-depth="0.08">
+        <Image src={hockey.src} alt={hockey.alt} widths={[300, 520, 760]} sizes="(max-width: 900px) 34vw, 260px" loading="lazy" decoding="async" />
+        <figcaption class="label">Now playing — {games[2].name}</figcaption>
+      </figure>
+      <PhoneFrame class="ic-phone" shot={project.mobile} data-depth="0.14" />
+      <p class="ic-press" aria-hidden="true">Press start</p>
+    </div>
+  </div>
+</section>

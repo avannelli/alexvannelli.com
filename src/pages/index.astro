@@ -1,95 +1,21 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import ProjectDialog from '../components/ProjectDialog.astro';
-import ProjectIdentity from '../components/ProjectIdentity.astro';
-import Footer from '../components/Footer.astro';
-import { projects, process } from '../data/portfolio';
+import Hero from '../components/Hero.astro';
+import Intro from '../components/Intro.astro';
+import InsertCoinWorld from '../components/worlds/InsertCoinWorld.astro';
+import AlderspanWorld from '../components/worlds/AlderspanWorld.astro';
+import MorrowWorld from '../components/worlds/MorrowWorld.astro';
+import About from '../components/About.astro';
+import Contact from '../components/Contact.astro';
 import '../styles/home.css';
+import '../styles/worlds.css';
 ---
-<Layout>
- <div class="home-page" id="top">
-  <div class="personal-backdrop" aria-hidden="true">
-   <svg viewBox="0 0 1600 1200" preserveAspectRatio="xMidYMid slice">
-    <g class="backdrop-rink">
-     <path d="M1176 -42v314c0 116 94 210 210 210h258" />
-     <path d="M1240 -42v306c0 84 68 152 152 152h252" />
-     <circle cx="1388" cy="208" r="82" />
-     <circle cx="1388" cy="208" r="5" class="backdrop-dot" />
-    </g>
-    <g class="backdrop-plates">
-     <circle cx="90" cy="686" r="156" />
-     <circle cx="90" cy="686" r="111" />
-     <circle cx="90" cy="686" r="34" />
-     <path d="M-74 686h328" />
-     <path d="M196 655v62M220 643v86" />
-    </g>
-    <g class="backdrop-dog">
-     <path d="M1280 777c-42-57-48-119-20-183 28 29 52 50 87 59 46-13 90-8 126 16 21 14 34 32 50 50l72 19-50 51c-12 51-51 92-111 110-45 13-93 7-135-18" />
-     <path d="M1320 815c37 16 77 15 111-2" />
-     <circle cx="1432" cy="724" r="5" class="backdrop-dot" />
-    </g>
-    <g class="backdrop-pixels">
-     <path d="M342 104h28v28h28v28h-28v28h-28v-28h-28v-28h28z" />
-     <rect x="428" y="118" width="18" height="18" />
-     <rect x="466" y="148" width="12" height="12" />
-     <path d="M369 1024h24v24h24v24h-24v24h-24v-24h-24v-24h24z" />
-     <rect x="439" y="1037" width="14" height="14" />
-    </g>
-   </svg>
-  </div>
-  <Header />
-  <main id="main">
-   <section class="opening wrap" aria-labelledby="home-title">
-    <div class="opening-name" data-parallax>
-     <h1 id="home-title"><span class="name-first">Alessandro</span><span class="name-last">Vannelli<span class="name-period" aria-hidden="true">.</span></span></h1>
-     <p class="opening-descriptor">Independent web design &amp; development</p>
-    </div>
-    <div class="identity-row">
-     {projects.map((project) => (
-      <a
-       class:list={['site-card', `site-${project.slug}`]}
-       href={project.liveUrl}
-       target="_blank"
-       rel="noopener noreferrer"
-       aria-label={`Open the ${project.title} website (opens in a new tab)`}
-       data-spotlight
-       data-reveal
-      >
-       <span class="card-cat">{project.category.split(/\s*&\s*/)[0]}</span>
-       <span class="card-body">
-        <ProjectIdentity project={project} />
-        <span class="card-type">{project.type}</span>
-       </span>
-       <span class="card-go">Visit site <i aria-hidden="true">↗</i></span>
-      </a>
-     ))}
-    </div>
-   </section>
-
-   <section class="approach wrap" id="process" aria-labelledby="process-title">
-    <div class="section-rail">
-     <h2 id="process-title">The approach</h2>
-     <span>One person. From first sketch to final build.</span>
-    </div>
-    <div class="approach-layout">
-     <div class="approach-intro" data-reveal>
-      <p class="large-statement">Good websites<br />start with <em>your world.</em></p>
-      <p>I’m Alessandro. I design and build websites for local and independent businesses. We work directly together, shaping the details around what makes your business yours.</p>
-      <button type="button" data-open-project class="btn btn--secondary">Tell me what you have in mind <i aria-hidden="true">↗</i></button>
-     </div>
-     <div class="process-list" data-reveal>
-      {process.map((stage, index) => (
-       <details name="process" open={index === 0}>
-        <summary>{stage.name}<span aria-hidden="true">+</span></summary>
-        <p>{stage.text}</p>
-       </details>
-      ))}
-     </div>
-    </div>
-   </section>
-  </main>
-  <Footer />
-  <ProjectDialog />
- </div>
+<Layout headerWorld="tri" headerRail>
+  <Hero />
+  <Intro />
+  <InsertCoinWorld />
+  <AlderspanWorld />
+  <MorrowWorld />
+  <About />
+  <Contact />
 </Layout>

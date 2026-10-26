@@ -1,336 +1,866 @@
-/* Home composition. Hero typography and card identities share one opening. */
-.home-page{position:relative;isolation:isolate}
-.home-page>:not(.personal-backdrop){position:relative;z-index:1}
-
-/* Personal backdrop: rink geometry, weight plates, a dog contour and game
-   pixels reduced to one shared drafting language. It is deliberately fixed,
-   so the page moves through it like a quiet studio wall. */
-.personal-backdrop{
- position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
-}
-.personal-backdrop::before{
- content:'';position:absolute;inset:0;
- background:radial-gradient(circle at 84% 16%,var(--ambient-glow),var(--clear) 26%);
-}
-.personal-backdrop svg{width:100%;height:100%;overflow:visible}
-.personal-backdrop g{
- fill:none;stroke:var(--ambient-line-soft);stroke-width:1;
- vector-effect:non-scaling-stroke;
-}
-.personal-backdrop .backdrop-rink,
-.personal-backdrop .backdrop-pixels{stroke:var(--ambient-line)}
-.personal-backdrop .backdrop-plates circle:first-child,
-.personal-backdrop .backdrop-dog path:first-child{fill:var(--ambient-fill)}
-.personal-backdrop .backdrop-dot{fill:var(--ambient-line);stroke:none}
-.backdrop-pixels rect,.backdrop-pixels path{fill:var(--ambient-fill)}
-.section-rail{
- display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;
- padding:26px 0;border-top:1px solid var(--line);
-}
-.section-rail h2{font:600 15px/1 var(--sans);letter-spacing:-.02em;color:var(--ink)}
-.section-rail>span{
- margin-left:auto;text-align:right;
- font:500 12px/1.5 var(--mono);letter-spacing:.02em;color:var(--faint);
-}
-
-.opening{position:relative;padding-top:clamp(44px,6vw,80px);padding-bottom:56px}
-.opening-name{
- max-width:1080px;margin-inline:auto;
- transform:translateY(var(--p-y,0)) scale(var(--p-scale,1));
- transform-origin:center;
-}
-.opening h1{
- display:flex;flex-direction:column;align-items:center;text-align:center;
- font:600 clamp(60px,9.4vw,132px)/1 var(--display);
- letter-spacing:-.065em;
-}
-.name-first{display:block}
-.name-last{
- display:block;align-self:center;margin-top:.025em;
- font-size:1.05em;font-weight:600;
- background:var(--hero-name-fill);
- background-clip:text;-webkit-background-clip:text;
- color:var(--clear);
- text-shadow:var(--hero-name-shadow);
-}
-.name-period{color:var(--accent-text)}
-.opening-descriptor{
- display:flex;align-items:center;justify-content:center;gap:24px;
- margin-top:32px;
- font:400 clamp(12px,1.1vw,15px)/1.5 var(--sans);
- letter-spacing:.035em;color:var(--faint);
-}
-.opening-descriptor::before,.opening-descriptor::after{
- content:'';height:1px;flex:1;max-width:100px;background:var(--line-strong);
-}
-
-.identity-row{
- position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
- gap:18px;margin-top:48px;padding-top:28px;
-}
-.identity-row::before{
- content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--hero-rule);
-}
-.site-card{
- --card-title-weight:600;
- --card-title-tracking:-.025em;
- --card-title-transform:none;
- --card-texture:none;
- position:relative;isolation:isolate;overflow:hidden;
- display:grid;grid-template-rows:auto 1fr auto;gap:24px;
- min-height:226px;padding:22px;
- border:1px solid var(--card-edge);border-radius:var(--r-md);
- background:var(--card-texture),var(--card-bg);
- box-shadow:var(--shadow-hero-card);
- transition:transform var(--t-base) var(--ease),box-shadow var(--t-base) var(--ease),border-color var(--t-base) var(--ease);
-}
-.site-card::before{
- content:'';position:absolute;top:0;height:1px;
- left:0;right:0;
- background:linear-gradient(90deg,var(--clear),var(--card-accent),var(--clear));
- opacity:.65;transition:opacity var(--t-base) var(--ease);
-}
-.site-card:hover,.site-card:focus-visible{
- transform:translateY(var(--lift));border-color:var(--card-accent);
- box-shadow:var(--shadow-card-hover);
-}
-.js .site-card[data-reveal][data-shown]:is(:hover,:focus-visible){
- transform:translateY(var(--lift));
-}
-.site-card:hover::before,.site-card:focus-visible::before{opacity:1}
-.site-card[data-spotlight]::after{
- background:radial-gradient(300px circle at var(--mx,50%) var(--my,50%),var(--card-glow),var(--clear) 70%);
-}
-.card-cat{font:500 10px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--card-label)}
-.card-body{align-self:center;display:grid;gap:12px;min-width:0}
-.site-card .project-identity{display:flex;align-items:center;gap:14px;min-width:0}
-.site-card .project-identity img{
- width:46px;height:46px;flex:none;object-fit:contain;
- transition:transform var(--t-base) var(--ease),filter var(--t-base) var(--ease);
-}
-.site-card:hover .project-identity img,
-.site-card:focus-visible .project-identity img{
- transform:translateY(-3px) scale(1.02);
- filter:var(--card-mark-shadow);
-}
-.site-card .project-identity>span{
- min-width:0;font:var(--card-title-weight) clamp(17px,1.5vw,22px)/1.12 var(--sans);
- letter-spacing:var(--card-title-tracking);text-transform:var(--card-title-transform);color:var(--card-title);
-}
-.card-type{font:400 12px/1.5 var(--sans);color:var(--card-label)}
-.card-go{
- display:flex;align-items:center;justify-content:space-between;
- padding-top:14px;border-top:1px solid var(--card-edge);
- font:500 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--card-label);
-}
-.card-go i{font-style:normal;font-size:16px;color:var(--card-title);transition:transform var(--t-quick) var(--ease)}
-.site-card:hover .card-go i,.site-card:focus-visible .card-go i{transform:translate(2px,-2px)}
-
-/* ---------- InsertCoin: the arcade --------------------------------------
-   Deep violet cabinet, magenta frame, yellow marquee type, cyan readout,
-   and the CRT scanline the site runs across its whole canvas.
-   ------------------------------------------------------------------------ */
-.site-insertcoin{
- --card-bg:linear-gradient(180deg,#1d1036 0%,#120a24 100%);
- --card-edge:rgba(255,46,136,.38);
- --card-accent:#ff2e88;
- --card-glow:rgba(255,46,136,.2);
- --card-label:#6fe3cc;
- --card-title:#f7e457;
- --card-title-weight:700;
- --card-title-tracking:.01em;
- --card-title-transform:uppercase;
- --card-texture:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.28) 2px 4px);
-}
-.site-insertcoin .card-go{border-top-color:rgba(255,46,136,.28)}
-
-/* ---------- Alderspan: the engineering practice --------------------------
-   Near-black green, teal rules, a drawing grid, and the warm orange the
-   site reserves for the one word it emphasises.
-   ------------------------------------------------------------------------ */
-.site-alderspan{
- --card-bg:linear-gradient(180deg,#0d1614 0%,#080f0e 100%);
- --card-edge:rgba(45,125,111,.36);
- --card-accent:#f0a070;
- --card-glow:rgba(45,125,111,.22);
- --card-label:#6ec3ae;
- --card-title:#f2f5f4;
- --card-texture:
-  linear-gradient(rgba(110,195,174,.1) 1px,transparent 1px) 0 0/22px 22px,
-  linear-gradient(90deg,rgba(110,195,174,.1) 1px,transparent 1px) 0 0/22px 22px;
-}
-.site-alderspan .card-go{border-top-color:rgba(45,125,111,.26)}
-
-/* ---------- Morrow & Crumb: the bakery -----------------------------------
-   The one warm, light surface in the row — which is exactly how the site
-   reads against everything else. Honey band, cream paper, cocoa ink.
-   ------------------------------------------------------------------------ */
-.site-morrow-and-crumb{
- --card-bg:linear-gradient(180deg,#f4e8d3 0%,#e8d7ba 100%);
- --card-edge:rgba(58,42,24,.22);
- --card-accent:#b5822f;
- --card-glow:rgba(180,130,47,.22);
- --card-label:#6f5124;
- --card-title:#3a2a18;
- --card-title-weight:400;
- --card-title-tracking:.005em;
-}
-/* The honey band the site runs behind its masthead. */
-.site-morrow-and-crumb::before{
- height:4px;
- background:linear-gradient(90deg,#e8c07d,#d8a856);
- opacity:1;
-}
-.site-morrow-and-crumb .card-go{border-top-color:rgba(58,42,24,.18)}
+/* ======================================================================
+   Home: hero, work introduction, about and contact.
+   The three project worlds live in worlds.css.
+   Desktop-first; narrower breakpoints come last.
+   ====================================================================== */
 
 /* ======================================================================
-   Approach
+   Hero — the triptych
+   ----------------------------------------------------------------------
+   Three full-size layers share one box, one per project world. Each is
+   clipped to its slice by the split points --s1 and --s2 (registered in
+   global.css and set on the root, so the header's columns follow them).
+   Pointing at a slice widens it, and on load the worlds wipe in from the
+   right one after another — header included.
+   Every layer sets the headline in the same place, so the sentence reads
+   unbroken while each third of it belongs to a different world.
    ====================================================================== */
-.approach{padding-bottom:clamp(56px,7vw,96px)}
+:root:has(.hero){animation:worlds-in 2.2s .2s var(--ease-travel) backwards}
+@keyframes worlds-in{
+ 0%{--s1:100%;--s2:100%}
+ 50%{--s1:33.333%;--s2:100%}
+ 100%{--s1:33.333%;--s2:66.667%}
+}
+:root:has(.hero-slice--0:is(:hover,:focus-visible)){--s1:52%;--s2:76%}
+:root:has(.hero-slice--1:is(:hover,:focus-visible)){--s1:24%;--s2:76%}
+:root:has(.hero-slice--2:is(:hover,:focus-visible)){--s1:24%;--s2:48%}
 
-.approach-layout{
- display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);
- gap:clamp(36px,5vw,80px);
- padding-top:clamp(32px,4vw,56px);
- align-items:start;
-}
-
-.large-statement{
- font:600 clamp(34px,4.2vw,56px)/1.1 var(--sans);
- letter-spacing:-.04em;
- background:linear-gradient(to bottom,#fff,rgba(255,255,255,.74));
- -webkit-background-clip:text;background-clip:text;
- color:transparent;
-}
-/* The emphasised phrase gets the accent gradient with a slow shimmer. */
-.large-statement em{
- font-style:normal;
- background:linear-gradient(90deg,var(--accent-text),#a8b0f2,var(--accent-text));
- background-size:200% 100%;
- -webkit-background-clip:text;background-clip:text;
- color:transparent;
- animation:shimmer 6s var(--ease) infinite;
-}
-@keyframes shimmer{
- 0%,100%{background-position:0% 0}
- 50%{background-position:100% 0}
+.hero{
+ /* Left edge of the page content, so slice labels line up with the copy. */
+ --edge:max(var(--gutter),calc((100% - var(--measure)) / 2));
+ position:relative;isolation:isolate;overflow:hidden;
+ height:clamp(700px,calc(100svh - var(--header-h)),940px);
 }
 
-.approach-intro>p:not(.large-statement){
- margin-top:24px;max-width:46ch;
- font-size:16px;line-height:1.75;color:var(--muted);
+.hero-world{
+ position:absolute;inset:0;
+ background:var(--w-texture),var(--w-bg);
+ color:var(--w-ink);
 }
-.approach-intro .btn{margin-top:32px}
+/* A pool of light centred on each world's own third. */
+.hero-world::before{
+ content:'';position:absolute;inset:0;
+ background:radial-gradient(32% 48% at var(--glow-x) 72%,var(--hw-glow),transparent 70%);
+}
+.hero-world--0{clip-path:inset(0 calc(100% - var(--s1)) 0 0);--glow-x:16%}
+.hero-world--1{clip-path:inset(0 calc(100% - var(--s2)) 0 var(--s1));--glow-x:50%}
+.hero-world--2{clip-path:inset(0 0 0 var(--s2));--glow-x:84%}
 
-/* ---------- Process accordion -------------------------------------------- */
-.process-list{display:grid;gap:8px}
-.process-list details{
+/* Each world sets the same sentence in its own voice. */
+.hero-world.world-insertcoin{--hw-title:#f7e457;--hw-em:#fff;--hw-shadow:.03em .03em 0 #ff2e88;--hw-glow:rgba(255,46,136,.3)}
+.hero-world.world-alderspan{--hw-title:#eef3fc;--hw-em:#f0a070;--hw-shadow:none;--hw-glow:rgba(30,74,150,.75)}
+.hero-world.world-morrow-and-crumb{--hw-title:#3a2a18;--hw-em:#9a6224;--hw-shadow:none;--hw-glow:rgba(232,192,125,.6)}
+
+.hero-copy{position:relative;z-index:1;padding-top:clamp(92px,13vh,150px)}
+/* Sized so both lines run into the third slice at every desktop width. */
+.hero-title{
+ font:400 clamp(60px,14vw,210px)/.86 var(--serif);
+ letter-spacing:-.035em;
+ color:var(--hw-title);
+ text-shadow:var(--hw-shadow);
+}
+.hero-title span{display:block}
+.hero-title em{font-style:italic;color:var(--hw-em)}
+
+/* Each world's own site, rising out of the bottom of its slice. */
+.hero-screen{
+ position:absolute;z-index:1;bottom:-7%;
+ left:calc(var(--slot) * 33.333% + 3.2%);width:27%;
+ rotate:var(--tilt);
+ transition:translate var(--t-slow) var(--ease),scale var(--t-slow) var(--ease);
+}
+.hero-screen img{
+ width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;
  border-radius:var(--r-md);
- border:1px solid var(--line);
- background:var(--surface);
- transition:
-  border-color var(--t-base) var(--ease),
-  background var(--t-base) var(--ease),
-  box-shadow var(--t-base) var(--ease);
+ box-shadow:var(--frame-shadow);
 }
-.process-list details:hover{border-color:var(--line-hover);background:var(--surface-hover)}
-.process-list details[open]{
- border-color:var(--line-accent);
- background:var(--surface-hover);
- box-shadow:0 0 40px rgba(94,106,210,.08);
+.hero-world--0 .hero-screen{--slot:0;--tilt:-2deg}
+.hero-world--1 .hero-screen{--slot:1;--tilt:1.5deg}
+.hero-world--2 .hero-screen{--slot:2;--tilt:-1deg}
+.hero:has(.hero-slice--0:is(:hover,:focus-visible)) .hero-world--0 .hero-screen,
+.hero:has(.hero-slice--1:is(:hover,:focus-visible)) .hero-world--1 .hero-screen,
+.hero:has(.hero-slice--2:is(:hover,:focus-visible)) .hero-world--2 .hero-screen{translate:0 -20px;scale:1.04}
+
+/* The slices themselves are the links into the work. */
+.hero-slices{position:absolute;inset:0;z-index:2}
+.hero-slice{
+ position:absolute;top:0;bottom:0;
+ display:grid;grid-template-columns:auto 1fr auto;align-content:start;column-gap:12px;row-gap:5px;
+ padding:24px clamp(16px,2.4vw,36px);
+ color:var(--w-ink);
+}
+.hero-slice--0{left:0;width:var(--s1);padding-left:var(--edge)}
+.hero-slice--1{left:var(--s1);width:calc(var(--s2) - var(--s1));box-shadow:inset 1px 0 rgba(255,255,255,.18)}
+.hero-slice--2{left:var(--s2);right:0}
+.hero-slice:focus-visible{outline-offset:-10px}
+.hero-slice-num{grid-row:1/3;font:500 11px/1.9 var(--mono);color:var(--w-label)}
+.hero-slice-title{font:400 clamp(19px,1.6vw,24px)/1.1 var(--serif);letter-spacing:-.01em}
+.hero-slice-kind{grid-column:2;font:500 10px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w-label)}
+.hero-slice i{
+ grid-row:1/3;grid-column:3;align-self:center;
+ font-style:normal;color:var(--w-label);
+ transition:translate var(--t-quick) var(--ease);
+}
+.hero-slice:is(:hover,:focus-visible) i{translate:0 4px}
+
+/* ======================================================================
+   Introduction — a two-sided postcard
+   ----------------------------------------------------------------------
+   Front: a vintage "Greetings from" card whose giant letters are filled
+   with screenshots of the three worlds. Back: a note, three perforated
+   stamps cancelled by a postmark, and the address. With JS (.is-3d) the
+   faces stack in 3D: the card arrives face up, turns itself over, tilts
+   toward the pointer and flips on demand. Without it, only the back shows.
+   ====================================================================== */
+.intro{padding:clamp(72px,9vw,140px) 0 clamp(56px,7vw,112px)}
+
+.postcard-stage{position:relative;width:min(1120px,100%);margin-inline:auto;perspective:1800px}
+.is-3d .postcard-card{cursor:pointer}
+.is-3d .postcard-card :is(a,button){cursor:pointer}
+
+/* The card's shadow on the page: it slides against the tilt, and narrows
+   to a sliver while the card is edge-on mid-turn. */
+.postcard-floor{
+ position:absolute;left:6%;right:6%;bottom:-38px;height:52px;z-index:-1;
+ background:radial-gradient(closest-side,rgba(22,19,15,.34),transparent);
+ filter:blur(8px);
+ translate:calc(var(--px,0) * -36px) 0;
+ transition:translate .5s var(--ease);
+}
+/* During a turn the card lifts off the page and comes toward the viewer. */
+.postcard-stage.is-flipping .postcard-tilt{animation:card-lift 1.15s var(--ease-travel)}
+.postcard-stage.is-flipping .postcard-floor{animation:floor-narrow 1.15s var(--ease-travel)}
+@keyframes card-lift{50%{translate:0 -22px;scale:1.05}}
+@keyframes floor-narrow{50%{scale:.3 .8;opacity:.45}}
+.postcard-tilt{
+ transform-style:preserve-3d;
+ transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) rotate(-1deg);
+ transition:transform .5s var(--ease);
+}
+.postcard-card{display:grid;transform-style:preserve-3d}
+.postcard-card>*{grid-area:1/1}
+.pc-front{display:none}
+
+.postcard{
+ position:relative;
+ display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+ padding:clamp(44px,4.4vw,64px) clamp(24px,4vw,60px) clamp(28px,3.6vw,52px);
+ border-radius:var(--r-xs);
+ background:var(--paper-lift);
+ box-shadow:var(--shadow-lift);
+ /* Airmail edge: red and blue bars round the message side. */
+ border:9px solid transparent;
+ border-image:repeating-linear-gradient(-45deg,#af1e2d 0 10px,transparent 10px 15px,#24407e 15px 25px,transparent 25px 30px) 9;
 }
 
-.process-list summary{
- display:flex;align-items:center;justify-content:space-between;gap:18px;
- padding:18px 22px;min-height:58px;
- list-style:none;cursor:pointer;
- font:600 clamp(17px,1.6vw,20px)/1.2 var(--sans);letter-spacing:-.025em;
- color:var(--ink);
-}
-.process-list summary::-webkit-details-marker{display:none}
+/* The 3D card, once the script is running. */
+.is-3d{opacity:0;translate:0 40px;transition:opacity .9s var(--ease),translate 1.1s var(--ease)}
+.is-3d[data-in]{opacity:1;translate:0 0}
+.is-3d .postcard-card{transition:transform 1.15s var(--ease-travel)}
+.is-3d .postcard-card[data-flipped]{transform:rotateY(180deg)}
+.is-3d .pc-front,.is-3d .postcard{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.is-3d .pc-front{display:block}
+.is-3d .postcard{transform:rotateY(180deg)}
 
-.process-list summary span{
- flex:none;
- width:26px;height:26px;display:grid;place-items:center;
+/* Glare that follows the pointer across whichever face is up. */
+.pc-glare{
+ position:absolute;inset:0;z-index:6;pointer-events:none;border-radius:inherit;
+ background:radial-gradient(60% 60% at var(--gx,50%) var(--gy,30%),rgba(255,255,255,.38),transparent 60%);
+ mix-blend-mode:soft-light;opacity:0;
+ transition:opacity var(--t-base) var(--ease);
+}
+.postcard-stage:hover .pc-glare{opacity:1}
+
+/* ---------- Front: "Greetings from WORLDS" ----------------------------- */
+.pc-front{
+ position:relative;container-type:inline-size;
+ padding:clamp(10px,1.2vw,16px);
+ border-radius:var(--r-xs);
+ background:#f7f0e1;
+ box-shadow:var(--shadow-lift);
+}
+.pc-scene{
+ position:relative;isolation:isolate;overflow:hidden;
+ display:grid;place-content:center;justify-items:center;gap:2.2cqw;
+ height:100%;min-height:52cqw;padding:5cqw 4cqw;
+ border-radius:2px;
+ background:
+  radial-gradient(rgba(0,0,0,.12) 1px,transparent 1.4px) 0 0/6px 6px,
+  repeating-conic-gradient(from -90deg at 50% 118%,rgba(255,236,190,.16) 0 5deg,transparent 5deg 10deg),
+  linear-gradient(180deg,#141a4a 0%,#3d2a78 30%,#b0407a 58%,#f08a4b 80%,#ffd27a 100%);
+}
+/* A low sun the rays fan out from, and a linen weave over everything. */
+.pc-sun{
+ position:absolute;left:50%;bottom:-26cqw;z-index:-1;
+ width:60cqw;aspect-ratio:1;translate:-50% 0;border-radius:50%;
+ background:radial-gradient(circle,#fff1c4 0 38%,rgba(255,210,122,.6) 50%,transparent 70%);
+ transform:translate(calc(var(--px,0) * 22px),calc(var(--py,0) * 12px));
+ transition:transform .5s var(--ease);
+}
+.pc-scene::after{
+ content:'';position:absolute;inset:0;pointer-events:none;
+ background:
+  repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,transparent 1px 3px),
+  repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 1px,transparent 1px 3px);
+ mix-blend-mode:overlay;
+}
+.pc-greeting{
+ justify-self:start;margin-left:6cqw;margin-bottom:-2.2cqw;z-index:2;
+ font:italic 400 7.4cqw/1 var(--serif);color:#fff6e0;
+ text-shadow:.04em .05em 0 #b0407a,.08em .1em 0 #141a4a;
+ rotate:-6deg;
+ translate:calc(var(--px,0) * -18px) calc(var(--py,0) * -12px);
+ transition:translate .5s var(--ease);
+}
+/* Giant letters: an outlined, extruded under-layer, and the same letters on
+   top filled with the screenshots. */
+/* Depth: the sun, letters, greeting and ribbon drift against the pointer
+   at different rates, so the flat scene reads as layered. */
+.pc-big{
+ display:grid;font:700 21cqw/.86 var(--sans);letter-spacing:-.045em;text-transform:uppercase;
+ translate:calc(var(--px,0) * -10px) calc(var(--py,0) * -7px);
+ transition:translate .5s var(--ease);
+}
+.pc-big>span{grid-area:1/1;white-space:nowrap}
+.pc-big-under{
+ color:#fff;-webkit-text-stroke:.07em #fff;
+ text-shadow:
+  .012em .012em 0 #fff,
+  .03em .03em 0 #141a4a,.045em .045em 0 #141a4a,.06em .06em 0 #141a4a,.075em .075em 0 #141a4a,
+  .1em .12em .08em rgba(0,0,0,.5);
+}
+/* Each pair is tinted in its world's identity, with the real site showing
+   through underneath as texture. */
+.pc-big-fill span{
+ color:transparent;
+ background:var(--tint),var(--img) center 18%/auto 150% no-repeat;
+ -webkit-background-clip:text;background-clip:text;
+}
+.pc-w0{--tint:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 2px,transparent 2px 4px),linear-gradient(172deg,rgba(247,228,87,.82) 8%,rgba(255,46,136,.8) 52%,rgba(52,18,110,.85) 96%)}
+.pc-w1{--tint:linear-gradient(rgba(214,228,255,.4) 1px,transparent 1px) 0 0/11px 11px,linear-gradient(90deg,rgba(214,228,255,.4) 1px,transparent 1px) 0 0/11px 11px,linear-gradient(172deg,rgba(84,148,240,.8),rgba(14,42,100,.88))}
+/* Holographic foil over the letters: it sweeps across once on arrival,
+   then follows the pointer like a holo trading card. */
+.pc-big-foil{
+ color:transparent;pointer-events:none;
+ background:linear-gradient(105deg,transparent 22%,rgba(255,255,255,.85) 42%,rgba(150,235,255,.7) 48%,rgba(255,150,235,.7) 54%,rgba(255,240,170,.6) 60%,transparent 76%) 0 0/320% 100% no-repeat;
+ -webkit-background-clip:text;background-clip:text;
+ mix-blend-mode:overlay;
+ background-position:110% 0;
+}
+.is-3d[data-in] .pc-big-foil{animation:foil-sweep 2.4s .5s var(--ease-travel) both}
+@keyframes foil-sweep{from{background-position:110% 0}to{background-position:-10% 0}}
+.postcard-stage:hover .pc-big-foil{animation:none;background-position:calc(110% - var(--gx,50%) * 1.2) 0;transition:background-position .4s var(--ease)}
+.pc-w2{--tint:radial-gradient(rgba(140,80,24,.4) 1.6px,transparent 2.2px) 0 0/10px 10px,linear-gradient(172deg,rgba(255,240,200,.78),rgba(230,156,70,.86))}
+.pc-ribbon{
+ z-index:2;margin-top:1cqw;
+ padding:1.2cqw 6cqw;
+ background:#af1e2d;color:#fff6e0;
+ font:600 2.4cqw/1 var(--mono);letter-spacing:.42em;text-transform:uppercase;
+ clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%);
+ box-shadow:inset 0 2px 0 rgba(255,255,255,.2);
+ translate:calc(var(--px,0) * -5px) 0;
+ transition:translate .5s var(--ease);
+}
+.pc-small{
+ position:absolute;right:3cqw;bottom:2.4cqw;
+ font:500 1.5cqw/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:rgba(20,26,74,.75);
+}
+
+.postcard-flip{color:var(--ink)}
+.postcard-flip i{font-style:normal;font-size:16px}
+.postcard-flip:hover i{translate:0;rotate:180deg;transition:rotate .6s var(--ease)}
+.postcard-title{
+ position:absolute;top:clamp(16px,1.8vw,24px);left:50%;translate:-50% 0;
+ font:500 11px/1 var(--mono);letter-spacing:.6em;text-transform:uppercase;white-space:nowrap;
+ color:var(--ink-faint);
+}
+
+.postcard-message{display:grid;gap:16px;align-content:start;padding-right:clamp(24px,3.4vw,52px)}
+.postcard-message p{font:italic 400 clamp(19px,1.65vw,25px)/1.42 var(--serif);color:var(--ink-soft)}
+.postcard-message .postcard-greeting{font-size:clamp(36px,3.4vw,52px);line-height:1;color:var(--ink)}
+.postcard-message .postcard-sign{
+ position:relative;justify-self:start;margin-top:10px;
+ font-size:clamp(32px,2.8vw,42px);line-height:1;color:var(--ink);
+}
+.postcard-sign svg{
+ position:absolute;left:-8%;bottom:-.42em;width:125%;height:.55em;overflow:visible;
+ fill:none;stroke:var(--accent-bright);stroke-width:2.5px;stroke-linecap:round;
+}
+.postcard-sign svg path{vector-effect:non-scaling-stroke}
+
+.postcard-side{
+ display:grid;grid-template-rows:auto 1fr auto;row-gap:28px;
+ padding-left:clamp(24px,3.4vw,52px);
+ border-left:1px solid var(--rule-strong);
+}
+
+/* Stamps, postmark and its cancellation lines share one corner. */
+.postcard-franking{position:relative;justify-self:end;margin-top:4px}
+/* Each stamp overlaps the right edge of the one before it, so stamp
+   content keeps to the left and centre. */
+.postcard-stamps{display:flex;padding-left:6px}
+.postcard-stamps li{
+ position:relative;margin-left:-6px;
+ rotate:var(--r);
+ transition:rotate var(--t-base) var(--ease),translate var(--t-base) var(--ease);
+}
+.postcard-stamps li:is(:hover,:focus-within){z-index:4;rotate:0deg;translate:0 -8px}
+.stamp{
+ display:block;
+ filter:drop-shadow(0 1px 1px rgba(22,19,15,.2)) drop-shadow(0 10px 14px rgba(22,19,15,.18));
+}
+.stamp:focus-visible{outline-offset:6px}
+/* White stamp paper with perforated edges: a solid content box unioned
+   with a repeating field of holes that only shows in the padding band. */
+.stamp-paper{
+ display:block;width:clamp(96px,8.4vw,122px);aspect-ratio:4/5;padding:7px;
+ background:#fffdf8;
+ -webkit-mask:linear-gradient(#000 0 0) content-box,radial-gradient(circle,transparent 3px,#000 3.5px) -5px -5px/10px 10px round;
+ mask:linear-gradient(#000 0 0) content-box,radial-gradient(circle,transparent 3px,#000 3.5px) -5px -5px/10px 10px round;
+}
+.stamp-face{
+ display:grid;grid-template-rows:auto 1fr auto;justify-items:center;align-items:center;
+ height:100%;padding:7px 6px 9px;text-align:center;
+ background:var(--sf-bg);color:var(--sf-ink);
+ box-shadow:inset 0 0 0 1px var(--sf-frame);
+}
+.stamp-num{justify-self:start;font:500 10px/1 var(--mono);color:var(--sf-num)}
+.stamp-face img{width:40%;height:auto}
+.stamp-name{font:var(--sf-font);letter-spacing:var(--sf-track,0)}
+
+.stamp--insertcoin{
+ --sf-bg:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.25) 2px 3px),radial-gradient(circle at 50% 42%,rgba(255,46,136,.4),transparent 62%),#130a24;
+ --sf-ink:#f7e457;--sf-frame:#ff2e88;--sf-num:#6fe3cc;
+ --sf-font:700 10px/1.05 var(--sans);--sf-track:-.02em;
+}
+.stamp--insertcoin .stamp-name{text-transform:uppercase}
+.stamp--alderspan{
+ --sf-bg:linear-gradient(rgba(170,196,240,.14) 1px,transparent 1px) 0 0/9px 9px,linear-gradient(90deg,rgba(170,196,240,.14) 1px,transparent 1px) 0 0/9px 9px,#0b2350;
+ --sf-ink:#eef3fc;--sf-frame:rgba(170,196,240,.55);--sf-num:#f0a070;
+ --sf-font:500 11px/1.1 var(--sans);--sf-track:-.02em;
+}
+.stamp--morrow-and-crumb{
+ --sf-bg:radial-gradient(circle at 50% 40%,rgba(232,192,125,.55),transparent 65%),#f1e3c8;
+ --sf-ink:#3a2a18;--sf-frame:rgba(58,42,24,.35);--sf-num:#7a4e17;
+ --sf-font:italic 400 15px/1 var(--serif);
+}
+
+.postmark,.postmark-waves{
+ position:absolute;z-index:5;pointer-events:none;
+ fill:none;stroke:var(--ink);stroke-width:1.2;
+ mix-blend-mode:multiply;
+}
+.postmark{left:-30%;bottom:-24%;width:46%;max-width:136px;rotate:-14deg;opacity:.6}
+.postmark text{fill:var(--ink);stroke:none;font:500 10.5px/1 var(--mono)}
+.postmark .postmark-mark{font:italic 400 30px/1 var(--serif)}
+.postmark-waves{left:-6%;right:-8%;top:58%;width:auto;height:30%;opacity:.45}
+.postmark-waves path{vector-effect:non-scaling-stroke}
+
+.par-avion{
+ justify-self:start;align-self:center;
+ display:grid;gap:2px;padding:7px 14px 8px;
+ background:#24407e;color:#fff;
+ box-shadow:inset 0 0 0 2px #24407e,inset 0 0 0 3px rgba(255,255,255,.7),0 2px 4px rgba(22,19,15,.2);
+ font:600 11px/1.1 var(--mono);letter-spacing:.2em;text-transform:uppercase;text-align:center;
+ rotate:-4deg;
+}
+.par-avion span:first-child{font:italic 400 17px/1 var(--serif);letter-spacing:.02em;text-transform:none}
+.postcard-address{align-self:end;display:grid}
+.postcard-address .label{color:var(--ink-faint);margin-bottom:4px}
+.postcard-address p{
+ padding:12px 0 6px;border-bottom:1px solid var(--rule-strong);
+ font:italic 400 clamp(21px,1.8vw,27px)/1.2 var(--serif);
+}
+.postcard-reply{justify-self:start;margin-top:20px;color:var(--ink)}
+
+/* Arrival: the stamps press down in turn, then the postmark lands. */
+.js .postcard .postcard-stamps li{opacity:0}
+.js .postcard[data-shown] .postcard-stamps li{animation:stamp-down .55s var(--ease) both;animation-delay:calc(.55s + var(--n) * .18s)}
+@keyframes stamp-down{from{opacity:0;scale:1.35}to{opacity:1;scale:1}}
+.js .postcard .postmark{opacity:0;scale:1.25;transition:opacity .4s var(--ease) 1.2s,scale .5s var(--ease) 1.2s}
+.js .postcard[data-shown] .postmark{opacity:.6;scale:1}
+
+.intro-actions{
+ display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px 40px;
+ margin-top:clamp(40px,4.4vw,64px);
+}
+.intro-hint{color:var(--ink-faint)}
+.intro-hint i{display:inline-block;font-style:normal;margin-left:6px;animation:nudge 2.4s var(--ease-travel) infinite}
+@keyframes nudge{50%{translate:0 4px}}
+
+/* ======================================================================
+   About — the terminal
+   ----------------------------------------------------------------------
+   Phosphor green on black: digital rain on a canvas behind everything
+   (scripts/matrix.ts), CRT scanlines and a vignette over it, and every
+   label written as a shell prompt. Contrast on --m-bg: --m-green 14:1,
+   --m-text 15:1, --m-dim 8.6:1.
+   ====================================================================== */
+.about{
+ --m-bg:#010603;
+ --m-green:#33ff66;
+ --m-bright:#d8ffe0;
+ --m-text:#a8f5bc;
+ --m-dim:#3fcf6a;
+ --m-line:rgba(51,255,102,.22);
+ --m-glow:0 0 6px rgba(51,255,102,.55),0 0 22px rgba(51,255,102,.25);
+ --focus:var(--m-green);
+ position:relative;isolation:isolate;overflow:hidden;
+ padding:clamp(96px,11vw,176px) 0 clamp(80px,9vw,140px);
+ background:var(--m-bg);color:var(--m-text);
+ font-family:var(--mono);
+}
+.about-rain{position:absolute;inset:0;z-index:-2;width:100%;height:100%;opacity:.38}
+/* Scanlines and a vignette, like the glass of an old monitor. */
+.about::before,.about::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none}
+.about::before{background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.32) 2px 3px)}
+.about::after{background:radial-gradient(120% 90% at 50% 45%,transparent 55%,rgba(0,0,0,.75))}
+
+.about-inner{
+ display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+ column-gap:clamp(16px,2vw,28px);row-gap:clamp(36px,4.5vw,64px);
+}
+.term-prompt{font:500 13px/1.5 var(--mono);letter-spacing:.02em;color:var(--m-dim)}
+.term-prompt span{color:var(--m-green)}
+.term-prompt b{font-weight:500;color:#5fb4ff}
+.about-inner>.term-prompt{grid-column:1/-1;margin-bottom:calc(-1 * clamp(18px,2.6vw,40px))}
+
+.about-title{
+ grid-column:1/-1;
+ display:grid;
+ font:500 clamp(36px,6.4vw,100px)/1.02 var(--mono);letter-spacing:-.045em;
+ color:var(--m-green);text-shadow:var(--m-glow);
+ overflow-wrap:normal;
+}
+.about-title-line.is-bright{color:var(--m-bright)}
+
+/* Bio and process sit in bordered terminal panes. */
+.term-block{
+ position:relative;
+ padding:clamp(20px,2.4vw,32px);
+ border:1px solid var(--m-line);
+ background:rgba(1,10,4,.72);
+ backdrop-filter:blur(2px);
+ box-shadow:inset 0 0 40px rgba(51,255,102,.05),0 0 0 1px rgba(0,0,0,.6),0 20px 50px -20px rgba(0,0,0,.8);
+}
+.about-copy{grid-column:1/8;display:flex;flex-direction:column;gap:16px}
+/* The pane ends on an empty prompt, waiting for input. */
+.term-waiting{margin-top:auto;padding-top:8px}
+.about-copy p:not(.term-prompt){font-size:15px;line-height:1.75}
+.about-copy .about-lead{font-size:clamp(16px,1.3vw,18px);line-height:1.65;color:var(--m-bright)}
+.term-cursor{
+ display:inline-block;width:.6em;height:1.1em;margin-left:4px;vertical-align:text-bottom;
+ background:var(--m-green);box-shadow:var(--m-glow);
+ animation:cursor-blink 1.05s steps(2,jump-none) infinite;
+}
+@keyframes cursor-blink{50%{opacity:0}}
+
+.about-process{grid-column:8/-1;align-content:start}
+.about-process ol{display:grid;gap:16px;margin-top:16px}
+.about-process li{
+ display:grid;grid-template-columns:auto auto minmax(12px,1fr) auto;align-items:baseline;column-gap:10px;row-gap:4px;
+}
+.boot-num{font-size:12px;color:var(--m-dim)}
+.about-process strong{font:600 15px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--m-bright)}
+.boot-dots{align-self:center;height:1px;border-bottom:2px dotted var(--m-line)}
+.boot-ok{font-size:12px;color:var(--m-green);text-shadow:var(--m-glow)}
+.boot-text{grid-column:2/-1;font-size:13px;line-height:1.6;color:var(--m-text)}
+/* Once revealed, each stage reports OK in turn. */
+.js .about-process .boot-ok{opacity:0}
+.js .about-process[data-shown] .boot-ok{animation:boot-ok .01s calc(.6s + var(--n) * .45s) both}
+@keyframes boot-ok{to{opacity:1}}
+
+.about-off{grid-column:1/-1;padding-top:22px;border-top:1px solid var(--m-line)}
+.about-off-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px;margin-bottom:22px}
+.about-off-hint{font:500 12px/1.5 var(--mono);color:var(--m-dim)}
+/* The interest cards keep their own worlds; on black they lift with a
+   green rim instead of a paper shadow. */
+.about .interest-tile{box-shadow:0 0 0 1px rgba(51,255,102,.18),0 18px 40px -18px rgba(0,0,0,.9)}
+.about .interest-tile[aria-expanded="true"]{box-shadow:0 0 0 2px var(--i-accent),0 0 28px -6px var(--i-accent),0 30px 50px -24px rgba(0,0,0,.9)}
+.about .interest-panel{box-shadow:0 0 0 1px rgba(51,255,102,.18),0 18px 40px -18px rgba(0,0,0,.9)}
+.about .interest-tile:focus-visible{outline-color:var(--m-green)}
+
+/* ---------- Off the clock ------------------------------------------------
+   Each interest is a small world of its own, like the projects: a palette
+   in --i-* variables on .i-<slug>, shared by its tile and its panel.
+   Selecting (or pointing at) a tile sets its drawing in motion. */
+.i-games{
+ --i-bg:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.3) 2px 3px),radial-gradient(75% 70% at 50% 40%,#173422,#0b130e);
+ --i-ink:#e3ffe9;--i-label:#7dff9b;--i-accent:#7dff9b;
+}
+.i-lifting{
+ --i-bg:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.5px) 0 0/14px 14px,radial-gradient(80% 70% at 50% 35%,#2c2c30,#17171a);
+ --i-ink:#f1eee8;--i-label:#c9c4ba;--i-accent:#d23c2a;
+}
+.i-pitbulls{
+ --i-bg:radial-gradient(80% 70% at 50% 35%,#f9eee2,#eedac3);
+ --i-ink:#3b2416;--i-label:#7a4325;--i-accent:#b5552b;
+}
+/* Bleu-blanc-rouge: a Canadiens-navy dressing room with a red stripe. */
+.i-hockey{
+ --i-bg:
+  linear-gradient(transparent calc(100% - 5px),#af1e2d calc(100% - 5px)),
+  radial-gradient(75% 65% at 50% 32%,#27358a,#111847);
+ --i-ink:#f4f6fb;--i-label:#c9d0ee;--i-accent:#af1e2d;
+}
+
+.interest-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.6vw,22px)}
+.interest-tile{
+ position:relative;
+ display:grid;grid-template-rows:minmax(0,1fr) auto;gap:10px;
+ width:100%;aspect-ratio:1;
+ padding:clamp(14px,1.4vw,20px);
  border-radius:var(--r-sm);
- border:1px solid var(--line-hover);
- font-size:0;color:var(--muted);
- transition:
-  border-color var(--t-quick) var(--ease),
-  color var(--t-quick) var(--ease),
-  background var(--t-quick) var(--ease);
+ background:var(--i-bg);color:var(--i-ink);text-align:left;
+ box-shadow:0 0 0 1px rgba(22,19,15,.08),0 2px 4px rgba(22,19,15,.06),0 16px 32px -18px rgba(22,19,15,.45);
+ transition:translate var(--t-base) var(--ease),box-shadow var(--t-base) var(--ease);
 }
-/* The markup supplies a "+"; the box prints its own glyph so the open state
-   can swap it without rotating the border into a diamond. */
-.process-list summary span::before{content:'+';font:400 16px/1 var(--sans)}
-.process-list details[open] summary span{
- border-color:var(--line-accent);
- background:var(--accent-wash);
- color:var(--accent-text);
+button.interest-tile:hover{translate:0 -4px}
+.interest-tile[aria-expanded="true"]{
+ translate:0 -6px;
+ box-shadow:0 0 0 2px var(--i-accent),0 6px 12px rgba(22,19,15,.1),0 30px 50px -24px rgba(22,19,15,.55);
 }
-.process-list details[open] summary span::before{content:'–'}
+.interest-tile:focus-visible{outline-color:var(--ink);outline-offset:4px}
+.interest-art{display:grid;place-items:center;min-height:0}
+.interest-art svg{width:80%;max-height:100%;overflow:visible}
+.interest-meta{display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:10px}
+.interest-num{font:500 10px/1 var(--mono);color:var(--i-label)}
+.interest-title{font:400 clamp(19px,1.7vw,24px)/1 var(--serif)}
+.interest-toggle{position:relative;align-self:center;width:22px;height:22px;border-radius:50%;box-shadow:inset 0 0 0 1px var(--i-label)}
+.interest-toggle::before,.interest-toggle::after{
+ content:'';position:absolute;left:50%;top:50%;width:8px;height:1.5px;
+ background:var(--i-label);translate:-50% -50%;
+ transition:rotate var(--t-base) var(--ease);
+}
+.interest-toggle::after{rotate:90deg}
+[aria-expanded="true"] .interest-toggle::after{rotate:0deg}
 
-.process-list details p{
- padding:0 56px 20px 22px;max-width:52ch;
- font-size:15px;line-height:1.75;color:var(--muted);
+/* Video games: a pixel controller on a phosphor screen. */
+.pix-body{fill:var(--i-accent)}
+.pix-btn{fill:#ff5fa2}
+.i-games .interest-art svg{filter:drop-shadow(0 0 10px rgba(125,255,155,.45))}
+.interest-tile.i-games:is(:hover,[aria-expanded="true"]) .interest-art svg{animation:pix-bob 1.2s steps(2,jump-none) infinite}
+.interest-tile.i-games:is(:hover,[aria-expanded="true"]) .pix-btn{animation:pix-blink .9s steps(2,jump-none) infinite}
+@keyframes pix-bob{50%{translate:0 -4px}}
+@keyframes pix-blink{50%{fill:#fff27a}}
+
+/* Lifting: competition plates on chalky iron; the bar leaves the floor. */
+.lift-floor{fill:none;stroke:var(--i-label);stroke-width:1.5;stroke-dasharray:4 5;opacity:.6}
+.lift-metal{fill:#b9b4aa}
+.lift-shaft{fill:#e8e4dc}
+.lift-knurl{fill:none;stroke:#8f8a80;stroke-width:1}
+.lift-red{fill:#d23c2a}
+.lift-blue{fill:#2f5fd0}
+.lift-yellow{fill:#f2c230}
+.lift-bar{transition:translate .7s var(--ease)}
+.lift-chalk{fill:#f1eee8;opacity:0;transition:opacity var(--t-base) var(--ease)}
+.interest-tile.i-lifting:is(:hover,[aria-expanded="true"]) .lift-bar{translate:0 -20px}
+.interest-tile.i-lifting:is(:hover,[aria-expanded="true"]) .lift-chalk{opacity:.7}
+
+/* Pitbulls: a vector portrait of Alessandro's dog (interests/Pitbull.astro
+   carries its own colours). Selected, he tilts his head and lifts his ears. */
+.dog-head{transform-origin:200px 290px;transition:rotate .6s var(--ease)}
+.dog-ear{transition:rotate .5s var(--ease)}
+.dog-ear--l{transform-origin:124px 100px}
+.dog-ear--r{transform-origin:276px 100px}
+.interest-tile.i-pitbulls:is(:hover,[aria-expanded="true"]) .dog-head{rotate:-10deg}
+.interest-tile.i-pitbulls:is(:hover,[aria-expanded="true"]) .dog-ear--l{rotate:16deg}
+.interest-tile.i-pitbulls:is(:hover,[aria-expanded="true"]) .dog-ear--r{rotate:-16deg}
+
+/* Hockey: his stall in a Canadiens dressing room (interests/HabsStall.astro).
+   Selected, the stall light comes up and the sweater swings on its hook. */
+.habs-plate{font:600 8.5px/1 var(--mono);letter-spacing:.24em;fill:#192168}
+/* Name and number are white tackle twill with a blue edge; .habs-twill is
+   the dark copy underneath that makes them read as raised. */
+.habs-name{font:700 9px/1 var(--sans);letter-spacing:.16em;fill:#fff;stroke:#192168;stroke-width:1.4px;paint-order:stroke}
+.habs-number{font:700 34px/1 var(--sans);letter-spacing:-.03em;fill:#fff;stroke:#192168;stroke-width:3px;paint-order:stroke}
+.habs-twill{fill:#000;stroke:#000;opacity:.3}
+.habs-sleeve-num{font:700 9px/1 var(--sans);fill:#fff;stroke:#192168;stroke-width:1px;paint-order:stroke}
+.habs-sweater{transform-origin:104px 42px;filter:drop-shadow(0 6px 6px rgba(0,0,0,.45))}
+.habs-light{opacity:.7;transition:opacity var(--t-base) var(--ease)}
+.interest-tile.i-hockey:is(:hover,[aria-expanded="true"]) .habs-light{opacity:1}
+.interest-tile.i-hockey:is(:hover,[aria-expanded="true"]) .habs-sweater{animation:sweater-swing 1.6s var(--ease)}
+@keyframes sweater-swing{
+ 0%{rotate:0deg}
+ 20%{rotate:5deg}
+ 45%{rotate:-3.5deg}
+ 70%{rotate:2deg}
+ 88%{rotate:-.8deg}
+ 100%{rotate:0deg}
 }
 
-/* Responsive rules follow the desktop composition in decreasing widths. */
+/* The panel below the tiles takes the selected interest's palette. */
+.interest-panel{
+ margin-top:clamp(16px,2vw,24px);
+ padding:clamp(22px,3vw,40px);
+ border-radius:var(--r-sm);
+ background:var(--i-bg);color:var(--i-ink);
+ box-shadow:0 0 0 1px rgba(22,19,15,.08),0 16px 32px -18px rgba(22,19,15,.45);
+}
+.interest-panel:not([hidden]){animation:panel-in var(--t-base) var(--ease)}
+@keyframes panel-in{from{opacity:0;translate:0 -8px}}
+.interest-panel-kicker{margin-bottom:14px;color:var(--i-label)}
+.interest-panel-text{font:italic 400 clamp(20px,2vw,28px)/1.4 var(--serif);max-width:62ch}
+.interest-panel-todo{
+ max-width:64ch;padding:14px 16px;
+ border:1px dashed var(--i-label);border-radius:var(--r-xs);
+ font-size:15px;line-height:1.6;
+}
+.interest-panel-todo code{font:500 13px/1 var(--mono);color:var(--i-label)}
+
+/* ======================================================================
+   Contact — a neon sign on a brick wall
+   ----------------------------------------------------------------------
+   A shop window after dark. --neon is registered so the switch plate can
+   cross-fade the sign, its glow on the bricks and the button between the
+   three worlds' colours.
+   ====================================================================== */
+@property --neon{syntax:'<color>';inherits:true;initial-value:#ff2e88}
+@property --neon-2{syntax:'<color>';inherits:true;initial-value:#d6f0ff}
+
+.contact{
+ --neon:#ff2e88;
+ --neon-2:#d6f0ff;
+ --focus:var(--neon-2);
+ position:relative;isolation:isolate;overflow:hidden;
+ color:var(--paper);
+ background:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='88' height='44'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='.55' stroke-width='3'%3E%3Cpath d='M0 1.5H88M0 23.5H88M1.5 1.5V23.5M45.5 23.5V45'/%3E%3C/g%3E%3C/svg%3E"),
+  radial-gradient(70% 55% at 40% 42%,color-mix(in srgb,var(--neon) 22%,transparent),transparent 70%),
+  linear-gradient(180deg,#24140f,#170d0a 60%,#0e0807);
+ transition:--neon .7s var(--ease),--neon-2 .7s var(--ease);
+}
+.contact[data-neon="blueprint"]{--neon:#38a8ff;--neon-2:#fff1d6}
+.contact[data-neon="bakery"]{--neon:#ffab3d;--neon-2:#ffe0ef}
+/* Night: the bricks fall into darkness away from the sign. */
+.contact::after{
+ content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background:radial-gradient(90% 75% at 42% 40%,transparent 35%,rgba(0,0,0,.72));
+}
+
+.contact-inner{
+ display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+ column-gap:clamp(16px,2vw,28px);row-gap:clamp(32px,3.6vw,56px);
+ padding:clamp(96px,11vw,176px) 0 clamp(80px,9vw,140px);
+}
+.contact .section-mark{grid-column:1/-1;grid-row:1;color:rgba(242,237,227,.62)}
+
+/* ---------- The sign: tubes on an acrylic backer ------------------------ */
+.neon-board{
+ grid-column:1/10;grid-row:2;
+ position:relative;justify-self:start;
+ padding:clamp(28px,3.4vw,52px) clamp(28px,4vw,64px) clamp(32px,3.8vw,56px);
+ border-radius:22px;
+ background:linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.015) 45%,rgba(255,255,255,.05));
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 1px 0 rgba(255,255,255,.14),0 30px 60px -30px rgba(0,0,0,.8);
+}
+/* The light the sign throws onto the wall. */
+.neon-board::before{
+ content:'';position:absolute;inset:-25% -15%;z-index:-1;pointer-events:none;
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--neon) 34%,transparent),transparent);
+ filter:blur(30px);
+ transition:opacity 1.2s var(--ease);
+}
+.neon-standoff{
+ position:absolute;width:12px;height:12px;border-radius:50%;
+ background:radial-gradient(circle at 35% 30%,#f3f3f3,#8b8f96 55%,#3b3e43);
+ box-shadow:0 2px 4px rgba(0,0,0,.6);
+}
+.neon-standoff:nth-of-type(1){top:14px;left:14px}
+.neon-standoff:nth-of-type(2){top:14px;right:14px}
+.neon-standoff:nth-of-type(3){bottom:14px;left:14px}
+.neon-standoff:nth-of-type(4){bottom:14px;right:14px}
+
+.neon-sign{display:grid;gap:clamp(4px,1vw,14px)}
+.neon-line{display:block;transition:opacity .3s}
+/* Outlined glass tube. */
+.neon-line--top{
+ font:600 clamp(22px,3.3vw,50px)/1.1 var(--sans);letter-spacing:.02em;text-transform:uppercase;
+ color:transparent;
+ -webkit-text-stroke:clamp(1.2px,.12vw,2px) var(--neon-2);
+ filter:drop-shadow(0 0 2px var(--neon-2)) drop-shadow(0 0 9px var(--neon-2)) drop-shadow(0 0 22px color-mix(in srgb,var(--neon-2) 60%,var(--neon)));
+}
+/* Filled script tube: a pale core inside a coloured glow. */
+.neon-line--main{
+ padding:0 .08em .12em 0;
+ font:italic 400 clamp(64px,11.6vw,184px)/.92 var(--serif);letter-spacing:-.02em;
+ color:color-mix(in srgb,var(--neon) 30%,#fff);
+ filter:drop-shadow(0 0 2px var(--neon)) drop-shadow(0 0 10px var(--neon)) drop-shadow(0 0 30px var(--neon)) drop-shadow(0 0 70px color-mix(in srgb,var(--neon) 55%,transparent));
+}
+/* One letter with a tired tube. */
+.neon-buzz{animation:neon-buzz 7s 4s infinite}
+@keyframes neon-buzz{
+ 0%,90%,100%{opacity:1}
+ 91%{opacity:.35}92%{opacity:1}93.5%{opacity:.45}95%{opacity:1}
+}
+
+/* Unlit until the sign scrolls into view, then the tubes stutter on. */
+.js [data-reveal="neon"]{opacity:1;transform:none}
+.js .neon-board .neon-line{opacity:.16}
+.js .neon-board::before{opacity:0}
+.js .neon-board[data-shown]::before{opacity:1;transition-delay:.9s}
+.js .neon-board[data-shown] .neon-line--top{animation:neon-on 1.1s .2s both}
+.js .neon-board[data-shown] .neon-line--main{animation:neon-on 1.4s .85s both}
+@keyframes neon-on{
+ 0%{opacity:.16}
+ 8%{opacity:1}11%{opacity:.2}
+ 19%{opacity:1}23%{opacity:.3}
+ 36%{opacity:1}40%{opacity:.6}
+ 55%,100%{opacity:1}
+}
+
+/* ---------- OPEN, hanging from a nail ----------------------------------- */
+.open-sign{
+ grid-column:10/-1;grid-row:2;align-self:start;justify-self:center;
+ width:clamp(130px,13vw,190px);
+ transform-origin:50% 7px;
+ filter:drop-shadow(0 18px 18px rgba(0,0,0,.55));
+}
+.open-string{width:100%;height:auto;overflow:visible;fill:none;stroke:#c9b896;stroke-width:1.6}
+.open-string circle{fill:#8b8f96;stroke:#3b3e43;stroke-width:1.5}
+.open-card{
+ display:grid;justify-items:center;gap:6px;margin-top:-2px;
+ padding:14px 12px 16px;border-radius:6px;
+ background:linear-gradient(180deg,#f7efdf,#e9dcc3);
+ box-shadow:inset 0 0 0 3px #f7efdf,inset 0 0 0 5px #af1e2d,0 0 40px -12px var(--neon);
+}
+.open-word{font:700 clamp(30px,3.2vw,46px)/1 var(--sans);letter-spacing:.04em;text-transform:uppercase;color:#af1e2d}
+.open-sub{font:500 10px/1.3 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#4a3a22;text-align:center}
+.js .open-sign[data-reveal]{opacity:0;transform:none;translate:0 -30px}
+.js .open-sign[data-reveal][data-shown]{opacity:1;translate:0 0;animation:sign-swing 2.6s .3s var(--ease) both}
+.open-sign:hover{animation:sign-swing 2.2s var(--ease)!important}
+@keyframes sign-swing{
+ 0%{rotate:14deg}22%{rotate:-9deg}42%{rotate:5deg}62%{rotate:-2.5deg}80%{rotate:1deg}100%{rotate:0deg}
+}
+
+/* ---------- Copy and actions -------------------------------------------- */
+.contact-body{grid-column:1/7;grid-row:3;display:grid;gap:28px;align-content:start}
+.contact-body>p{font-size:18px;line-height:1.65;color:rgba(242,237,227,.78);max-width:44ch}
+.contact-actions{display:flex;flex-wrap:wrap;align-items:center;gap:18px 28px}
+.contact .link-arrow{color:var(--paper)}
+
+/* ---------- The switch plate -------------------------------------------- */
+.neon-panel{grid-column:8/-1;grid-row:3;justify-self:end;display:grid;gap:12px;align-content:start}
+.neon-panel .label{color:rgba(242,237,227,.62)}
+.switch-plate{
+ position:relative;
+ display:flex;gap:clamp(14px,1.6vw,22px);
+ padding:26px 26px 24px;border-radius:8px;
+ background:
+  repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px),
+  linear-gradient(180deg,#45484e,#2a2c30);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 -1px 0 rgba(0,0,0,.5),0 16px 30px -12px rgba(0,0,0,.8);
+}
+/* Two screws. */
+.switch-plate::before,.switch-plate::after{
+ content:'';position:absolute;left:50%;width:7px;height:7px;translate:-50% 0;border-radius:50%;
+ background:linear-gradient(135deg,transparent 42%,#1d1f22 42% 58%,transparent 58%),radial-gradient(circle at 35% 30%,#d9dbde,#6c7076);
+}
+.switch-plate::before{top:9px}
+.switch-plate::after{bottom:7px}
+.switch{display:grid;justify-items:center;gap:8px;color:rgba(242,237,227,.75)}
+.switch-rocker{
+ position:relative;display:block;width:28px;height:46px;border-radius:6px;
+ background:#141517;
+ box-shadow:inset 0 2px 4px rgba(0,0,0,.8),0 1px 0 rgba(255,255,255,.12);
+}
+.switch-rocker span{
+ position:absolute;left:3px;right:3px;top:3px;height:22px;border-radius:4px;
+ background:linear-gradient(180deg,#e8e6e1,#b9b6ae);
+ box-shadow:0 3px 0 #8d8a83,0 6px 8px rgba(0,0,0,.5);
+ translate:0 18px;
+ transition:translate var(--t-base) var(--ease),box-shadow var(--t-base) var(--ease);
+}
+.switch[aria-pressed="true"] .switch-rocker span{translate:0 0;box-shadow:0 -3px 0 #8d8a83,0 2px 6px rgba(0,0,0,.5)}
+/* A pilot light in each switch's colour. */
+.switch-rocker::after{
+ content:'';position:absolute;left:50%;bottom:-11px;width:6px;height:6px;translate:-50% 0;border-radius:50%;
+ background:#3a3a3a;transition:background var(--t-base) var(--ease),box-shadow var(--t-base) var(--ease);
+}
+.switch--arcade{--pilot:#ff2e88}
+.switch--blueprint{--pilot:#38a8ff}
+.switch--bakery{--pilot:#ffab3d}
+.switch[aria-pressed="true"] .switch-rocker::after{background:var(--pilot);box-shadow:0 0 8px var(--pilot)}
+.switch-name{margin-top:8px;font:500 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.switch[aria-pressed="true"] .switch-name{color:#fff}
+.switch:focus-visible{outline-offset:6px}
+
+@media (prefers-reduced-motion:reduce){
+ :root:has(.hero){animation:none}
+ .intro-hint i,.term-cursor,.is-3d[data-in] .pc-big-foil{animation:none}
+ .js .about-process .boot-ok{opacity:1;animation:none}
+ .neon-buzz,.js .neon-board[data-shown] .neon-line{animation:none}
+ .js .neon-board .neon-line{opacity:1}
+ .js .open-sign[data-reveal][data-shown],.open-sign:hover{animation:none!important}
+}
+
+/* ======================================================================
+   Tablet
+   ====================================================================== */
 @media (max-width:900px){
- .personal-backdrop svg{transform:scale(1.15);transform-origin:center top}
- .opening{padding-top:56px}
- .identity-row{gap:12px}
- .site-card{padding:18px;gap:20px;min-height:220px}
- .site-card .project-identity{gap:10px}
- .site-card .project-identity img{width:36px;height:36px}
- .approach-layout{grid-template-columns:1fr;gap:36px}
- .approach-intro>p:not(.large-statement){max-width:56ch}
+ .hero-slice-kind{display:none}
+ .about-copy,.about-process{grid-column:1/-1}
+ .interest-tiles{grid-template-columns:1fr 1fr}
+ .neon-board{grid-column:1/-1;grid-row:2;justify-self:stretch}
+ /* The OPEN card hangs at the right of the label row, above the sign. */
+ .contact .section-mark{grid-column:1/9;align-self:end}
+ .open-sign{grid-column:9/-1;grid-row:1;justify-self:end;width:clamp(110px,18vw,150px)}
+ .contact-body,.neon-panel{grid-column:1/-1;grid-row:auto;justify-self:start}
 }
+
+/* ======================================================================
+   Phone
+   ----------------------------------------------------------------------
+   The slices stay vertical: the headline wraps across them, and each
+   world shows its phone-width capture instead of the desktop one.
+   ====================================================================== */
 @media (max-width:720px){
- .opening h1{font-size:clamp(46px,10.7vw,78px)}
- .opening-descriptor{gap:14px;font-size:12px;letter-spacing:0}
- .opening-descriptor::before,.opening-descriptor::after{max-width:32px}
- .identity-row{grid-template-columns:1fr;margin-top:34px;padding-top:24px;gap:12px}
- .site-card{
-  grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto;
-  min-height:0;padding:20px;gap:12px 16px;
- }
- .card-cat{grid-column:1/-1}
- .card-body{grid-column:1;grid-row:2;gap:8px}
- .card-go{grid-column:2;grid-row:2;gap:12px;padding-top:0;border-top:0}
- .site-card .project-identity>span{font-size:20px}
- .site-card .project-identity img{width:36px;height:36px}
- .card-type{font-size:11px}
+ .hero{height:clamp(520px,68svh,600px)}
+ .hero-copy{padding-top:84px}
+ .hero-title{font-size:clamp(46px,14.5vw,72px);line-height:.9}
+ .hero-screen{width:30%;left:calc(var(--slot) * 33.333% + 1.7%);bottom:-10%}
+ .hero-screen img{aspect-ratio:390/844;border-radius:14px}
+ .hero-slice{grid-template-columns:1fr;row-gap:2px;padding:16px 10px}
+ .hero-slice--0{padding-left:var(--edge)}
+ .hero-slice-num{grid-row:auto}
+ .hero-slice-title{font-size:15px}
+ .hero-slice i{display:none}
+}
+/* Phones held sideways: the hero fits the short screen instead of
+   keeping its tall minimum. */
+@media (max-height:540px) and (orientation:landscape){
+ .hero{height:max(440px,calc(100svh - var(--header-h)))}
+ .hero-copy{padding-top:76px}
+ .hero-title{font-size:min(14vw,22svh)}
+ .hero-screen{width:26%;left:calc(var(--slot) * 33.333% + 3.6%);bottom:-12%}
+ .hero-screen img{aspect-ratio:16/10;border-radius:var(--r-md)}
+ .hero-slice-kind{display:none}
 }
 @media (max-width:640px){
- .personal-backdrop{opacity:.72}
- .personal-backdrop svg{transform:scale(1.5);transform-origin:58% top}
- .backdrop-dog{display:none}
- .opening{padding-top:44px;padding-bottom:36px}
- .opening h1{font-size:clamp(42px,10.7vw,70px)}
- .name-last{margin-top:.045em}
- .opening-descriptor{margin-top:28px;font-size:11px}
- .section-rail{padding:22px 0;gap:8px}
- .section-rail>span{margin-left:0;flex-basis:100%;text-align:left}
- .site-card{padding:18px;gap:12px}
- .site-card .project-identity>span{font-size:18px}
- .card-go{font-size:9px;gap:8px}
- .large-statement{font-size:clamp(30px,8.5vw,40px)}
- .approach-intro>p:not(.large-statement){font-size:15.5px}
- .process-list summary{font-size:17px;padding:16px 18px}
- .process-list details p{padding:0 18px 18px;font-size:15px}
-}
-@media (max-width:360px){
- .opening h1{font-size:10.7vw}
- .opening-descriptor::before,.opening-descriptor::after{content:none}
- .site-card .project-identity>span{font-size:16px}
- .site-card .project-identity img{width:30px;height:30px}
- .large-statement{font-size:28px}
-}
-@media (prefers-reduced-motion:reduce){
- .large-statement em{animation:none}
- .site-card:hover,.site-card:focus-visible,
- .js .site-card[data-reveal][data-shown]:is(:hover,:focus-visible){transform:none}
- .site-card:hover .project-identity img,.site-card:focus-visible .project-identity img{transform:none}
- .opening-name{transform:none}
+ /* The message side is tall on a phone, so instead of a flip the front
+    sits as its own compact card above it and both stay visible. */
+ .postcard-tilt{transform:none}
+ .postcard-card{gap:20px}
+ .postcard-card>*{grid-area:auto}
+ .is-3d .postcard-card[data-flipped],.is-3d .postcard{transform:none}
+ .is-3d .pc-front{rotate:-1.5deg}
+ .postcard-flip{display:none}
+ .postcard-stage.is-flipping :is(.postcard-tilt,.postcard-floor){animation:none}
+ .par-avion{justify-self:center}
+ .postcard{grid-template-columns:1fr;padding:52px 20px 26px}
+ .postcard-message{padding-right:0;padding-bottom:30px}
+ .postcard-side{padding:30px 0 0;border-left:0;border-top:1px solid var(--rule-strong)}
+ .postcard-franking{justify-self:center}
+ .stamp-paper{width:clamp(84px,25vw,104px)}
+ .postmark{left:-10%;bottom:-30%;width:40%}
+ .about-title{font-size:clamp(28px,9.4vw,52px)}
+ .neon-board{padding:30px 22px 32px}
+ .neon-line--top{font-size:5.2vw}
+ .neon-line--main{font-size:12.5vw}
+ .neon-standoff{width:9px;height:9px}
+ .neon-standoff:nth-of-type(odd){left:10px}
+ .neon-standoff:nth-of-type(even){right:10px}
+ .neon-standoff:nth-of-type(-n+2){top:10px}
+ .neon-standoff:nth-of-type(n+3){bottom:10px}
+ .term-prompt{font-size:12px}
 }

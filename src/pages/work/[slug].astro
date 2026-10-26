@@ -1,0 +1,122 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import BrowserFrame from '../../components/BrowserFrame.astro';
+import PhoneFrame from '../../components/PhoneFrame.astro';
+import WorldActions from '../../components/worlds/WorldActions.astro';
+import { games, projects, site, type Project } from '../../data/portfolio';
+import '../../styles/worlds.css';
+import '../../styles/case.css';
+
+export function getStaticPaths() {
+  return projects.map((project, index) => ({
+    params: { slug: project.slug },
+    props: { project, next: projects[(index + 1) % projects.length] },
+  }));
+}
+
+interface Props {
+  project: Project;
+  next: Project;
+}
+
+const { project, next } = Astro.props;
+---
+<Layout title={`${project.title} — ${site.name}`} description={project.summary} headerWorld={project.slug}>
+  <article class:list={['case', `world-${project.slug}`]}>
+    <header class="case-head" data-header-world={project.slug} data-header-label={`Case study — ${project.number} / 03`}>
+      <div class="case-head-inner wrap">
+        <a class="case-back label" href="/#work"><span aria-hidden="true">←</span> All work</a>
+        <p class="world-meta label"><span>{project.number} / 03</span><span>{project.category}</span></p>
+        <h1 class="case-title" data-reveal="lines"><span class="reveal-line"><span>{project.title}</span></span></h1>
+        <div class="case-intro" data-reveal>
+          <p class="case-headline">“{project.headline}”</p>
+          <p class="world-summary">{project.summary}</p>
+          {project.concept && <p class="case-concept label">Self-directed concept — not client work</p>}
+          <WorldActions project={project} caseStudy={false} />
+        </div>
+        <dl class="case-facts" data-reveal>
+          <div><dt>Role</dt><dd>{project.role}</dd></div>
+          <div><dt>Type</dt><dd>{project.kind}</dd></div>
+          <div><dt>Live at</dt><dd><a href={project.liveUrl} target="_blank" rel="noopener noreferrer">{project.domain}<span class="visually-hidden"> (opens in a new tab)</span></a></dd></div>
+        </dl>
+      </div>
+    </header>
+
+    <section class="case-hero wrap" aria-label={`${project.title}, finished work`}>
+      <BrowserFrame class="case-cover" shot={project.cover} domain={project.domain} sizes="(max-width: 1400px) 94vw, 1320px" eager data-reveal />
+    </section>
+
+    <section class="case-gallery wrap" aria-labelledby="gallery-title">
+      <h2 id="gallery-title" class="section-mark label">The finished work</h2>
+      <div class:list={['case-gallery-grid', `case-gallery-grid--${project.gallery.length}`]}>
+        {project.gallery.map((shot) => (
+          shot.src.height > shot.src.width ? (
+            <figure class="case-shot case-shot--portrait" data-reveal>
+              <Image src={shot.src} alt={shot.alt} widths={[400, 760, 1140]} sizes="(max-width: 900px) 60vw, 380px" loading="lazy" decoding="async" />
+              <figcaption class="label">{shot.caption}</figcaption>
+            </figure>
+          ) : (
+            <figure class="case-shot" data-reveal>
+              <BrowserFrame shot={shot} domain={project.domain} sizes="(max-width: 900px) 94vw, 62vw" />
+              <figcaption class="label">{shot.caption}</figcaption>
+            </figure>
+          )
+        ))}
+        <figure class="case-shot case-shot--phone" data-reveal>
+          <PhoneFrame shot={project.mobile} />
+          <figcaption class="label">{project.mobile.caption}</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="case-story wrap" aria-labelledby="story-title">
+      <div class="case-overview" data-reveal>
+        <h2 id="story-title" class="section-mark label">The project</h2>
+        {project.overview.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <aside class="case-stack" data-reveal>
+        <h2 class="section-mark label">Built with</h2>
+        <ul>{project.technologies.map((item) => <li>{item}</li>)}</ul>
+        {project.slug === 'insertcoin' && (
+          <>
+            <h2 class="section-mark label">On the floor</h2>
+            <ol class="case-games">
+              {games.map((game) => (
+                <li><span>{game.number}</span><strong>{game.name}</strong><em>{game.genre}</em></li>
+              ))}
+            </ol>
+          </>
+        )}
+      </aside>
+    </section>
+
+    <section class="case-decisions wrap" aria-labelledby="decisions-title">
+      <h2 id="decisions-title" class="case-decisions-title" data-reveal>Decisions <em>worth noting</em></h2>
+      <ol>
+        {project.decisions.map((decision, index) => (
+          <li data-reveal>
+            <span class="case-decision-num">{String(index + 1).padStart(2, '0')}</span>
+            <h3>{decision.title}</h3>
+            <p>{decision.detail}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="case-launch" data-header-world={project.slug} data-header-label={`Case study — ${project.number} / 03`} aria-labelledby="launch-title">
+      <div class="case-launch-inner wrap" data-reveal>
+        <h2 id="launch-title" class="case-launch-title">See it running.</h2>
+        <WorldActions project={project} caseStudy={false} />
+      </div>
+    </section>
+
+    <nav class="case-next wrap" aria-label="Next project">
+      <a href={`/work/${next.slug}`} class="case-next-link">
+        <span class="label">Next world — {next.number} / 03</span>
+        <span class="case-next-title">{next.title} <i aria-hidden="true">→</i></span>
+        <span class="case-next-kind">{next.kind}</span>
+      </a>
+    </nav>
+  </article>
+</Layout>

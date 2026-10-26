@@ -1,0 +1,23 @@
+---
+// The two ways out of every world: the live site and the case study. Both
+// pick up the surrounding world's palette through --w-* variables.
+import type { Project } from '../../data/portfolio';
+
+interface Props {
+  project: Project;
+  caseStudy?: boolean;
+}
+
+const { project, caseStudy = true } = Astro.props;
+---
+
+<div class="world-actions">
+  <a class="btn btn--world" href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+    {project.liveLabel} <i aria-hidden="true">↗</i><span class="visually-hidden"> (opens {project.domain} in a new tab)</span>
+  </a>
+  {caseStudy && (
+    <a class="link-arrow" href={`/work/${project.slug}`}>
+      Read the case study <i aria-hidden="true">→</i>
+    </a>
+  )}
+</div>

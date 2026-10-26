@@ -1,0 +1,225 @@
+---
+// The introduction is a two-sided postcard. The front is a vintage
+// "Greetings from" card whose giant letters are filled with screenshots of
+// the three worlds; the back is the message side — a note, three stamps (one
+// per world, each linking to it) cancelled by a postmark, and a "Write back"
+// that opens the inquiry dialog.
+//
+// With JavaScript the card turns itself over once it scrolls into view,
+// tilts toward the pointer, and can be flipped with the button; focusing
+// anything on the back turns it over too. Without JavaScript, or under
+// reduced motion, it is simply the message side.
+import { getImage } from 'astro:assets';
+import { projects } from '../data/portfolio';
+
+const phrases = projects.map((project) => project.phrase);
+const tilts = ['-6deg', '3deg', '-2deg'];
+
+// Two letters of WORLDS per world, each filled with that world's site.
+const fills = await Promise.all(
+  projects.map((project) => getImage({ src: project.cover.src, width: 900, format: 'webp' })),
+);
+const letters = [...'WORLDS'].map((ch, i) => ({ ch, world: Math.floor(i / 2), img: fills[Math.floor(i / 2)].src }));
+---
+
+<section class="intro wrap" id="work" aria-labelledby="intro-title">
+  <h2 id="intro-title" class="visually-hidden">Introduction</h2>
+
+  <div class="postcard-stage" data-postcard>
+    <span class="postcard-floor" aria-hidden="true"></span>
+    <div class="postcard-tilt">
+      <div class="postcard-card" data-card>
+        <!-- Front: decorative, so it is hidden from assistive tech. -->
+        <div class="pc-front" aria-hidden="true">
+          <div class="pc-scene">
+            <span class="pc-sun"></span>
+            <p class="pc-greeting">Greetings from</p>
+            <p class="pc-big">
+              <span class="pc-big-under">WORLDS</span>
+              <span class="pc-big-fill">
+                {letters.map(({ ch, world, img }) => <span class={`pc-w${world}`} style={`--img:url(${img})`}>{ch}</span>)}
+              </span>
+              <span class="pc-big-foil">WORLDS</span>
+            </p>
+            <p class="pc-ribbon"><span>Built from scratch</span></p>
+            <p class="pc-small">alexvannelli.com — three worlds, one maker</p>
+          </div>
+          <span class="pc-glare"></span>
+        </div>
+
+        <article class="postcard" data-back>
+          <p class="postcard-title" aria-hidden="true">Post card</p>
+
+          <div class="postcard-message">
+            <p class="postcard-greeting">Hello —</p>
+            <p>I’m Alessandro Vannelli, an independent designer and developer. I build websites that look and behave like the business behind them, each one designed and coded from a blank page.</p>
+            <p>Below are three of them: {phrases[0]}, {phrases[1]} and {phrases[2]}. Different worlds, same care.</p>
+            <p class="postcard-sign">
+              Alessandro
+              <svg viewBox="0 0 220 40" aria-hidden="true" data-draw style="--draw-delay:1.1s"><path d="M4 26C40 30 90 14 120 18S176 34 216 12" /></svg>
+            </p>
+          </div>
+
+          <div class="postcard-side">
+            <div class="postcard-franking">
+              <ul class="postcard-stamps" aria-label="The three worlds">
+                {projects.map((project, index) => (
+                  <li style={`--r:${tilts[index]};--n:${index}`}>
+                    <a class={`stamp stamp--${project.slug}`} href={`#${project.slug}`}>
+                      <span class="stamp-paper">
+                        <span class="stamp-face">
+                          <span class="stamp-num">{project.number}</span>
+                          <img src={project.logo} width="40" height="40" alt="" />
+                          <span class="stamp-name">{project.title}</span>
+                        </span>
+                      </span>
+                      <span class="visually-hidden"> — {project.kind}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <svg class="postmark" viewBox="0 0 160 160" aria-hidden="true">
+                <defs>
+                  <path id="postmark-ring" d="M80 80m-56 0a56 56 0 1 1 112 0a56 56 0 1 1-112 0" />
+                  <!-- Rubber-stamp ink: patchy coverage and slightly ragged edges. -->
+                  <filter id="postmark-ink">
+                    <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="7" result="grain" />
+                    <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 1.75" result="mask" />
+                    <feComposite in="SourceGraphic" in2="mask" operator="in" result="patchy" />
+                    <feDisplacementMap in="patchy" in2="grain" scale="2.2" />
+                  </filter>
+                </defs>
+                <g filter="url(#postmark-ink)">
+                  <circle cx="80" cy="80" r="72" />
+                  <circle cx="80" cy="80" r="42" />
+                  <text><textPath href="#postmark-ring" textLength="346" lengthAdjust="spacing">BUILT FROM SCRATCH · DIFFERENT WORLDS ·</textPath></text>
+                  <text class="postmark-mark" x="80" y="90" text-anchor="middle">AV</text>
+                </g>
+              </svg>
+              <svg class="postmark-waves" viewBox="0 0 300 54" preserveAspectRatio="none" aria-hidden="true" data-draw style="--draw-delay:1.4s">
+                <path d="M0 8C25 0 50 16 75 8S125 0 150 8 200 16 225 8 275 0 300 8" />
+                <path d="M0 27C25 19 50 35 75 27S125 19 150 27 200 35 225 27 275 19 300 27" />
+                <path d="M0 46C25 38 50 54 75 46S125 38 150 46 200 54 225 46 275 38 300 46" />
+              </svg>
+            </div>
+
+            <p class="par-avion" aria-hidden="true"><span>Par avion</span><span>By air mail</span></p>
+
+            <div class="postcard-address">
+              <span class="label">To</span>
+              <p>You, and the business</p>
+              <p>you’re building</p>
+              <button class="link-arrow postcard-reply" type="button" data-open-project aria-haspopup="dialog" aria-controls="project-dialog">
+                Write back <i aria-hidden="true">→</i>
+              </button>
+            </div>
+          </div>
+          <span class="pc-glare"></span>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <div class="intro-actions">
+    <button class="link-arrow postcard-flip" type="button" data-flip hidden>
+      <i aria-hidden="true">↻</i> <span data-flip-label>See the front</span>
+    </button>
+    <p class="intro-hint label">Three worlds below <i aria-hidden="true">↓</i></p>
+  </div>
+</section>
+
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+
+  document.querySelectorAll<HTMLElement>('[data-postcard]').forEach((stage) => {
+    const card = stage.querySelector<HTMLElement>('[data-card]');
+    const back = stage.querySelector<HTMLElement>('[data-back]');
+    const section = stage.closest('section');
+    const button = section?.querySelector<HTMLButtonElement>('[data-flip]');
+    const label = section?.querySelector<HTMLElement>('[data-flip-label]');
+    if (!card || !back || !button || !label) return;
+
+    let touched = false;
+    let flipTimer = 0;
+    const showBack = (on: boolean) => {
+      if (card.hasAttribute('data-flipped') !== on) {
+        // Lift the card and narrow its shadow for the length of the turn.
+        stage.classList.remove('is-flipping');
+        void stage.offsetWidth;
+        stage.classList.add('is-flipping');
+        clearTimeout(flipTimer);
+        flipTimer = window.setTimeout(() => stage.classList.remove('is-flipping'), 1200);
+      }
+      card.toggleAttribute('data-flipped', on);
+      // The stamps press down and the strokes draw the first time the back lands.
+      if (on) back.setAttribute('data-shown', '');
+      label.textContent = on ? 'See the front' : 'Turn it over';
+    };
+
+    stage.classList.add('is-3d');
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      touched = true;
+      showBack(!card.hasAttribute('data-flipped'));
+    });
+    // Clicking the card itself turns it over, except on its links and buttons.
+    const stacked = matchMedia('(max-width: 640px)');
+    card.addEventListener('click', (event) => {
+      if (stacked.matches || (event.target as Element).closest('a,button')) return;
+      touched = true;
+      showBack(!card.hasAttribute('data-flipped'));
+    });
+    // Keyboard users tabbing into the stamps or "Write back" see what they focus.
+    back.addEventListener('focusin', () => {
+      touched = true;
+      showBack(true);
+    });
+
+    if (reduced.matches) {
+      stage.setAttribute('data-in', '');
+      showBack(true);
+      return;
+    }
+
+    // Arrive face up, then turn over to the message.
+    showBack(false);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        stage.setAttribute('data-in', '');
+        setTimeout(() => !touched && showBack(true), 1700);
+      },
+      { threshold: 0.45 },
+    );
+    observer.observe(stage);
+
+    if (!finePointer.matches) return;
+    let frame = 0;
+    let x = 0.5;
+    let y = 0.5;
+    // Written on the stage so the tilt, the glare, the foil, the depth
+    // layers and the floor shadow all read the same pointer position.
+    const apply = () => {
+      frame = 0;
+      stage.style.setProperty('--ry', `${((x - 0.5) * 12).toFixed(2)}deg`);
+      stage.style.setProperty('--rx', `${((0.5 - y) * 9).toFixed(2)}deg`);
+      stage.style.setProperty('--gx', `${(x * 100).toFixed(1)}%`);
+      stage.style.setProperty('--gy', `${(y * 100).toFixed(1)}%`);
+      stage.style.setProperty('--px', (x - 0.5).toFixed(3));
+      stage.style.setProperty('--py', (y - 0.5).toFixed(3));
+    };
+    stage.addEventListener('pointermove', (event) => {
+      const rect = stage.getBoundingClientRect();
+      x = (event.clientX - rect.left) / rect.width;
+      y = (event.clientY - rect.top) / rect.height;
+      if (!frame) frame = requestAnimationFrame(apply);
+    }, { passive: true });
+    stage.addEventListener('pointerleave', () => {
+      x = 0.5;
+      y = 0.5;
+      if (!frame) frame = requestAnimationFrame(apply);
+    });
+  });
+</script>

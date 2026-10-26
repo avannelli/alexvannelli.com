@@ -1,0 +1,126 @@
+---
+// Alessandro's stall in a Canadiens dressing room: a Habs home sweater hung
+// back-out on a hanger, his nameplate above, a taped stick leaning in.
+// Bleu-blanc-rouge only — the CH crest is an NHL trademark and is left out.
+// .habs-sweater and .habs-light are the animation hooks (home.css).
+const name = 'VANNELLI';
+const number = '14';
+
+// The sweater, seen from the back: drop shoulders, long sleeves hanging
+// down from the hanger, a hem that dips at the centre.
+const sweater =
+  'M82 57Q100 63 118 57L140 62Q150 64 154 72L168 140L150 148L138 98L142 172Q100 179 58 172L62 98L50 148L32 140L46 72Q50 64 60 62Z';
+const leftSleeve = 'M60 62Q50 64 46 72L32 140L50 148L62 98Q68 82 66 63Z';
+const body = 'M60 62L82 57Q100 63 118 57L140 62L134 63Q132 82 138 98L142 172Q100 179 58 172L62 98Q68 82 66 63Z';
+---
+
+<svg viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="habs-wood" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5c3418" />
+      <stop offset=".5" stop-color="#7c4a26" />
+      <stop offset="1" stop-color="#5c3418" />
+    </linearGradient>
+    <radialGradient id="habs-spot" cx="50%" cy="0%" r="90%">
+      <stop offset="0" stop-color="#fff3d6" stop-opacity=".55" />
+      <stop offset=".55" stop-color="#fff3d6" stop-opacity=".08" />
+      <stop offset="1" stop-color="#fff3d6" stop-opacity="0" />
+    </radialGradient>
+    <!-- Fabric light: edges fall into shadow, shoulders catch the spot. -->
+    <linearGradient id="habs-shade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity=".42" />
+      <stop offset=".24" stop-color="#000" stop-opacity="0" />
+      <stop offset=".76" stop-color="#000" stop-opacity="0" />
+      <stop offset="1" stop-color="#000" stop-opacity=".42" />
+    </linearGradient>
+    <radialGradient id="habs-sheen" cx="50%" cy="8%" r="70%">
+      <stop offset="0" stop-color="#fff" stop-opacity=".22" />
+      <stop offset="1" stop-color="#fff" stop-opacity="0" />
+    </radialGradient>
+    <!-- Jersey mesh. -->
+    <pattern id="habs-mesh" width="2.4" height="2.4" patternUnits="userSpaceOnUse">
+      <circle cx="1.2" cy="1.2" r=".45" fill="#000" />
+    </pattern>
+    <filter id="habs-soft" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="1.8" />
+    </filter>
+    <clipPath id="habs-sweater-clip"><path d={sweater} /></clipPath>
+    <clipPath id="habs-body-clip"><path d={body} /></clipPath>
+    <clipPath id="habs-sleeve-clip"><path d={leftSleeve} /></clipPath>
+    <!-- Sleeve stripes run across the sleeve, square to its angle. -->
+    <g id="habs-sleeve-band" clip-path="url(#habs-sleeve-clip)">
+      <g transform="rotate(10 46 112)">
+        <rect x="20" y="99" width="52" height="26" fill="#fff" />
+        <rect x="20" y="103" width="52" height="18" fill="#192168" />
+        <rect x="14" y="134" width="60" height="9" fill="#000" opacity=".22" />
+      </g>
+    </g>
+  </defs>
+
+  <!-- The stall -->
+  <rect x="16" y="6" width="168" height="190" rx="3" fill="url(#habs-wood)" />
+  <rect x="28" y="32" width="144" height="150" rx="2" fill="#1d1410" />
+  <rect class="habs-light" x="28" y="32" width="144" height="150" rx="2" fill="url(#habs-spot)" />
+  <path d="M28 32H172" stroke="#000" stroke-opacity=".5" stroke-width="3" />
+  <rect x="44" y="11" width="112" height="16" rx="2" fill="#f4ecdc" />
+  <rect x="44" y="11" width="112" height="3" rx="1" fill="#af1e2d" />
+  <text class="habs-plate" x="100" y="24" text-anchor="middle">{name}</text>
+
+  <!-- A taped stick leaning in the corner -->
+  <path d="M164 38L152 172" stroke="#e8d3a6" stroke-width="5" stroke-linecap="round" />
+  <path d="M164 38L162 56" stroke="#f4f4f2" stroke-width="6" stroke-linecap="round" />
+  <path d="M152 172Q156 180 172 178" fill="none" stroke="#111820" stroke-width="7" stroke-linecap="round" />
+
+  <!-- Bench -->
+  <rect x="16" y="178" width="168" height="14" fill="#4a2a12" />
+  <rect x="16" y="178" width="168" height="3" fill="#8a5a32" />
+
+  <!-- The sweater, swinging from its hook. -->
+  <g class="habs-sweater">
+    <path d={sweater} fill="#af1e2d" />
+
+    <!-- Bleu-blanc-rouge stripes: chest band and hem follow the drape. -->
+    <g clip-path="url(#habs-body-clip)" fill="none">
+      <path d="M40 109Q100 116 160 109" stroke="#fff" stroke-width="26" />
+      <path d="M40 109Q100 116 160 109" stroke="#192168" stroke-width="18" />
+      <path d="M40 158Q100 166 160 158" stroke="#fff" stroke-width="12" />
+      <path d="M40 158Q100 166 160 158" stroke="#192168" stroke-width="6" />
+    </g>
+    <use href="#habs-sleeve-band" />
+    <use href="#habs-sleeve-band" transform="translate(200 0) scale(-1 1)" />
+
+    <!-- Light, folds, seams and weave, all inside the fabric. -->
+    <g clip-path="url(#habs-sweater-clip)">
+      <rect x="28" y="50" width="144" height="132" fill="url(#habs-shade)" />
+      <rect x="28" y="50" width="144" height="132" fill="url(#habs-sheen)" />
+      <rect x="28" y="50" width="144" height="132" fill="url(#habs-mesh)" opacity=".1" />
+      <!-- Drape: soft shadow folds falling from the shoulders, each with a
+           faint highlight on its lit side. -->
+      <g fill="none" stroke-linecap="round" filter="url(#habs-soft)">
+        <path d="M64 100Q80 130 88 172M136 100Q120 130 112 172M100 148V178M40 96Q42 120 40 136M160 96Q158 120 160 136" stroke="#000" stroke-opacity=".28" stroke-width="5" />
+        <path d="M69 100Q85 130 93 172M131 100Q115 130 107 172" stroke="#fff" stroke-opacity=".1" stroke-width="3" />
+      </g>
+      <g fill="none" stroke-linecap="round">
+        <path d="M66 63Q68 82 62 98M134 63Q132 82 138 98" stroke="#000" stroke-opacity=".35" stroke-width="1.2" />
+        <path d="M67.6 64Q69.6 82 63.8 98M132.4 64Q130.4 82 136.2 98" stroke="#fff" stroke-opacity=".3" stroke-width=".7" stroke-dasharray="1.6 1.6" />
+        <path d="M58 172Q100 179 142 172" stroke="#000" stroke-opacity=".35" stroke-width="2.5" />
+      </g>
+      <!-- Ribbed cuffs -->
+      <path d="M32 140L50 148M150 148L168 140" stroke="#7a1420" stroke-width="5" />
+      <path d="M35 139L37 144M39 141L41 146M43 143L45 148M157 147L159 142M161 145L163 140M165 143L167 138" stroke="#000" stroke-opacity=".25" stroke-width=".8" />
+    </g>
+
+    <!-- Collar and the hanger's hook above it. -->
+    <path d="M82 57Q100 63 118 57" fill="none" stroke="#192168" stroke-width="5" stroke-linecap="round" />
+    <path d="M84 60Q100 65.5 116 60" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="1" />
+    <path d="M100 58V46C100 40 106 38 108 42" fill="none" stroke="#d9d4ca" stroke-width="2.4" stroke-linecap="round" />
+
+    <!-- Tackle-twill lettering: a dark lift shadow under each piece. -->
+    <text class="habs-name habs-twill" x="100.6" y="87" text-anchor="middle" aria-hidden="true">{name}</text>
+    <text class="habs-name" x="100" y="86" text-anchor="middle">{name}</text>
+    <text class="habs-number habs-twill" x="100.8" y="128.2" text-anchor="middle" aria-hidden="true">{number}</text>
+    <text class="habs-number" x="100" y="127" text-anchor="middle">{number}</text>
+    <text class="habs-sleeve-num" x="51" y="92" text-anchor="middle" transform="rotate(10 51 88)">{number}</text>
+    <text class="habs-sleeve-num" x="149" y="92" text-anchor="middle" transform="rotate(-10 149 88)">{number}</text>
+  </g>
+</svg>

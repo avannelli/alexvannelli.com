@@ -1,0 +1,38 @@
+---
+// World 02 — the engineering practice. Laid out as a drawing set: sheets
+// on a blueprint field, dimension lines that plot themselves in, and a
+// title block in place of a card.
+import BrowserFrame from '../BrowserFrame.astro';
+import PhoneFrame from '../PhoneFrame.astro';
+import WorldActions from './WorldActions.astro';
+import { getProject } from '../../data/portfolio';
+
+const project = getProject('alderspan')!;
+const [index] = project.gallery;
+---
+
+<section class="world world-alderspan" id={project.slug} aria-labelledby="alderspan-title" data-header-world={project.slug} data-header-label={`Now viewing — ${project.number} / 03 Alderspan`}>
+  <div class="world-inner wrap">
+    <div class="al-stage" data-reveal="plot">
+      <BrowserFrame class="al-sheet" shot={index} domain={`${project.domain}/projects`} sizes="(max-width: 900px) 70vw, 36vw" />
+      <BrowserFrame class="al-main" shot={project.cover} domain={project.domain} sizes="(max-width: 900px) 88vw, 48vw" />
+      <PhoneFrame class="al-phone" shot={project.mobile} data-depth="0.1" />
+      <span class="al-dim al-dim--main" aria-hidden="true"><span>A–01 · Homepage</span></span>
+      <span class="al-dim al-dim--sheet" aria-hidden="true"><span>A–02 · Project index</span></span>
+    </div>
+
+    <div class="al-copy" data-reveal>
+      <p class="world-meta label"><span>{project.number} / 03</span><span>{project.category}</span></p>
+      <h2 id="alderspan-title" class="al-title">Alderspan<span>Engineering</span></h2>
+      <p class="al-quote">Engineering <em>with consequence.</em></p>
+      <p class="world-summary">{project.summary}</p>
+      <dl class="al-titleblock">
+        <div><dt>Project</dt><dd>Consultancy website</dd></div>
+        <div><dt>Status</dt><dd>Concept, live</dd></div>
+        <div><dt>Drawings</dt><dd>Original SVG</dd></div>
+        <div><dt>Sheet</dt><dd>{project.number} of 03</dd></div>
+      </dl>
+      <WorldActions project={project} />
+    </div>
+  </div>
+</section>

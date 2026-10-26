@@ -1,8 +1,19 @@
 /* ======================================================================
-   Tokens, reset and base
+   Tokens, reset, base and motion primitives
    ----------------------------------------------------------------------
-   Shared design tokens live here. Project palettes live on their card classes.
+   The portfolio itself is an ivory exhibition wall: warm paper, ink type
+   and one indigo accent. Each project brings its own palette through
+   --w-* variables on .world-<slug> (see worlds.css), so the shared rules
+   here never name a project colour.
    ====================================================================== */
+@font-face{
+ font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:swap;
+ src:url('/fonts/instrument-serif-latin.woff2') format('woff2');
+}
+@font-face{
+ font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:swap;
+ src:url('/fonts/instrument-serif-italic-latin.woff2') format('woff2');
+}
 @font-face{
  font-family:'Space Grotesk';font-style:normal;font-weight:400 700;font-display:swap;
  src:url('/fonts/space-grotesk-latin.woff2') format('woff2');
@@ -11,121 +22,78 @@
  font-family:'Geist Mono';font-style:normal;font-weight:400 500;font-display:swap;
  src:url('/fonts/geist-mono-latin.woff2') format('woff2');
 }
-@font-face{
- font-family:'Sora';font-style:normal;font-weight:400 700;font-display:swap;
- src:url('/fonts/sora-latin.woff2') format('woff2');
-}
 
 :root{
- /* ---- Surfaces -------------------------------------------------------
-    Near-blacks, never #000. Elevation is translucent white over the base
-    so surfaces inherit whatever ambient light sits behind them. */
- --bg-deep:#020203;
- --bg:#050506;
- --bg-elevated:#0a0a0c;
- --surface:rgba(255,255,255,.05);
- --surface-hover:rgba(255,255,255,.08);
- --surface-sunken:#0f0f12;
+ /* ---- Paper ----------------------------------------------------------- */
+ --paper:#f2ede3;
+ --paper-deep:#e9e2d4;
+ --paper-lift:#f8f5ee;
 
- /* ---- Ink ------------------------------------------------------------ */
- --ink:#ededef;
- --muted:#8a8f98;
- /* foreground-subtle. .38 alpha composites to 3.45:1 here, which fails AA
-    for small text, so tertiary copy sits at .60 (7.33:1). */
- --faint:rgba(255,255,255,.6);
+ /* ---- Ink ------------------------------------------------------------
+    Ratios are against --paper. */
+ --ink:#16130f;        /* 16.9:1 */
+ --ink-soft:#4a443b;   /*  8.3:1 */
+ --ink-faint:#6b6458;  /*  4.9:1 — the floor for small text */
+ --rule:rgba(22,19,15,.14);
+ --rule-strong:rgba(22,19,15,.32);
 
  /* ---- Accent ---------------------------------------------------------
-    #5E6AD2 is 4.33:1 on the base background — fine for fills, borders and
-    glows, but short of AA for text. --accent-text is the lighter step
-    (6.3:1) used anywhere the accent carries words. */
- --accent:#5e6ad2;
- --accent-bright:#6872d9;
- --accent-text:#7c87e8;
- --accent-ink:#ffffff;
+    The portfolio's own indigo. --accent carries text (6.4:1 on paper);
+    --accent-bright is for fills and strokes only. */
+ --accent:#3d48b8;
+ --accent-bright:#5e6ad2;
  --accent-wash:rgba(94,106,210,.12);
 
- /* ---- Ambient artwork -------------------------------------------------
-    Quiet personal references in the page backdrop. These remain structural
-    linework rather than illustrations, so they never compete with content. */
- --ambient-line:rgba(124,135,232,.12);
- --ambient-line-soft:rgba(255,255,255,.055);
- --ambient-fill:rgba(94,106,210,.035);
- --ambient-glow:rgba(94,106,210,.09);
-
- /* ---- Borders --------------------------------------------------------- */
- --line:rgba(255,255,255,.06);
- --line-hover:rgba(255,255,255,.1);
- --line-strong:rgba(255,255,255,.16);
- --line-accent:rgba(94,106,210,.3);
-
- /* ---- Radius ---------------------------------------------------------- */
- --r-sm:8px;
- --r-md:12px;
- --r-lg:16px;
-
- /* ---- Shadow ---------------------------------------------------------
-    Never a single shadow. Each is a border highlight, a soft diffuse and
-    an ambient darkness, with an accent glow where the surface is active. */
- --shadow-accent:
-  0 0 0 1px rgba(94,106,210,.5),
-  0 4px 12px rgba(94,106,210,.3),
-  inset 0 1px 0 0 rgba(255,255,255,.2);
- --shadow-accent-hover:
-  0 0 0 1px rgba(94,106,210,.6),
-  0 6px 20px rgba(94,106,210,.42),
-  inset 0 1px 0 0 rgba(255,255,255,.25);
- --shadow-inset-hi:inset 0 1px 0 0 rgba(255,255,255,.1);
- --shadow-overlay:0 24px 80px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.08);
-
  /* ---- Type ------------------------------------------------------------ */
+ --serif:'Instrument Serif','Iowan Old Style','Times New Roman',serif;
  --sans:'Space Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
- --display:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
  --mono:'Geist Mono',ui-monospace,SFMono-Regular,monospace;
 
- /* Hero: directional light on the lettering and deeper card elevation. */
- --hero-name-fill:linear-gradient(115deg,#f5f5fc 8%,#c4c9ec 54%,#8996dc 100%);
- --hero-name-shadow:0 1px 0 rgba(255,255,255,.12),0 12px 36px rgba(94,106,210,.1);
- --hero-rule:linear-gradient(90deg,transparent,var(--line-strong),transparent);
- --clear:transparent;
+ /* ---- Depth ----------------------------------------------------------
+    Never a single shadow: a contact edge, a soft diffuse and a long
+    ambient fall-off, so frames read as objects resting on the paper. */
+ --shadow-frame:
+  0 0 0 1px rgba(22,19,15,.08),
+  0 2px 4px rgba(22,19,15,.06),
+  0 18px 40px -14px rgba(22,19,15,.28),
+  0 60px 120px -40px rgba(22,19,15,.34);
+ --shadow-frame-dark:
+  0 0 0 1px rgba(255,255,255,.08),
+  0 2px 6px rgba(0,0,0,.3),
+  0 24px 50px -16px rgba(0,0,0,.6),
+  0 70px 140px -40px rgba(0,0,0,.7);
+ --shadow-lift:
+  0 0 0 1px rgba(22,19,15,.1),
+  0 4px 10px rgba(22,19,15,.08),
+  0 30px 60px -18px rgba(22,19,15,.36),
+  0 80px 140px -40px rgba(22,19,15,.4);
+
+ /* ---- Radius ---------------------------------------------------------- */
+ --r-xs:3px;
+ --r-sm:6px;
+ --r-md:10px;
 
  /* ---- Motion ----------------------------------------------------------
-    One easing curve everywhere: expo-out. Swift and decisive, never
-    bouncy. Movement budget is 4–8px; scale budget is .98–1.02. */
+    Expo-out for arrivals, a symmetric curve for things that travel. */
  --ease:cubic-bezier(.16,1,.3,1);
+ --ease-travel:cubic-bezier(.65,0,.35,1);
  --t-quick:200ms;
- --t-base:300ms;
- --t-enter:600ms;
- --lift:-6px;
+ --t-base:450ms;
+ --t-slow:1000ms;
 
  /* ---- Rhythm ----------------------------------------------------------- */
- --gutter:clamp(18px,5vw,56px);
- --measure:1240px;
- --anchor-offset:104px;
+ --gutter:clamp(16px,4vw,56px);
+ --measure:1360px;
+ --header-h:64px;
 
- color-scheme:dark;
+ color-scheme:light;
  -webkit-text-size-adjust:100%;
  text-size-adjust:100%;
 }
 
-/* These resolve on each card so the shadows pick up its own glow colour. */
-.site-card{
- --shadow-card-hover:
-  inset 0 1px 0 rgba(255,255,255,.15),
-  0 0 0 1px var(--card-edge),
-  0 14px 34px rgba(0,0,0,.48),
-  0 28px 66px rgba(0,0,0,.42),
-  0 0 68px var(--card-glow);
- --shadow-hero-card:inset 0 1px 0 rgba(255,255,255,.1),0 8px 20px rgba(0,0,0,.32),0 28px 56px rgba(0,0,0,.4),0 0 32px var(--card-glow);
- --card-mark-shadow:drop-shadow(0 5px 10px var(--card-glow));
-}
-
-@media (max-width:640px){
- :root{--anchor-offset:88px}
-}
-
 *,*::before,*::after{box-sizing:border-box}
 
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:var(--header-h)}
 
 html,body{
  max-width:100%;
@@ -133,17 +101,10 @@ html,body{
  overflow-x:clip;
 }
 
-/* ---------- Background: two layers ------------------------------------
-   A radial falloff from top-centre gives the page vertical depth, and a
-   noise film stops the large gradient from banding on wide displays.
-   Both are fixed, so they read as a lit room the content scrolls through
-   rather than as decoration attached to the page. */
 body{
  margin:0;
  min-height:100svh;
- background:
-  radial-gradient(ellipse 120% 80% at 50% 0%,#0d0d14 0%,var(--bg) 52%,var(--bg-deep) 100%)
-  var(--bg-deep) no-repeat fixed;
+ background:var(--paper);
  color:var(--ink);
  font-family:var(--sans);
  font-size:16px;
@@ -153,113 +114,108 @@ body{
  text-rendering:optimizeLegibility;
 }
 
+/* Paper grain. Multiplied so it darkens the fibres instead of greying the
+   page, and fixed so it reads as the surface rather than as a pattern. */
 body::before{
  content:'';
- position:fixed;inset:0;z-index:0;
+ position:fixed;inset:0;z-index:200;
  pointer-events:none;
- opacity:.015;
- background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+ opacity:.07;
+ mix-blend-mode:multiply;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Content sits above the noise film. */
-body>*{position:relative;z-index:1}
-
-h1,h2,p{margin:0}
+h1,h2,h3,p,figure,blockquote,dl,dd,ol,ul{margin:0}
+ol,ul{padding:0;list-style:none}
 
 a{color:inherit;text-decoration:none}
 button,input,select,textarea{font:inherit;color:inherit}
-button{background:none;border:0;cursor:pointer}
+button{background:none;border:0;cursor:pointer;padding:0}
 
-img{max-width:100%;height:auto}
+img,svg{display:block;max-width:100%}
+img{height:auto}
 
-p,h1,h2,summary,a{overflow-wrap:break-word}
+p,h1,h2,h3,a,dd{overflow-wrap:break-word}
 
-/* ---------- Focus -------------------------------------------------------
-   Prominent by design: this should feel like a desktop application, where
-   keyboard focus is never ambiguous. */
+/* ---------- Focus -------------------------------------------------------- */
 :where(a,button,input,select,textarea,summary):focus-visible{
- outline:2px solid rgba(94,106,210,.5);
- outline-offset:2px;
- border-radius:var(--r-sm);
+ outline:2px solid var(--focus,var(--accent));
+ outline-offset:3px;
+ border-radius:var(--r-xs);
 }
 
-::selection{background:var(--accent);color:var(--accent-ink)}
+::selection{background:var(--ink);color:var(--paper)}
 
 /* ---------- Layout utilities --------------------------------------------- */
 .wrap{
  width:min(var(--measure),100% - var(--gutter) * 2);
  margin-inline:auto;
- /* Never let content fall inside a display cutout. */
- padding-inline:max(0px,env(safe-area-inset-left) - var(--gutter)) max(0px,env(safe-area-inset-right) - var(--gutter));
+}
+
+.visually-hidden{
+ position:absolute;width:1px;height:1px;overflow:hidden;
+ clip-path:inset(50%);white-space:nowrap;
 }
 
 .skip-link{
- position:fixed;top:-80px;left:20px;z-index:300;
+ position:fixed;top:-80px;left:16px;z-index:300;
  padding:12px 16px;border-radius:var(--r-sm);
- background:var(--accent);color:var(--accent-ink);
- font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
- box-shadow:var(--shadow-accent);
+ background:var(--ink);color:var(--paper);
+ font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;
 }
-.skip-link:focus{top:20px}
+.skip-link:focus{top:16px}
 
-/* Anchor targets clear the sticky header. */
-[id]{scroll-margin-top:var(--anchor-offset)}
-#top{scroll-margin-top:0}
+/* Small technical label: section numbers, captions, annotations. */
+.label{
+ font:500 11px/1.4 var(--mono);
+ letter-spacing:.12em;text-transform:uppercase;
+}
 
 html:has(dialog[open]){overflow:hidden}
 
 /* ======================================================================
    Motion primitives
    ----------------------------------------------------------------------
-   Progressive behaviours driven by scripts/motion.ts. They degrade to
-   "already visible, no transform" when the script never runs or when the
-   viewer prefers reduced motion.
+   Driven by scripts/motion.ts. Everything is visible and still before the
+   script runs; the .js class on <html> opts elements into their hidden
+   starting state, and reduced motion opts them straight back out.
    ====================================================================== */
 
-/* Scroll-revealed entrance: fade up 8px, staggered by --i. */
-[data-reveal]{
- opacity:1;
- transform:none;
-}
+/* Default entrance: fade up. Variants are keyed on the attribute value. */
 .js [data-reveal]{
  opacity:0;
- transform:translateY(8px);
- transition:
-  opacity var(--t-enter) var(--ease),
-  transform var(--t-enter) var(--ease);
- transition-delay:calc(var(--i,0) * 80ms);
+ transform:translateY(18px);
+ transition:opacity var(--t-slow) var(--ease),transform var(--t-slow) var(--ease);
+ transition-delay:calc(var(--i,0) * 90ms);
 }
 .js [data-reveal][data-shown]{opacity:1;transform:none}
 
-/* Mouse-tracking spotlight. The script writes --mx/--my; the surface
-   renders a soft pool of accent light at those coordinates. */
-[data-spotlight]{position:relative;isolation:isolate}
-[data-spotlight]::after{
- content:'';
- position:absolute;inset:0;z-index:2;
- border-radius:inherit;
- pointer-events:none;
- opacity:0;
- transition:opacity var(--t-base) var(--ease);
+/* Headline lines rise out of a mask, one after another. */
+.js [data-reveal="lines"]{opacity:1;transform:none}
+.reveal-line{display:block;overflow:clip;padding-bottom:.08em;margin-bottom:-.08em}
+.reveal-line>span{display:inline-block}
+.js [data-reveal="lines"] .reveal-line>span{
+ transform:translateY(105%);
+ transition:transform 1.1s var(--ease);
+ transition-delay:calc(var(--line,0) * 120ms + 120ms);
 }
-[data-spotlight]:hover::after,
-[data-spotlight]:focus-within::after{opacity:1}
+.js [data-reveal="lines"][data-shown] .reveal-line>span{transform:none}
 
-/* ---------- Touch and small-screen standards ---------------------------- */
-@media (pointer:coarse){
- a[href],button,summary,select{min-height:44px}
- /* A cursor spotlight has no meaning without a cursor. */
- [data-spotlight]::after{content:none}
+/* Hand-drawn strokes draw themselves once shown. */
+.js [data-draw] path{
+ stroke-dasharray:var(--len,1200);
+ stroke-dashoffset:var(--len,1200);
+ transition:stroke-dashoffset 1.4s var(--ease-travel);
+ transition-delay:var(--draw-delay,.6s);
 }
-
-/* iOS zooms the page when a focused field is under 16px. */
-@media (max-width:640px){
- input,select,textarea{font-size:16px}
-}
+.js [data-shown] [data-draw] path,
+.js [data-draw][data-shown] path{stroke-dashoffset:0}
 
 @media (prefers-reduced-motion:reduce){
  html{scroll-behavior:auto}
- .js [data-reveal]{opacity:1;transform:none;transition:none}
+ .js [data-reveal],
+ .js [data-reveal="lines"] .reveal-line>span{opacity:1;transform:none;transition:none}
+ .js [data-draw] path{stroke-dashoffset:0;transition:none}
  *,*::before,*::after{
   animation-duration:.01ms!important;
   animation-iteration-count:1!important;

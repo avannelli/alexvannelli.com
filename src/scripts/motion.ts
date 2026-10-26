@@ -1,60 +1,17 @@
 /**
- * Motion primitives for the design system's three interactive signatures:
- * cursor spotlights, scroll-revealed entrances and hero parallax.
+ * Progressive motion for the exhibition.
  *
- * Each one is progressive: the markup is complete and legible before this
- * runs, and every effect is skipped when the viewer prefers reduced motion.
- * Nothing here is required to read or operate the page.
+ * Every behaviour here is an enhancement: the markup is complete, visible
+ * and operable before this runs, and anything that moves is skipped when
+ * the viewer prefers reduced motion. Nothing hijacks scrolling.
  */
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-const finePointer = matchMedia('(pointer: fine)');
-
-/* ---------------------------------------------------------------------
-   Spotlight
-   Writes the cursor's position on the surface as --mx/--my percentages.
-   The gradient itself lives in CSS, so this stays a coordinate feed.
-   --------------------------------------------------------------------- */
-function initSpotlights() {
-  if (!finePointer.matches) return;
-
-  const surfaces = document.querySelectorAll<HTMLElement>('[data-spotlight]');
-  if (!surfaces.length) return;
-
-  // One rAF for all surfaces: pointermove fires far faster than we paint.
-  let pending: { el: HTMLElement; x: number; y: number } | null = null;
-  let frame = 0;
-
-  const flush = () => {
-    frame = 0;
-    if (!pending) return;
-    const { el, x, y } = pending;
-    el.style.setProperty('--mx', `${x}%`);
-    el.style.setProperty('--my', `${y}%`);
-    pending = null;
-  };
-
-  surfaces.forEach((el) => {
-    el.addEventListener(
-      'pointermove',
-      (event) => {
-        const rect = el.getBoundingClientRect();
-        pending = {
-          el,
-          x: ((event.clientX - rect.left) / rect.width) * 100,
-          y: ((event.clientY - rect.top) / rect.height) * 100,
-        };
-        if (!frame) frame = requestAnimationFrame(flush);
-      },
-      { passive: true },
-    );
-  });
-}
 
 /* ---------------------------------------------------------------------
    Scroll reveal
-   Fade-up entrance once the element is ~18% visible. Siblings stagger via
-   a --i index so a group arrives as a sequence rather than all at once.
+   Marks [data-reveal] elements as shown once ~15% visible. Siblings get a
+   --i index (unless the markup sets one) so groups arrive in sequence.
    --------------------------------------------------------------------- */
 function initReveal() {
   const items = document.querySelectorAll<HTMLElement>('[data-reveal]');
@@ -65,9 +22,9 @@ function initReveal() {
     return;
   }
 
-  // Index within the nearest reveal group drives the stagger delay.
   const groups = new Map<Element, number>();
   items.forEach((el) => {
+    if (el.style.getPropertyValue('--i')) return;
     const parent = el.parentElement ?? document.body;
     const next = groups.get(parent) ?? 0;
     el.style.setProperty('--i', String(next));
@@ -82,21 +39,14 @@ function initReveal() {
   };
 
   const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) show(entry.target);
-      });
-    },
-    { threshold: 0.18, rootMargin: '0px 0px -5% 0px' },
+    (entries) => entries.forEach((entry) => entry.isIntersecting && show(entry.target)),
+    { threshold: 0.15, rootMargin: '0px 0px -6% 0px' },
   );
-
   items.forEach((el) => observer.observe(el));
 
-  /* Safety net. An instant jump — an anchor link, a restored scroll position,
-     a find-in-page — can move the viewport past an element between frames, so
-     the observer never sees it intersect and it stays at opacity 0 forever.
-     This sweeps anything that has ended up at or above the fold and detaches
-     itself once every element has been shown. */
+  /* An instant jump (anchor link, restored scroll, find-in-page) can carry
+     an element past the viewport between frames, so the observer never
+     sees it. Sweep anything at or above the fold, then detach. */
   const sweep = () => {
     pending.forEach((el) => {
       if (el.getBoundingClientRect().top < innerHeight) show(el);
@@ -104,41 +54,101 @@ function initReveal() {
     if (!pending.size) removeEventListener('scroll', sweep);
   };
   addEventListener('scroll', sweep, { passive: true });
-  // Run once for anything already in view (or already scrolled past) on load.
   requestAnimationFrame(sweep);
 }
 
 /* ---------------------------------------------------------------------
-   Hero parallax
-   Over the first viewport the name settles by at most 8px and shrinks
-   to .98. It stays legible while the cards come into view.
+   Hand-drawn strokes
+   Measures each path so the dash animation in CSS matches its length.
    --------------------------------------------------------------------- */
-function initParallax() {
-  const hero = document.querySelector<HTMLElement>('[data-parallax]');
-  if (!hero || reduced.matches) return;
+function initDraw() {
+  document.querySelectorAll<SVGPathElement>('[data-draw] path').forEach((path) => {
+    path.style.setProperty('--len', String(Math.ceil(path.getTotalLength()) + 2));
+  });
+}
+
+/* ---------------------------------------------------------------------
+   Depth
+   [data-depth] layers drift against the scroll by a fraction of their
+   distance from the viewport centre, capped so nothing travels far.
+   --------------------------------------------------------------------- */
+function initDepth() {
+  const layers = [...document.querySelectorAll<HTMLElement>('[data-depth]')];
+  if (!layers.length || reduced.matches) return;
 
   let frame = 0;
-
   const update = () => {
     frame = 0;
-    // Progress through the first viewport height, clamped to 0..1.
-    const progress = Math.min(scrollY / innerHeight, 1);
-    hero.style.setProperty('--p-y', `${(progress * 8).toFixed(1)}px`);
-    hero.style.setProperty('--p-scale', (1 - progress * 0.02).toFixed(4));
+    const mid = innerHeight / 2;
+    layers.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.bottom < -200 || rect.top > innerHeight + 200) return;
+      const depth = Number(el.dataset.depth) || 0;
+      const offset = Math.max(-48, Math.min(48, (mid - (rect.top + rect.height / 2)) * depth));
+      el.style.setProperty('--py', `${offset.toFixed(1)}px`);
+    });
   };
-
-  const onScroll = () => {
+  const request = () => {
     if (!frame) frame = requestAnimationFrame(update);
   };
+  addEventListener('scroll', request, { passive: true });
+  addEventListener('resize', request, { passive: true });
+  update();
+}
 
-  addEventListener('scroll', onScroll, { passive: true });
+/* ---------------------------------------------------------------------
+   Header world
+   The header takes on the world of whatever section sits just beneath
+   it ([data-header-world]; ivory "paper" when none does), and swaps its
+   role line for that section's label. On the homepage the three-part rail
+   fills as the reader moves through each world.
+   This is not motion, so it runs under reduced motion too.
+   --------------------------------------------------------------------- */
+function initHeaderWorld() {
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  if (!header) return;
+  const zones = [...document.querySelectorAll<HTMLElement>('[data-header-world]')];
+  const role = header.querySelector<HTMLElement>('[data-role]');
+  const fallback = role?.textContent ?? '';
+  const rail = [...header.querySelectorAll<HTMLElement>('[data-rail]')].map((segment) => ({
+    segment,
+    section: document.getElementById(segment.dataset.rail ?? ''),
+  }));
+
+  let frame = 0;
+  let current: HTMLElement | null | undefined;
+  const update = () => {
+    frame = 0;
+    const probe = header.offsetHeight + 1;
+    const zone = zones.find((el) => {
+      const rect = el.getBoundingClientRect();
+      return rect.top <= probe && rect.bottom > probe;
+    }) ?? null;
+    if (zone !== current) {
+      current = zone;
+      header.dataset.world = zone?.dataset.headerWorld ?? 'paper';
+      if (role) role.textContent = zone?.dataset.headerLabel ?? fallback;
+    }
+    rail.forEach(({ segment, section }) => {
+      if (!section) return;
+      const rect = section.getBoundingClientRect();
+      const progress = Math.min(1, Math.max(0, (probe - rect.top) / rect.height));
+      segment.style.setProperty('--p', progress.toFixed(3));
+    });
+  };
+  const request = () => {
+    if (!frame) frame = requestAnimationFrame(update);
+  };
+  addEventListener('scroll', request, { passive: true });
+  addEventListener('resize', request, { passive: true });
   update();
 }
 
 function start() {
-  initSpotlights();
+  initDraw();
   initReveal();
-  initParallax();
+  initDepth();
+  initHeaderWorld();
 }
 
 if (document.readyState === 'loading') {
@@ -151,7 +161,5 @@ if (document.readyState === 'loading') {
 reduced.addEventListener('change', () => {
   if (!reduced.matches) return;
   document.querySelectorAll('[data-reveal]').forEach((el) => el.setAttribute('data-shown', ''));
-  const hero = document.querySelector<HTMLElement>('[data-parallax]');
-  hero?.style.removeProperty('--p-y');
-  hero?.style.removeProperty('--p-scale');
+  document.querySelectorAll<HTMLElement>('[data-depth]').forEach((el) => el.style.removeProperty('--py'));
 });

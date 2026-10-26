@@ -1,0 +1,59 @@
+---
+// About is a terminal: phosphor green on black, CRT scanlines and digital
+// rain behind. The headline decodes itself, the bio is the output of a
+// command, the process runs like a boot sequence, and "Off the clock" is a
+// directory listing above the interest cards (which keep their own worlds).
+// The rain and the decode live in scripts/matrix.ts; both are skipped under
+// reduced motion and the section reads completely without them.
+import Interests from './Interests.astro';
+import { interests, process } from '../data/portfolio';
+
+const anyInteractive = import.meta.env.DEV || interests.some((interest) => interest.description);
+const lines = ['A designer’s eye.', 'An engineer’s hands.'];
+---
+
+<section class="about" id="about" aria-labelledby="about-title" data-header-world="matrix" data-header-label="~/about — session open">
+  <canvas class="about-rain" aria-hidden="true" data-rain></canvas>
+  <div class="about-inner wrap">
+    <p class="term-prompt" aria-hidden="true"><span>alessandro@studio</span>:<b>~</b>$ whoami</p>
+    <h2 id="about-title" class="about-title" aria-label={lines.join(' ')}>
+      {lines.map((line, index) => (
+        <span class:list={['about-title-line', { 'is-bright': index === 1 }]} aria-hidden="true" data-decode>{line}</span>
+      ))}
+    </h2>
+
+    <div class="about-copy term-block" data-reveal>
+      <p class="term-prompt" aria-hidden="true"><span>alessandro@studio</span>:<b>~</b>$ cat about.txt</p>
+      <p class="about-lead">I’m Alessandro Vannelli, an independent web designer and developer. I work on both sides of a website — how it looks and how it’s built — so nothing gets lost between a design and the finished code.</p>
+      <p>Every project starts from a blank page. The arcade, the engineering practice and the bakery above share no template, only the care that went into them. I work directly with the people I build for: one person, from the first sketch to the final build.</p>
+      <p class="term-prompt term-waiting" aria-hidden="true"><span>alessandro@studio</span>:<b>~</b>$ <span class="term-cursor"></span></p>
+    </div>
+
+    <div class="about-process term-block" data-reveal>
+      <p class="term-prompt" aria-hidden="true"><span>alessandro@studio</span>:<b>~</b>$ ./run project</p>
+      <h3 class="visually-hidden">How a project runs</h3>
+      <ol>
+        {process.map((stage, index) => (
+          <li style={`--n:${index}`}>
+            <span class="boot-num">[{stage.number}]</span>
+            <strong>{stage.name}</strong>
+            <span class="boot-dots" aria-hidden="true"></span>
+            <span class="boot-ok" aria-hidden="true">[ OK ]</span>
+            <span class="boot-text">{stage.text}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="about-off">
+      <div class="about-off-head">
+        <p class="term-prompt" aria-hidden="true"><span>alessandro@studio</span>:<b>~</b>$ ls ~/off_the_clock</p>
+        <h3 class="visually-hidden">Off the clock</h3>
+        {anyInteractive && <p class="about-off-hint">// select one to read more</p>}
+      </div>
+      <Interests />
+    </div>
+  </div>
+</section>
+
+<script>import '../scripts/matrix.ts';</script>

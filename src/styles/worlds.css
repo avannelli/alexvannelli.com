@@ -1,0 +1,419 @@
+/* ======================================================================
+   Project worlds
+   ----------------------------------------------------------------------
+   .world-<slug> carries only variables, so the same palette dresses the
+   homepage section and the case study. Decoration that belongs to the
+   homepage section is scoped to .world.world-<slug>.
+   Desktop-first; narrower breakpoints come last.
+   ====================================================================== */
+
+/* ---------- Palettes ---------------------------------------------------- */
+
+/* The arcade: violet cabinet, magenta frame, marquee yellow, cyan readout. */
+.world-insertcoin{
+ --w-bg:#130a24;
+ --w-ink:#f3eefc;
+ --w-soft:#c9bfe3;          /* 10.6:1 on --w-bg */
+ --w-label:#6fe3cc;         /* 11.9:1 */
+ --w-hi:#f7e457;
+ --w-accent:#ff2e88;
+ --w-line:rgba(255,46,136,.3);
+ --w-texture:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.22) 2px 3px);
+ --w-btn-bg:#f7e457;
+ --w-btn-hover:#fff27a;
+ --w-btn-ink:#130a24;
+ --w-btn-shadow:5px 5px 0 #ff2e88;
+ --w-btn-shadow-hover:7px 7px 0 #ff2e88;
+ --w-title-family:var(--sans);
+ --w-title-weight:700;
+ --w-title-tracking:-.06em;
+ --w-title-case:uppercase;
+ --w-title-color:#f7e457;
+ --w-title-shadow:.035em .035em 0 #ff2e88;
+ --frame-bar:#1d1036;
+ --frame-ink:#8a7bb3;
+ --frame-shadow:var(--shadow-frame-dark),0 0 80px -20px rgba(255,46,136,.45);
+ --focus:#f7e457;
+}
+
+/* The engineering practice: blueprint field, drafting lines, warm orange. */
+.world-alderspan{
+ --w-bg:#0b2350;
+ --w-ink:#eef3fc;
+ --w-soft:#b3c4e6;          /* 8.6:1 on --w-bg */
+ --w-label:#9fb4dc;         /* 7.3:1 */
+ --w-hi:#eef3fc;
+ --w-accent:#f0a070;
+ --w-line:rgba(170,196,240,.28);
+ --w-texture:
+  linear-gradient(rgba(170,196,240,.07) 1px,transparent 1px) 0 0/24px 24px,
+  linear-gradient(90deg,rgba(170,196,240,.07) 1px,transparent 1px) 0 0/24px 24px,
+  linear-gradient(rgba(170,196,240,.12) 1px,transparent 1px) 0 0/120px 120px,
+  linear-gradient(90deg,rgba(170,196,240,.12) 1px,transparent 1px) 0 0/120px 120px;
+ --w-btn-bg:#f0a070;
+ --w-btn-hover:#f5b68e;
+ --w-btn-ink:#14100c;
+ --w-btn-shadow:0 0 0 1px rgba(240,160,112,.4),0 10px 26px -10px rgba(240,160,112,.6);
+ --w-title-family:var(--sans);
+ --w-title-weight:500;
+ --w-title-tracking:-.05em;
+ --w-title-case:none;
+ --w-title-color:#eef3fc;
+ --w-title-shadow:none;
+ --frame-bar:#0e1a1a;
+ --frame-ink:#6f8a86;
+ --frame-shadow:var(--shadow-frame-dark);
+ --focus:#f0a070;
+}
+
+/* The bakery: cream paper, honey, cocoa ink. Every small text colour
+   clears 4.5:1 against the darker end of the cream gradient. */
+.world-morrow-and-crumb{
+ --w-bg:#f1e3c8;
+ --w-ink:#3a2a18;           /* 10.5:1 on #ecd8b4 */
+ --w-soft:#5c4528;          /*  6.2:1 */
+ --w-label:#7a4e17;         /*  4.9:1 */
+ --w-hi:#3a2a18;
+ --w-accent:#9a6224;        /*  3.4:1 — large display type only */
+ --w-line:rgba(58,42,24,.2);
+ --w-texture:linear-gradient(180deg,#f3e6cc,#ecd8b4);
+ --w-btn-bg:#3a2a18;
+ --w-btn-hover:#4d3920;
+ --w-btn-ink:#f8efdd;
+ --w-btn-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 10px 24px -10px rgba(58,42,24,.6);
+ --w-title-family:var(--serif);
+ --w-title-weight:400;
+ --w-title-tracking:-.035em;
+ --w-title-case:none;
+ --w-title-color:#3a2a18;
+ --w-title-shadow:none;
+ --frame-bar:#fbf6ec;
+ --frame-ink:#b7a582;
+ --frame-shadow:
+  0 0 0 1px rgba(58,42,24,.1),
+  0 2px 4px rgba(58,42,24,.08),
+  0 22px 44px -16px rgba(58,42,24,.35),
+  0 60px 110px -40px rgba(58,42,24,.4);
+ --focus:#3a2a18;
+}
+
+/* ---------- Shared world structure -------------------------------------- */
+.world{
+ --bleed:max(var(--gutter),calc((100vw - var(--measure)) / 2));
+ position:relative;isolation:isolate;
+ overflow-x:clip;
+ padding:clamp(88px,10vw,168px) 0;
+ background:var(--w-texture),var(--w-bg);
+ color:var(--w-ink);
+}
+.world-inner{
+ position:relative;z-index:1;
+ display:grid;grid-template-columns:repeat(12,minmax(0,1fr));
+ column-gap:clamp(16px,2vw,28px);row-gap:clamp(36px,4vw,64px);
+}
+.world-meta{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--w-label)}
+.world-summary{font-size:17px;line-height:1.65;color:var(--w-soft);max-width:44ch}
+.world-actions{display:flex;flex-wrap:wrap;align-items:center;gap:18px 30px;margin-top:6px}
+.world-actions .link-arrow{color:var(--w-ink)}
+
+/* ======================================================================
+   01 — InsertCoin
+   ====================================================================== */
+.world.world-insertcoin{
+ background:
+  radial-gradient(55% 45% at 82% 34%,rgba(255,46,136,.18),transparent 70%),
+  radial-gradient(45% 40% at 8% 88%,rgba(111,227,204,.1),transparent 70%),
+  var(--w-bg);
+}
+/* The neon edge the arcade frames everything with. */
+.world.world-insertcoin::before{
+ content:'';position:absolute;top:0;left:0;right:0;height:3px;z-index:2;
+ background:linear-gradient(90deg,#ff2e88,#f7e457 50%,#6fe3cc);
+ box-shadow:0 0 24px 2px rgba(255,46,136,.55);
+}
+/* CRT scanlines over the whole section. */
+.world.world-insertcoin::after{
+ content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+ background:var(--w-texture);opacity:.55;
+}
+
+.ic-head{grid-column:1/-1;display:grid;grid-template-columns:1fr auto;align-items:end;gap:18px 24px}
+.ic-head .world-meta{grid-column:1/-1}
+.ic-title{
+ font:700 clamp(64px,12.6vw,196px)/.82 var(--sans);
+ letter-spacing:-.065em;text-transform:uppercase;
+ color:var(--w-hi);
+ text-shadow:.035em .035em 0 var(--w-accent);
+}
+.ic-title .reveal-line{padding:0 .06em .1em 0;margin-bottom:-.1em}
+.ic-title-coin{color:#fff}
+.ic-dot{color:var(--w-label)}
+.ic-coin{
+ width:clamp(48px,5.4vw,84px);height:auto;margin-bottom:.6vw;
+ filter:drop-shadow(0 0 18px rgba(255,46,136,.6));
+ animation:coin-spin 3.2s linear infinite;
+}
+@keyframes coin-spin{to{transform:rotateY(360deg)}}
+
+.ic-copy{grid-column:1/6;grid-row:2;align-self:start;display:grid;gap:26px;justify-items:start;padding-top:5%}
+.ic-tagline{font:500 13px/1.5 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--w-label)}
+.ic-cabinets{width:100%;border-top:1px solid var(--w-line)}
+.ic-cabinets li{
+ position:relative;
+ display:grid;grid-template-columns:96px 1fr auto;align-items:baseline;gap:12px;
+ padding:15px 12px;
+ border-bottom:1px solid var(--w-line);
+ transition:background var(--t-quick) var(--ease),padding var(--t-base) var(--ease);
+}
+.ic-cabinets li::before{
+ content:'▶';position:absolute;left:-2px;top:50%;translate:0 -50%;
+ font-size:10px;color:var(--w-accent);opacity:0;
+ transition:opacity var(--t-quick) var(--ease);
+}
+.ic-cabinets li:hover{background:rgba(255,46,136,.1);padding-left:24px}
+.ic-cabinets li:hover::before{opacity:1;left:8px}
+.ic-cabinet-num{font:500 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--w-label)}
+.ic-cabinet-name{font:700 clamp(18px,1.6vw,22px)/1 var(--sans);letter-spacing:-.02em;text-transform:uppercase;color:var(--w-hi)}
+.ic-cabinet-genre{font:500 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--w-soft)}
+
+.ic-stage{
+ grid-column:6/-1;grid-row:2;
+ position:relative;
+ margin-right:calc(-1 * var(--bleed));
+ aspect-ratio:1.3;
+}
+/* The arcade floor: a perspective grid receding under the frames. */
+.ic-stage::before{
+ content:'';position:absolute;left:-30%;right:-10%;bottom:-18%;height:62%;z-index:0;
+ background:
+  linear-gradient(rgba(255,46,136,.45) 1px,transparent 1px) 0 0/64px 64px,
+  linear-gradient(90deg,rgba(255,46,136,.45) 1px,transparent 1px) 0 0/64px 64px;
+ transform:perspective(420px) rotateX(62deg);transform-origin:bottom;
+ mask-image:linear-gradient(to top,#000 10%,transparent 85%);
+ -webkit-mask-image:linear-gradient(to top,#000 10%,transparent 85%);
+}
+.ic-main{position:absolute;left:0;top:6%;width:88%;z-index:2;rotate:-1.5deg}
+.ic-cabinet{
+ position:absolute;left:3%;bottom:-6%;width:24%;z-index:3;margin:0;
+ rotate:2.5deg;translate:0 var(--py,0px);
+}
+.ic-cabinet img{
+ width:100%;aspect-ratio:1140/1780;object-fit:cover;
+ border:2px solid var(--w-hi);
+ box-shadow:6px 6px 0 var(--w-accent),0 30px 60px -20px rgba(0,0,0,.8);
+}
+.ic-cabinet figcaption{margin-top:14px;color:var(--w-label)}
+.ic-phone{position:absolute;right:7%;bottom:-10%;width:19%;z-index:4;rotate:4deg;translate:0 var(--py,0px)}
+.ic-press{
+ position:absolute;top:-1%;right:14%;z-index:4;
+ font:500 12px/1 var(--mono);letter-spacing:.32em;text-transform:uppercase;color:var(--w-hi);
+ text-shadow:0 0 12px rgba(247,228,87,.6);
+ animation:blink 1.1s steps(2,jump-none) infinite;
+}
+@keyframes blink{50%{opacity:0}}
+
+/* Entrance: the main screen powers on like a CRT, then the rest arrive. */
+.js .ic-stage[data-reveal="crt"]{opacity:1;transform:none}
+.js .ic-stage[data-reveal="crt"] .ic-main{opacity:0}
+.js .ic-stage[data-reveal="crt"][data-shown] .ic-main{animation:crt-on 1.15s var(--ease) both}
+@keyframes crt-on{
+ 0%{opacity:1;transform:scale(.55,.004);filter:brightness(5)}
+ 35%{transform:scale(1,.006);filter:brightness(4)}
+ 70%{transform:none;filter:brightness(1.5)}
+ 100%{opacity:1;transform:none;filter:none}
+}
+.js .ic-stage[data-reveal="crt"] :is(.ic-cabinet,.ic-phone,.ic-press){
+ opacity:0;transform:translateY(28px);
+ transition:opacity .8s var(--ease),transform 1s var(--ease);
+}
+.js .ic-stage[data-reveal="crt"][data-shown] :is(.ic-cabinet,.ic-phone,.ic-press){opacity:1;transform:none}
+.js .ic-stage[data-reveal="crt"][data-shown] .ic-cabinet{transition-delay:.75s}
+.js .ic-stage[data-reveal="crt"][data-shown] .ic-phone{transition-delay:.9s}
+.js .ic-stage[data-reveal="crt"][data-shown] .ic-press{transition-delay:1.2s}
+
+/* ======================================================================
+   02 — Alderspan
+   ====================================================================== */
+.world.world-alderspan{
+ background:
+  radial-gradient(60% 55% at 28% 45%,rgba(30,74,150,.55),transparent 70%),
+  var(--w-texture),
+  var(--w-bg);
+}
+/* A drafting ruler along the seam: fine ticks every 12px, majors every 120px. */
+.world.world-alderspan::before{
+ content:'';position:absolute;top:0;left:0;right:0;height:18px;z-index:2;
+ border-top:1px solid rgba(200,215,245,.6);
+ background:
+  repeating-linear-gradient(90deg,rgba(200,215,245,.55) 0 1px,transparent 1px 12px) top/100% 7px no-repeat,
+  repeating-linear-gradient(90deg,rgba(200,215,245,.85) 0 1px,transparent 1px 120px) top/100% 16px no-repeat;
+}
+
+.al-stage{
+ grid-column:1/8;grid-row:1;
+ position:relative;
+ margin-left:calc(-1 * var(--bleed));
+ aspect-ratio:1.24;
+}
+.al-sheet{position:absolute;left:6%;top:4%;width:60%;z-index:1}
+.al-main{position:absolute;right:0;top:20%;width:80%;z-index:2}
+.al-phone{position:absolute;left:12%;bottom:0;width:16%;z-index:3;translate:0 var(--py,0px)}
+
+/* Dimension lines with end ticks and a sheet label, plotted after the
+   sheets. Positions follow the frames they measure. */
+.al-dim{
+ position:absolute;z-index:4;height:1px;
+ background:rgba(200,215,245,.7);
+ transform-origin:left;
+}
+.al-dim::before,.al-dim::after{content:'';position:absolute;top:-5px;width:1px;height:11px;background:inherit}
+.al-dim::before{left:0}
+.al-dim::after{right:0}
+.al-dim span{
+ position:absolute;left:50%;bottom:6px;translate:-50% 0;
+ padding:0 8px;white-space:nowrap;
+ font:500 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+ color:var(--w-label);background:var(--w-bg);
+}
+.al-dim--sheet{left:6%;width:60%;top:calc(4% - 16px)}
+/* The main sheet ends at ~85% of the stage height (20% offset + a 16:10
+   frame 80% wide on a 1.24 stage), so this one is labelled underneath. */
+.al-dim--main{right:0;width:80%;top:calc(85% + 18px)}
+.al-dim--main span{bottom:auto;top:8px}
+
+.al-copy{grid-column:8/-1;grid-row:1;align-self:center;display:grid;gap:22px;justify-items:start}
+.al-title{
+ font:500 clamp(46px,5.6vw,88px)/.9 var(--sans);letter-spacing:-.05em;
+}
+.al-title span{
+ display:block;margin-top:14px;
+ font:500 12px/1 var(--mono);letter-spacing:.5em;text-transform:uppercase;color:var(--w-label);
+}
+.al-quote{font:400 clamp(24px,2.3vw,34px)/1.15 var(--sans);letter-spacing:-.03em}
+.al-quote em{font-style:normal;color:var(--w-accent);background:linear-gradient(currentColor,currentColor) left 100%/100% 2px no-repeat;padding-bottom:2px}
+.al-titleblock{
+ display:grid;grid-template-columns:1fr 1fr;gap:1px;width:100%;max-width:440px;
+ background:var(--w-line);border:1px solid var(--w-line);
+}
+.al-titleblock div{display:grid;gap:5px;padding:10px 12px;background:var(--w-bg)}
+.al-titleblock dt{font:500 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--w-label)}
+.al-titleblock dd{font-size:14px;line-height:1.3}
+
+/* Entrance: sheets plot in from the left like a plotter pass, then the
+   dimension lines draw across and the phone arrives. */
+.js .al-stage[data-reveal="plot"]{opacity:1;transform:none}
+.js .al-stage[data-reveal="plot"] :is(.al-sheet,.al-main){
+ clip-path:inset(0 100% 0 0);
+ transition:clip-path 1.3s var(--ease-travel);
+}
+.js .al-stage[data-reveal="plot"][data-shown] :is(.al-sheet,.al-main){clip-path:inset(-30% -30% -40% -30%)}
+.js .al-stage[data-reveal="plot"][data-shown] .al-sheet{transition-delay:.3s}
+.js .al-stage[data-reveal="plot"] .al-dim{transform:scaleX(0);transition:transform 1s var(--ease-travel)}
+.js .al-stage[data-reveal="plot"][data-shown] .al-dim{transform:none;transition-delay:1.1s}
+.js .al-stage[data-reveal="plot"] .al-dim span{opacity:0;transition:opacity .6s var(--ease) 1.8s}
+.js .al-stage[data-reveal="plot"][data-shown] .al-dim span{opacity:1}
+.js .al-stage[data-reveal="plot"] .al-phone{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease) 1.2s,transform 1s var(--ease) 1.2s}
+.js .al-stage[data-reveal="plot"][data-shown] .al-phone{opacity:1;transform:none}
+
+/* ======================================================================
+   03 — Morrow & Crumb
+   ====================================================================== */
+.world.world-morrow-and-crumb{
+ overflow:visible;
+ background:
+  radial-gradient(45% 40% at 86% 18%,rgba(232,192,125,.5),transparent 70%),
+  var(--w-texture),
+  var(--w-bg);
+}
+/* The soft wave the bakery uses under its hero, rising over the seam. */
+.world.world-morrow-and-crumb::before{
+ content:'';position:absolute;left:0;right:0;top:-31px;height:32px;
+ background:#f3e6cc;
+ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 32'%3E%3Cpath d='M0 32V20C40 4 80 4 120 18S200 34 240 18V32Z'/%3E%3C/svg%3E") repeat-x bottom/240px 32px;
+ -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 32'%3E%3Cpath d='M0 32V20C40 4 80 4 120 18S200 34 240 18V32Z'/%3E%3C/svg%3E") repeat-x bottom/240px 32px;
+}
+
+.mc-head{grid-column:1/-1;position:relative}
+.mc-head .world-meta{margin-bottom:18px}
+.mc-title{
+ font:400 clamp(64px,11vw,180px)/.88 var(--serif);letter-spacing:-.035em;
+}
+.mc-title em{font-style:italic;color:var(--w-accent)}
+.mc-title .reveal-line{padding-bottom:.14em;margin-bottom:-.14em}
+.mc-sprig{
+ position:absolute;right:3%;bottom:-6%;
+ width:clamp(56px,6.6vw,104px);height:auto;
+ fill:none;stroke:var(--w-accent);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;
+ rotate:14deg;
+}
+.mc-sprig path{vector-effect:non-scaling-stroke}
+
+.mc-stage{grid-column:1/9;grid-row:2;position:relative;aspect-ratio:1.22}
+.mc-menu{position:absolute;right:-8%;top:0;width:56%;z-index:1;rotate:4deg}
+.mc-main{position:absolute;left:0;top:15%;width:86%;z-index:2;rotate:-2deg}
+.mc-phone{position:absolute;right:-2%;bottom:-2%;width:19%;z-index:3;rotate:5deg;translate:0 var(--py,0px)}
+
+.mc-copy{grid-column:9/-1;grid-row:2;align-self:end;display:grid;gap:22px;justify-items:start;padding-bottom:3%}
+.mc-quote p{font:italic 400 clamp(30px,3vw,46px)/1.04 var(--serif);letter-spacing:-.015em}
+.world-morrow-and-crumb .world-summary{max-width:36ch}
+
+/* Entrance: pages are laid down on the table and settle into place. */
+.js .mc-stage[data-reveal="settle"]{opacity:1;transform:none}
+.js .mc-stage[data-reveal="settle"] :is(.mc-menu,.mc-main,.mc-phone){
+ opacity:0;transform:translateY(48px) rotate(var(--settle,3deg));
+ transition:opacity .9s var(--ease),transform 1.3s var(--ease);
+}
+.js .mc-stage[data-reveal="settle"] .mc-main{--settle:-3deg;transition-delay:.15s}
+.js .mc-stage[data-reveal="settle"] .mc-phone{--settle:6deg;transition-delay:.45s}
+.js .mc-stage[data-reveal="settle"][data-shown] :is(.mc-menu,.mc-main,.mc-phone){opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+ .ic-coin,.ic-press{animation:none}
+ .js .ic-stage[data-reveal="crt"] .ic-main{opacity:1;animation:none}
+ .js :is(.ic-stage,.al-stage,.mc-stage) *{opacity:1;transform:none;clip-path:none}
+}
+
+/* ======================================================================
+   Tablet
+   ====================================================================== */
+@media (max-width:900px){
+ .ic-stage{grid-column:1/-1;grid-row:2;margin:12px calc(-1 * var(--gutter)) 40px 0;aspect-ratio:1.25}
+ .ic-copy{grid-column:1/-1;grid-row:3}
+ .ic-cabinet{left:2%;width:26%}
+ .al-stage{grid-column:1/-1;margin-left:calc(-1 * var(--gutter));margin-bottom:24px}
+ .al-copy{grid-column:1/-1;grid-row:2}
+ .mc-stage{grid-column:1/-1;margin-bottom:24px}
+ .mc-menu{right:-2%}
+ .mc-copy{grid-column:1/-1;grid-row:3}
+}
+
+/* ======================================================================
+   Phone
+   ====================================================================== */
+@media (max-width:640px){
+ /* "INSERTCOIN." cannot wrap, so it scales with the width (~6.1em wide)
+    and the coin moves up beside the label to give it the full line. */
+ .ic-title{grid-column:1/-1;font-size:min(14vw,80px)}
+ .ic-head .world-meta{grid-column:1;align-self:center}
+ .ic-coin{grid-column:2;grid-row:1;width:40px;margin:0}
+ .ic-stage{aspect-ratio:1.05}
+ .ic-main{width:96%}
+ .ic-cabinet{width:30%;bottom:-8%}
+ .ic-cabinet figcaption{display:none}
+ .ic-phone{width:26%;right:2%}
+ .ic-press{display:none}
+ .ic-cabinets li{grid-template-columns:1fr auto;padding-inline:4px}
+ .ic-cabinet-num{grid-column:1/-1}
+ .al-stage{aspect-ratio:1}
+ .al-sheet{width:72%}
+ .al-dim--sheet{width:72%}
+ .al-main{width:88%;top:24%}
+ .al-dim--main{width:88%;top:calc(82% + 14px)}
+ .al-phone{width:21%;left:3%;bottom:-6%}
+ .mc-title{font-size:clamp(52px,15vw,80px)}
+ .mc-sprig{display:none}
+ .mc-stage{aspect-ratio:1.05}
+ .mc-main{width:92%}
+ .mc-menu{width:66%}
+ .mc-phone{width:26%}
+}

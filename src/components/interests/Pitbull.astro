@@ -1,0 +1,101 @@
+---
+// Alessandro's dog as a puppy: a Staffordshire terrier / red-nose pitbull /
+// boxer mix. A layered vector portrait with tone shapes instead of
+// outlines, in puppy proportions: a big round head, large low eyes, a short
+// muzzle, oversized floppy ears and big paws. Copper-red coat, liver-pink
+// nose, white blaze, chest and toes.
+// .dog-head and .dog-ear--l/--r are the animation hooks (home.css).
+const mirror = (d: string) => `<g transform="translate(400 0) scale(-1 1)">${d}</g>`;
+
+// Features drawn once for the viewer's left side and mirrored.
+const ear = `
+  <path d="M130 96C106 74 70 78 56 104C50 118 60 140 78 148C86 128 100 112 122 104Z" fill="#8a3818"/>
+  <path d="M120 100C102 88 80 92 70 108C67 118 72 130 80 136C88 120 100 108 116 102Z" fill="#c9785a" opacity=".7"/>
+  <path d="M56 104C72 86 100 82 124 96" fill="none" stroke="#d07848" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>`;
+const sideTones = `
+  <path d="M116 112C100 132 94 160 96 188C98 214 108 238 124 256C114 230 110 200 114 170C118 146 128 126 146 106C134 106 124 108 116 112Z" fill="#6e2a10" opacity=".35"/>
+  <path d="M120 214C114 194 118 176 132 166C128 186 130 204 140 222Z" fill="#f0a066" opacity=".4"/>
+  <path d="M134 152Q156 138 178 150" fill="none" stroke="#e8955a" stroke-width="7" stroke-linecap="round" opacity=".4"/>
+  <ellipse cx="132" cy="234" rx="16" ry="9" fill="#ff8a78" opacity=".22"/>`;
+const eye = `
+  <circle cx="156" cy="180" r="21" fill="#3a160c"/>
+  <circle cx="156" cy="181" r="17" fill="url(#dog-iris)"/>
+  <circle cx="156" cy="182" r="9.5" fill="#120806"/>
+  <path d="M137 176C142 164 170 164 175 176C168 170 144 170 137 176Z" fill="#2a0e06" opacity=".5"/>
+  <circle cx="150" cy="175" r="5.5" fill="#fff"/>
+  <circle cx="162.5" cy="187" r="2.4" fill="#fff" opacity=".8"/>
+  <path d="M140 196C148 202 164 202 172 196" fill="none" stroke="#e8955a" stroke-width="2" stroke-linecap="round" opacity=".6"/>`;
+const muzzleSide = `
+  <path d="M146 254C154 272 172 284 194 288C172 288 154 280 146 266Z" fill="#d8b49a" opacity=".6"/>
+  <g fill="#c09a82">
+    <circle cx="166" cy="236" r="1.6"/><circle cx="174" cy="242" r="1.6"/><circle cx="162" cy="245" r="1.6"/><circle cx="171" cy="250" r="1.4"/>
+  </g>`;
+const paw = `
+  <ellipse cx="160" cy="390" rx="30" ry="18" fill="#b2532a"/>
+  <ellipse cx="160" cy="394" rx="26" ry="12" fill="#f6ece2"/>
+  <path d="M150 386V398M160 384V398M170 386V398" stroke="#d8c4b2" stroke-width="2" stroke-linecap="round"/>`;
+---
+
+<svg viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="dog-coat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cf7240" />
+      <stop offset=".55" stop-color="#b6562b" />
+      <stop offset="1" stop-color="#94401c" />
+    </linearGradient>
+    <radialGradient id="dog-iris" cx="50%" cy="40%" r="60%">
+      <stop offset="0" stop-color="#f2c47a" />
+      <stop offset=".55" stop-color="#c98a3a" />
+      <stop offset="1" stop-color="#7a4a1c" />
+    </radialGradient>
+    <linearGradient id="dog-nose" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c47e6c" />
+      <stop offset="1" stop-color="#7e3e32" />
+    </linearGradient>
+  </defs>
+
+  <!-- Small shoulders and white chest -->
+  <path d="M134 252C114 300 104 360 104 400H296C296 360 286 300 266 252Z" fill="url(#dog-coat)" />
+  <path d="M166 284C178 322 190 362 200 400C210 362 222 322 234 284Z" fill="#f6ece2" />
+  <path d="M132 310C156 330 244 330 268 310" fill="none" stroke="#24407e" stroke-width="12" stroke-linecap="round" />
+  <path d="M136 307C158 325 242 325 264 307" fill="none" stroke="#4a6cb0" stroke-width="2.5" stroke-linecap="round" opacity=".8" />
+  <circle cx="200" cy="334" r="3.5" fill="none" stroke="#b08a3a" stroke-width="2" />
+  <circle cx="200" cy="346" r="9" fill="#e2b24c" />
+  <ellipse cx="197.5" cy="343" rx="3.5" ry="2" fill="#fff" opacity=".5" />
+
+  <!-- Big puppy paws -->
+  <Fragment set:html={paw + mirror(paw)} />
+
+  <g class="dog-head">
+    <g class="dog-ear dog-ear--l"><Fragment set:html={ear} /></g>
+    <g class="dog-ear dog-ear--r"><Fragment set:html={mirror(ear)} /></g>
+
+    <!-- A big round head with full puppy cheeks. -->
+    <path d="M200 72C142 72 100 110 96 164C92 214 116 258 154 280C170 290 186 296 200 296C214 296 230 290 246 280C284 258 308 214 304 164C300 110 258 72 200 72Z" fill="url(#dog-coat)" />
+    <path d="M200 80C164 80 136 96 124 118C146 104 172 98 200 98C228 98 254 104 276 118C264 96 236 80 200 80Z" fill="#e8955a" opacity=".5" />
+    <Fragment set:html={sideTones + mirror(sideTones)} />
+    <path d="M154 280C170 290 186 296 200 296C214 296 230 290 246 280C230 284 216 286 200 286C184 286 170 284 154 280Z" fill="#5e2410" opacity=".35" />
+
+    <!-- White blaze down to the muzzle -->
+    <path d="M195 98C198 126 197 160 190 196C184 208 176 214 168 218H232C224 214 216 208 210 196C203 160 202 126 205 98C202 94 198 94 195 98Z" fill="#f6ece2" />
+    <!-- Soft puppy forehead wrinkles -->
+    <path d="M174 122Q186 116 192 122M208 122Q214 116 226 122M178 134Q188 129 193 135M207 135Q212 129 222 134" fill="none" stroke="#6e2a10" stroke-width="2.2" stroke-linecap="round" opacity=".3" />
+
+    <Fragment set:html={eye + mirror(eye)} />
+
+    <!-- Short, soft muzzle -->
+    <path d="M150 220C138 236 138 260 150 272C162 284 180 290 200 290C220 290 238 284 250 272C262 260 262 236 250 220C236 208 164 208 150 220Z" fill="#f4e6d8" />
+    <ellipse cx="200" cy="222" rx="24" ry="6" fill="#fff" opacity=".6" />
+    <Fragment set:html={muzzleSide + mirror(muzzleSide)} />
+
+    <!-- Liver-pink nose -->
+    <path d="M181 228C181 217 193 213 200 214C207 213 219 217 219 228C219 236 211 240 205 242L200 246L195 242C189 240 181 236 181 228Z" fill="url(#dog-nose)" />
+    <path d="M190 231C188 228 186 228 185 232C187 234 189 235 191 235ZM210 231C212 228 214 228 215 232C213 234 211 235 209 235Z" fill="#3a1810" />
+    <ellipse cx="196" cy="220" rx="8" ry="2.6" fill="#fff" opacity=".55" />
+
+    <!-- A little smile with the tip of a tongue -->
+    <path d="M191 258Q200 263 209 258C209 274 191 274 191 258Z" fill="#e7808c" />
+    <path d="M200 262V270" stroke="#c45a68" stroke-width="1.6" stroke-linecap="round" />
+    <path d="M200 246V254M200 254C193 262 180 264 172 257M200 254C207 262 220 264 228 257" fill="none" stroke="#6a3024" stroke-width="2.8" stroke-linecap="round" />
+  </g>
+</svg>

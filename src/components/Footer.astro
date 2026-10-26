@@ -1,9 +1,22 @@
 ---
-import { site } from '../data/portfolio';
+import { projects, site } from '../data/portfolio';
 ---
-<footer class="footer wrap">
- <div><a class="footer-name" href="#top">{site.name}</a><p>Custom websites for local and independent businesses.</p></div>
- <nav aria-label="Footer navigation"><a class="btn btn--ghost btn--sm" href="#process">Process</a><a class="btn btn--ghost btn--sm" href="#project-dialog" data-open-project aria-haspopup="dialog" aria-controls="project-dialog">Contact</a></nav>
- <div class="footer-end"><a href={`mailto:${site.email}`}>{site.email}</a><span>© {new Date().getFullYear()} {site.name}</span></div>
-</footer>
 
+<footer class="footer" data-header-world="ink">
+  <div class="footer-inner wrap">
+    <p class="footer-name">{site.name}<span>{site.role}</span></p>
+    <ul class="footer-live" aria-label="Live projects">
+      {projects.map((project) => (
+        <li>
+          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+            {project.title} <i aria-hidden="true">↗</i><span class="visually-hidden"> (opens in a new tab)</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <div class="footer-end">
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <span>© {new Date().getFullYear()} {site.name}. Designed and built from scratch.</span>
+    </div>
+  </div>
+</footer>

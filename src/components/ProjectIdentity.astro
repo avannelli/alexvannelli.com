@@ -1,9 +1,0 @@
-﻿---
-import type { Project } from '../data/portfolio';
-interface Props { project: Project }
-const { project } = Astro.props;
----
-<span class="project-identity">
- <img src={project.logo} width="44" height="44" alt="" />
- <span>{project.title}</span>
-</span>

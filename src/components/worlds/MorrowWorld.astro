@@ -1,0 +1,46 @@
+---
+// World 03 — the bakery. Warm paper, a drawn wheat sprig, and pages laid
+// loosely on the table rather than aligned to a grid.
+import BrowserFrame from '../BrowserFrame.astro';
+import PhoneFrame from '../PhoneFrame.astro';
+import WorldActions from './WorldActions.astro';
+import { getProject } from '../../data/portfolio';
+
+const project = getProject('morrow-and-crumb')!;
+const [menu] = project.gallery;
+---
+
+<section class="world world-morrow-and-crumb" id={project.slug} aria-labelledby="morrow-title" data-header-world={project.slug} data-header-label={`Now viewing — ${project.number} / 03 ${project.title}`}>
+  <div class="world-inner wrap">
+    <header class="mc-head">
+      <p class="world-meta label"><span>{project.number} / 03</span><span>{project.category}</span></p>
+      <h2 id="morrow-title" class="mc-title" data-reveal="lines">
+        <span class="reveal-line"><span>Morrow <em>&amp;</em> Crumb</span></span>
+      </h2>
+      <svg class="mc-sprig" viewBox="0 0 120 220" aria-hidden="true" data-reveal data-draw style="--draw-delay:.5s">
+        <path d="M60 214C58 160 60 96 66 10" />
+        <path d="M62 170C44 160 34 142 36 124C52 132 62 150 62 170Z" />
+        <path d="M62 170C80 160 90 142 88 124C72 132 62 150 62 170Z" />
+        <path d="M62 128C44 118 36 100 38 82C54 90 63 108 62 128Z" />
+        <path d="M63 128C81 118 89 100 87 82C71 90 62 108 63 128Z" />
+        <path d="M64 86C48 76 42 58 45 42C59 50 66 68 64 86Z" />
+        <path d="M64 86C80 76 86 58 83 42C69 50 63 68 64 86Z" />
+        <path d="M66 46C60 34 60 22 66 10C72 22 72 34 66 46Z" />
+      </svg>
+    </header>
+
+    <div class="mc-stage" data-reveal="settle">
+      <BrowserFrame class="mc-menu" shot={menu} domain={`${project.domain}/#menu`} sizes="(max-width: 900px) 70vw, 34vw" />
+      <BrowserFrame class="mc-main" shot={project.cover} domain={project.domain} sizes="(max-width: 900px) 92vw, 58vw" />
+      <PhoneFrame class="mc-phone" shot={project.mobile} data-depth="0.12" />
+    </div>
+
+    <div class="mc-copy" data-reveal>
+      <blockquote class="mc-quote">
+        <p>“{project.headline}”</p>
+      </blockquote>
+      <p class="world-summary">{project.summary}</p>
+      <WorldActions project={project} />
+    </div>
+  </div>
+</section>

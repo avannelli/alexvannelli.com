@@ -1,0 +1,76 @@
+---
+// Contact is a shop window after dark: a neon sign on a brick wall, an
+// OPEN card hanging from a nail, and a switch plate that changes the
+// neon's colour to one of the three worlds. The sign flickers on when it
+// scrolls into view (data-reveal="neon"); everything is lit and still
+// under reduced motion, and the switches only appear with JavaScript.
+import { site } from '../data/portfolio';
+
+const colours = [
+  { id: 'arcade', label: 'Arcade' },
+  { id: 'blueprint', label: 'Blueprint' },
+  { id: 'bakery', label: 'Bakery' },
+];
+---
+
+<section class="contact" id="contact" aria-labelledby="contact-title" data-neon="arcade" data-header-world="ink" data-header-label="Let’s build something">
+  <div class="contact-inner wrap">
+    <p class="section-mark label">Contact</p>
+
+    <div class="neon-board" data-reveal="neon">
+      <h2 id="contact-title" class="neon-sign">
+        <span class="neon-line neon-line--top">Have a world in mind?</span>
+        <span class="neon-line neon-line--main">Let’s <span class="neon-buzz">b</span>uild it.</span>
+      </h2>
+      <span class="neon-standoff" aria-hidden="true"></span>
+      <span class="neon-standoff" aria-hidden="true"></span>
+      <span class="neon-standoff" aria-hidden="true"></span>
+      <span class="neon-standoff" aria-hidden="true"></span>
+    </div>
+
+    <div class="open-sign" aria-hidden="true" data-reveal>
+      <svg class="open-string" viewBox="0 0 120 56"><path d="M8 54L60 8L112 54" /><circle cx="60" cy="7" r="5" /></svg>
+      <div class="open-card">
+        <span class="open-word">Open</span>
+        <span class="open-sub">for new projects</span>
+      </div>
+    </div>
+
+    <div class="contact-body" data-reveal>
+      <p>Tell me about the business and what the website needs to do. I’ll reply personally with questions, ideas and a sensible next step.</p>
+      <div class="contact-actions">
+        <button class="btn btn--neon" type="button" data-open-project aria-haspopup="dialog" aria-controls="project-dialog">
+          Start a project <i aria-hidden="true">↗</i>
+        </button>
+        <a class="link-arrow" href={`mailto:${site.email}`}>Or email {site.email} <i aria-hidden="true">→</i></a>
+      </div>
+    </div>
+
+    <div class="neon-panel" data-neon-panel data-reveal hidden>
+      <p class="label" id="neon-label">Neon — pick a world</p>
+      <div class="switch-plate" role="group" aria-labelledby="neon-label">
+        {colours.map((colour, index) => (
+          <button class={`switch switch--${colour.id}`} type="button" data-neon-set={colour.id} aria-pressed={String(index === 0)}>
+            <span class="switch-rocker" aria-hidden="true"><span></span></span>
+            <span class="switch-name">{colour.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.contact').forEach((section) => {
+    const panel = section.querySelector<HTMLElement>('[data-neon-panel]');
+    if (!panel) return;
+    panel.hidden = false;
+    const switches = [...panel.querySelectorAll<HTMLButtonElement>('[data-neon-set]')];
+    switches.forEach((button) =>
+      button.addEventListener('click', () => {
+        section.dataset.neon = button.dataset.neonSet;
+        switches.forEach((other) => other.setAttribute('aria-pressed', String(other === button)));
+      }),
+    );
+  });
+</script>
