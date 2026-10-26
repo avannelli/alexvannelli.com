@@ -42,7 +42,7 @@ The site was redesigned around **“Different worlds. Built from scratch.”** T
 - `BrowserFrame` and `PhoneFrame` wrap every screenshot. `WorldActions` is the live-site + case-study pair used in every world.
 - `scripts/motion.ts` provides progressive behaviours via attributes: `data-reveal` (fade-up, plus `lines`, `crt`, `plot` and `settle` variants), `data-draw` (self-drawing strokes), `data-depth` (scroll drift) and `data-tone="dark"` (header inversion). All are skipped under `prefers-reduced-motion`, and the page is complete and legible without the script — the `.js` class on `<html>` gates every hidden starting state. No scroll hijacking, loaders or custom cursors.
 - Stylesheets: `theme.css` (tokens, reset, base, motion primitives), `global.css` (buttons, header, footer, frames, dialog, form), `home.css` (hero, work intro, about, contact), `worlds.css` (project palettes and worlds), `case.css` (case studies). All are desktop-first (`max-width` queries), so narrower breakpoints come **last**.
-- The inquiry form has no backend. It composes a pre-filled email in the visitor's own mail app and says so; it must never appear to have delivered anything. `site.email` in `portfolio.ts` is still a placeholder.
+- The inquiry form has no backend. It composes a pre-filled email in the visitor's own mail app and says so; it must never appear to have delivered anything. It composes to `site.email` in `portfolio.ts`.
 
 ## Commands
 - `npm install`

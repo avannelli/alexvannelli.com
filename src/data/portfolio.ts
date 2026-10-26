@@ -19,8 +19,8 @@ export const site = {
   description:
     'Alessandro Vannelli is an independent web designer and developer who builds distinctive websites from a blank page, each with an identity of its own.',
   url: 'https://alexvannelli.com',
-  /** Placeholder until the real address is chosen. The inquiry form composes an email to it. */
-  email: 'hello@example.com',
+  /** The inquiry form composes an email to this address. */
+  email: 'alexvannelli14@gmail.com',
 };
 
 export interface Shot {
